@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 1154683133}
   - component: {fileID: 1154683132}
   - component: {fileID: 1154683130}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2701,8 +2701,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb5a8e516150492ea81c5c21ff5f64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxSpeed>k__BackingField: 0
+  <MaxSpeed>k__BackingField: 1
   <MoveSpeed>k__BackingField: 0
+  <SightRadius>k__BackingField: 3.2
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!61 &1824165962
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -16,11 +16,5 @@ public class Player : CharacterBase
         // allow player movement
         Move(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
     }
-
-    protected override void Move(Vector3 inputVector)
-    {
-        // call base class
-        base.Move(inputVector);
-    }
 }
 

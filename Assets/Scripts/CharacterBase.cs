@@ -8,6 +8,12 @@ public class CharacterBase : MonoBehaviour
     [field: SerializeField] public float MaxSpeed { get; set; }
     [field: SerializeField] public float MoveSpeed { get; set; }
 
+    public StateMachine StateMachine { get; set; }
+    public StateBase IdleState { get; set; }
+    public StateBase BattleState { get; set; }
+
+    public CharacterBase Opponent { get; set; }
+
 
     protected virtual void Awake()
     {
@@ -20,14 +26,19 @@ public class CharacterBase : MonoBehaviour
     {
         // set parameters
         MoveSpeed = MaxSpeed;
+
+        // state machine
+        StateMachine = new StateMachine();
     }
 
     protected virtual void Update()
     {
-
+        // run current state
+        if (StateMachine.CurrentState != null)
+            StateMachine.CurrentState.FrameUpdate();
     }
 
-    protected virtual void Move(Vector3 inputVector)
+    public virtual void Move(Vector3 inputVector)
     {
         // normalize
         inputVector = inputVector.normalized;
@@ -39,10 +50,21 @@ public class CharacterBase : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = true;
 
         // move
-            RB.linearVelocity = inputVector * MoveSpeed;
+        RB.linearVelocity = inputVector * MoveSpeed;
 
         // animate
-        Anim.SetFloat("Movement", RB.linearVelocity.magnitude/MoveSpeed);
+        Anim.SetFloat("Movement", RB.linearVelocity.magnitude / MoveSpeed);
+    }
+
+    public void FaceOpponent(CharacterBase opponent)
+    {
+        RB.linearVelocity = Vector2.zero;
+        Anim.SetFloat("Movement", RB.linearVelocity.magnitude / MoveSpeed);
+
+        if (opponent.transform.position.x > transform.position.x)
+            GetComponent<SpriteRenderer>().flipX = false;
+        else if (opponent.transform.position.x < transform.position.x)
+            GetComponent<SpriteRenderer>().flipX = true;
     }
 }
 

@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Slime : CharacterBase
+public class Slime : Enemy
 {
 
 }
+
