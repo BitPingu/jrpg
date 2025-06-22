@@ -38,16 +38,30 @@ public class CharacterBase : MonoBehaviour
             StateMachine.CurrentState.FrameUpdate();
     }
 
-    public virtual void Move(Vector3 inputVector)
+    public virtual void Idle()
+    {
+
+    }
+
+    public virtual void Battle()
+    {
+        // face opponent
+        FaceOpponent(Opponent);
+    }
+
+    protected virtual void Move(Vector2 inputVector)
     {
         // normalize
         inputVector = inputVector.normalized;
 
-        // face direction
-        if (inputVector.x > 0)
-            GetComponent<SpriteRenderer>().flipX = false;
-        else if (inputVector.x < 0)
-            GetComponent<SpriteRenderer>().flipX = true;
+        // face direction (when idle)
+        if (StateMachine.CurrentState == IdleState)
+        {
+            if (inputVector.x > 0)
+                GetComponent<SpriteRenderer>().flipX = false;
+            else if (inputVector.x < 0)
+                GetComponent<SpriteRenderer>().flipX = true;
+        }
 
         // move
         RB.linearVelocity = inputVector * MoveSpeed;
@@ -58,9 +72,6 @@ public class CharacterBase : MonoBehaviour
 
     public void FaceOpponent(CharacterBase opponent)
     {
-        RB.linearVelocity = Vector2.zero;
-        Anim.SetFloat("Movement", RB.linearVelocity.magnitude / MoveSpeed);
-
         if (opponent.transform.position.x > transform.position.x)
             GetComponent<SpriteRenderer>().flipX = false;
         else if (opponent.transform.position.x < transform.position.x)

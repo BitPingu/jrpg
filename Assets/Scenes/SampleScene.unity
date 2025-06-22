@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 1154683129}
   - component: {fileID: 1154683131}
   - component: {fileID: 1154683133}
+  - component: {fileID: 1154683134}
   - component: {fileID: 1154683132}
   - component: {fileID: 1154683130}
   m_Layer: 6
@@ -507,6 +508,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxSpeed>k__BackingField: 3
   <MoveSpeed>k__BackingField: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _engageIcon: {fileID: 5412774776041671937, guid: e27d841bbf0cb4314910d3494998508e, type: 3}
 --- !u!50 &1154683131
 Rigidbody2D:
   serializedVersion: 5
@@ -602,6 +607,42 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.25412783, y: 0.06189266}
   m_EdgeRadius: 0
+--- !u!58 &1154683134
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154683127}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.2}
+  m_Radius: 1.5
 --- !u!1 &1700344950
 GameObject:
   m_ObjectHideFlags: 0
@@ -2563,7 +2604,7 @@ GameObject:
   - component: {fileID: 1824165962}
   - component: {fileID: 1824165960}
   - component: {fileID: 1824165961}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}

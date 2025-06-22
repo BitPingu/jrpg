@@ -28,11 +28,12 @@ public class EnemyBattleState : StateBase
 
         // Debug.Log(character.name + " attacking...");
 
-        // face opponent
-        character.FaceOpponent(character.Opponent);
+        // allow battling
+        if (character.Opponent != null)
+            character.Battle();
 
         // exit battle
-        if (!((Enemy)character).SeePlayer())
+        if (character.Opponent == null)
             character.StateMachine.ChangeState(character.IdleState);
 
         // enemy dies

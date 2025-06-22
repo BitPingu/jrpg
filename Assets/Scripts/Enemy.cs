@@ -37,8 +37,11 @@ public class Enemy : CharacterBase
         _waitTime = Random.Range(3f, 5f);
     }
 
-    public void Idle()
+    public override void Idle()
     {
+        // call base class
+        base.Idle();
+
         if (_moveCounter > 0)
         {
             // Debug.Log("idle move");
@@ -71,19 +74,35 @@ public class Enemy : CharacterBase
         Move(_curDir);
     }
 
-    public bool SeePlayer()
+    public void Chase(CharacterBase opponent)
     {
-        // detect player
-        Collider2D _getPlayer = Physics2D.OverlapCircle(transform.position, SightRadius, playerLayer);
-
-        if (_getPlayer != null)
+        // chase opponent
+        float distance = Vector2.Distance(opponent.transform.position, transform.position);
+        if (distance > 1f)
         {
-            // make player opponent
-            Opponent = _getPlayer.GetComponent<CharacterBase>();
-            return true;
+            Move(opponent.transform.position - transform.position);
         }
+        else
+        {
+            Move(Vector2.zero);
+        }
+    }
 
-        return false;
+    public override void Battle()
+    {
+        // call base class
+        base.Battle();
+
+        // chase opponent
+        Chase(Opponent);
+
+        // opponent escapes
+        float distance = Vector2.Distance(Opponent.transform.position, transform.position);
+        if (distance > SightRadius)
+        {
+            Opponent.Opponent = null;
+            Opponent = null;
+        }
     }
 
     void OnDrawGizmosSelected()

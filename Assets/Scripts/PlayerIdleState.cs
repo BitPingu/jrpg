@@ -1,19 +1,17 @@
 using UnityEngine;
 
-public class EnemyIdleState : StateBase
+public class PlayerIdleState : StateBase
 {
     // pass in any parameters you need in the constructors
-    public EnemyIdleState(Enemy enemy, StateMachine stateMachine) : base(enemy, stateMachine)
+    public PlayerIdleState(Player player, StateMachine stateMachine) : base(player, stateMachine)
     {
-        // this.enemy = enemy;
+        // this.player = player;
     }
 
     // code that runs when we first enter the state
     public override void EnterState()
     {
         base.EnterState();
-
-        ((Enemy)character).SetRandomDir();
 
         Debug.Log(character.name + " is idle.");
     }
@@ -26,6 +24,7 @@ public class EnemyIdleState : StateBase
 
     public override void FrameUpdate()
     {
+        // TODO: simply state classes, idle and battle for enemy and player into 1
         base.FrameUpdate();
 
         // Debug.Log(character.name + " idling...");
@@ -33,11 +32,11 @@ public class EnemyIdleState : StateBase
         // allow idling
         character.Idle();
 
-        // engage player
+        // engage enemy
         if (character.Opponent != null)
             character.StateMachine.ChangeState(character.BattleState);
 
-        // enemy dies
+        // player dies
         // if (character.CurrentHealth <= 0f)
         //     character.StateMachine.End();
     }
