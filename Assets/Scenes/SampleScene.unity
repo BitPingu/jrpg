@@ -509,6 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxSpeed>k__BackingField: 3
   <MoveSpeed>k__BackingField: 0
+  <Abilities>k__BackingField: []
   _engageIcon: {fileID: 5412774776041671937, guid: e27d841bbf0cb4314910d3494998508e, type: 3}
 --- !u!50 &1154683131
 Rigidbody2D:
@@ -2754,6 +2755,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxSpeed>k__BackingField: 1
   <MoveSpeed>k__BackingField: 0
+  <Abilities>k__BackingField:
+  - {fileID: 11400000, guid: 0a12249c735ef4a9989a9e4955bcc7fc, type: 2}
   <SightRadius>k__BackingField: 4
   <AttackRange>k__BackingField: 1.5
   playerLayer:

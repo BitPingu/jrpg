@@ -4,7 +4,6 @@ using UnityEngine;
 public class LungeAbility : Ability
 {
     public int Power = 5;
-    public float ForceMultiplier = 5f;
 
     public override void Activate(GameObject parent)
     {

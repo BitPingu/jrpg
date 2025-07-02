@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Enemy : CharacterBase
 {
@@ -45,7 +46,6 @@ public class Enemy : CharacterBase
 
         if (_moveCounter > 0)
         {
-            // Debug.Log("idle move");
             // update move counter
             _moveCounter -= Time.deltaTime;
 
@@ -55,7 +55,6 @@ public class Enemy : CharacterBase
         }
         else
         {
-            // Debug.Log("idle wait");
             // stop
             _curDir = Vector2.zero;
 
@@ -95,7 +94,11 @@ public class Enemy : CharacterBase
         base.Battle();
 
         // chase opponent
-        Chase(Opponent);
+        if (!IsAttacking)
+            Chase(Opponent);
+
+        // attack opponent
+        UseAbilities();
 
         // opponent escapes
         float distance = Vector2.Distance(Opponent.transform.position, transform.position);

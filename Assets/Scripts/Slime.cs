@@ -5,6 +5,23 @@ public class Slime : Enemy
 {
     public AbilityStateMachine Lunge;
 
+    protected override void Awake()
+    {
+        // call base class
+        base.Awake();
+
+        // ability
+        foreach (Ability ability in Abilities)
+        {
+            if (ability.name == "Lunge")
+            {
+                Lunge = new AbilityStateMachine(ability, GetComponent<Enemy>(), KeyCode.None);
+                Lunge.State = AbilityStateMachine.AbilityState.cooldown;
+                Lunge.CurrentCooldownTime = 1f;
+            }
+        }
+    }
+
     public override void UseAbilities()
     {
         if (Lunge != null)
@@ -18,36 +35,21 @@ public class Slime : Enemy
 
     IEnumerator LungeRaycast()
     {
-        yield return new WaitForSeconds(.5f);
+        Vector2 _targetVector = Opponent.transform.position - transform.position;
 
-        // Animate attack
-        // Anim.SetTrigger("Lunge");
+        float _elapsedTime = 0f;
+        while (_elapsedTime < Lunge.Ability.ActiveTime)
+        {
+            // iterate timer
+            _elapsedTime += Time.fixedDeltaTime;
 
-        Vector3 _lungeForce = transform.forward * ((LungeAbility)Lunge.Ability).ForceMultiplier;
+            // apply force
+            RB.linearVelocity = _targetVector * MoveSpeed * 1.5f;
 
-        // force
-        // float _elapsedTime = 0f;
-        // while (_elapsedTime < .8f && !IsStun)
-        // {
-        //     // iterate timer
-        //     _elapsedTime += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
 
-        //     // gravity
-        //     _lungeForce.y += -9.81f*Time.deltaTime;
-
-        //     // apply force
-        //     if (Controller.enabled)
-        //         Controller.Move(_lungeForce*Time.deltaTime);
-
-        //     yield return new WaitForFixedUpdate();
-        // }
-
-        yield return new WaitForSeconds(1f);
-
-        // Animate attack
-        // Anim.SetTrigger("Lunge");
-
-        yield return new WaitForSeconds(1f);
+        Anim.SetTrigger("Attack");
     }
 }
 

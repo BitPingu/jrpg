@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CharacterBase : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class CharacterBase : MonoBehaviour
 
     [field: SerializeField] public float MaxSpeed { get; set; }
     [field: SerializeField] public float MoveSpeed { get; set; }
+    [field: SerializeField] public List<Ability> Abilities { get; set; }
 
     public StateMachine StateMachine { get; set; }
     public StateBase IdleState { get; set; }
