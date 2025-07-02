@@ -3,6 +3,7 @@ using UnityEngine;
 public class Enemy : CharacterBase
 {
     [field: SerializeField] public float SightRadius { get; set; }
+    [field: SerializeField] public float AttackRange { get; set; }
     public LayerMask playerLayer;
     private Vector2 _curDir;
     private float _moveCounter, _waitCounter, _waitTime;
@@ -78,7 +79,7 @@ public class Enemy : CharacterBase
     {
         // chase opponent
         float distance = Vector2.Distance(opponent.transform.position, transform.position);
-        if (distance > 1f)
+        if (distance > AttackRange)
         {
             Move(opponent.transform.position - transform.position);
         }

@@ -13,6 +13,7 @@ public class CharacterBase : MonoBehaviour
     public StateBase BattleState { get; set; }
 
     public CharacterBase Opponent { get; set; }
+    public bool IsAttacking { get; set; }
 
 
     protected virtual void Awake()
@@ -76,6 +77,11 @@ public class CharacterBase : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = false;
         else if (opponent.transform.position.x < transform.position.x)
             GetComponent<SpriteRenderer>().flipX = true;
+    }
+
+    public virtual void UseAbilities()
+    {
+        
     }
 }
 

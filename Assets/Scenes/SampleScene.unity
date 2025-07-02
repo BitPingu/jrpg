@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 1154683134}
   - component: {fileID: 1154683132}
   - component: {fileID: 1154683130}
+  - component: {fileID: 1154683135}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -508,9 +509,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxSpeed>k__BackingField: 3
   <MoveSpeed>k__BackingField: 0
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
   _engageIcon: {fileID: 5412774776041671937, guid: e27d841bbf0cb4314910d3494998508e, type: 3}
 --- !u!50 &1154683131
 Rigidbody2D:
@@ -643,6 +641,18 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.2}
   m_Radius: 1.5
+--- !u!114 &1154683135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154683127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a02e1d46b3647468090f588c4b53017d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1700344950
 GameObject:
   m_ObjectHideFlags: 0
@@ -2744,7 +2754,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxSpeed>k__BackingField: 1
   <MoveSpeed>k__BackingField: 0
-  <SightRadius>k__BackingField: 3.2
+  <SightRadius>k__BackingField: 4
+  <AttackRange>k__BackingField: 1.5
   playerLayer:
     serializedVersion: 2
     m_Bits: 64

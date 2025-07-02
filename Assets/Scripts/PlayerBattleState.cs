@@ -13,6 +13,8 @@ public class PlayerBattleState : StateBase
     {
         base.EnterState();
 
+        character.Anim.SetLayerWeight(1, 1);
+
         Debug.Log(character.name + " is attacking " + character.Opponent.name + ".");
     }
 
@@ -20,6 +22,8 @@ public class PlayerBattleState : StateBase
     public override void ExitState()
     {
         base.ExitState();
+
+        character.Anim.SetLayerWeight(1, 0);
     }
 
     public override void FrameUpdate()

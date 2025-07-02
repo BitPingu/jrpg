@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     public Vector3 offset; // default is 0f, 0f, -10f
     public float smoothTime; // default is 0.25f
