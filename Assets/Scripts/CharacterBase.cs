@@ -9,7 +9,7 @@ public class CharacterBase : MonoBehaviour
 
     [SerializeField] private float _moveSpeed = 3f;
 
-    [field: SerializeField] public List<Ability> Abilities { get; set; }
+    public List<Ability> Abilities;
 
     public StateMachine StateMachine { get; set; }
     public StateBase IdleState { get; set; }
@@ -136,6 +136,9 @@ public class CharacterBase : MonoBehaviour
 
         // damage flash
         CallDamageFlash();
+
+        // update health bar
+        GetComponentInChildren<HealthBar>().UpdateHealthBar(_maxHealth, _currentHealth);
     }
 
     public void CallDamageFlash()

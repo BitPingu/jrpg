@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Enemy : CharacterBase
 {
-    [field: SerializeField] public float SightRadius { get; set; }
-    [field: SerializeField] public float AttackRange { get; set; }
+    public float SightRadius;
+    public float AttackRange;
     public LayerMask playerLayer;
     private Vector2 _curDir;
     private float _moveCounter, _waitCounter, _waitTime;
@@ -97,6 +97,9 @@ public class Enemy : CharacterBase
     {
         // call base class
         base.Battle();
+
+        // TODO: temp
+        Move(Vector2.zero);
 
         // attack opponent
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBattleState : StateBase
 {
@@ -13,6 +14,8 @@ public class EnemyBattleState : StateBase
     {
         base.EnterState();
 
+        character.GetComponentInChildren<HealthBar>().gameObject.GetComponent<Image>().enabled = true;
+
         Debug.Log(character.name + " is attacking " + character.Opponent.name + ".");
     }
 
@@ -20,6 +23,8 @@ public class EnemyBattleState : StateBase
     public override void ExitState()
     {
         base.ExitState();
+
+        character.GetComponentInChildren<HealthBar>().gameObject.GetComponent<Image>().enabled = false;
     }
 
     public override void FrameUpdate()
