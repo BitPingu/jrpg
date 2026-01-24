@@ -14,7 +14,6 @@ public class LungeAbility : Ability
         // call ability from character
         slime.UseLunge();
 
-        IsActive = true;
         // Debug.Log(name + " activated.");
     }
 
@@ -25,8 +24,7 @@ public class LungeAbility : Ability
         Slime slime =  parent.GetComponent<Slime>();
     
         // ability finished
-        IsActive = false;
-        // Debug.Log(name + " on cooldown.");
+        Debug.Log(name + " on cooldown.");
     }
 }
 

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class Enemy : CharacterBase
 {
@@ -39,6 +38,12 @@ public class Enemy : CharacterBase
         _waitTime = Random.Range(3f, 5f);
     }
 
+    public void InterruptIdle()
+    {
+        // stop
+        _curDir = Vector2.zero;
+    }
+
     public override void Idle()
     {
         // call base class
@@ -56,7 +61,7 @@ public class Enemy : CharacterBase
         else
         {
             // stop
-            _curDir = Vector2.zero;
+            InterruptIdle();
 
             // update wait counter
             _waitCounter -= Time.deltaTime;
@@ -93,20 +98,11 @@ public class Enemy : CharacterBase
         // call base class
         base.Battle();
 
-        // chase opponent
-        if (!IsAttacking)
-            Chase(Opponent);
-
         // attack opponent
-        UseAbilities();
+
 
         // opponent escapes
-        float distance = Vector2.Distance(Opponent.transform.position, transform.position);
-        if (distance > SightRadius)
-        {
-            Opponent.Opponent = null;
-            Opponent = null;
-        }
+ 
     }
 
     void OnDrawGizmosSelected()

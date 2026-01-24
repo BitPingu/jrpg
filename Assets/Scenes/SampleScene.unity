@@ -170,7 +170,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -507,9 +507,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6a6b4328b34d82ad9ca503f942388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxSpeed>k__BackingField: 3
-  <MoveSpeed>k__BackingField: 0
+  _moveSpeed: 3
   <Abilities>k__BackingField: []
+  _maxHealth: 3
   _engageIcon: {fileID: 5412774776041671937, guid: e27d841bbf0cb4314910d3494998508e, type: 3}
 --- !u!50 &1154683131
 Rigidbody2D:
@@ -654,6 +654,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a02e1d46b3647468090f588c4b53017d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1419024776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1419024778}
+  - component: {fileID: 1419024777}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1419024777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419024776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 143f9346d57ce4fd2bda14e6b2ecc9ae, type: 2}
+--- !u!4 &1419024778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419024776}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1700344950
 GameObject:
   m_ObjectHideFlags: 0
@@ -2660,7 +2709,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 6dd69637c25854fbabfc6db2e7d509b5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2753,10 +2802,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb5a8e516150492ea81c5c21ff5f64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxSpeed>k__BackingField: 1
-  <MoveSpeed>k__BackingField: 0
-  <Abilities>k__BackingField:
-  - {fileID: 11400000, guid: 0a12249c735ef4a9989a9e4955bcc7fc, type: 2}
+  _moveSpeed: 1.5
+  <Abilities>k__BackingField: []
+  _maxHealth: 3
   <SightRadius>k__BackingField: 4
   <AttackRange>k__BackingField: 1.5
   playerLayer:
@@ -2817,3 +2865,4 @@ SceneRoots:
   - {fileID: 911120676}
   - {fileID: 1154683128}
   - {fileID: 1824165957}
+  - {fileID: 1419024778}

@@ -22,12 +22,6 @@ public class Slime : Enemy
         }
     }
 
-    public override void UseAbilities()
-    {
-        if (Lunge != null)
-            Lunge.Update();
-    }
-
     public void UseLunge()
     {
         StartCoroutine(LungeRaycast());
@@ -35,21 +29,13 @@ public class Slime : Enemy
 
     IEnumerator LungeRaycast()
     {
-        Vector2 _targetVector = Opponent.transform.position - transform.position;
+        Lunge.Ability.IsActive = true;
 
-        float _elapsedTime = 0f;
-        while (_elapsedTime < Lunge.Ability.ActiveTime)
-        {
-            // iterate timer
-            _elapsedTime += Time.fixedDeltaTime;
-
-            // apply force
-            RB.linearVelocity = _targetVector * MoveSpeed * 1.5f;
-
-            yield return new WaitForFixedUpdate();
-        }
-
+        yield return new WaitForSeconds(1f);
         Anim.SetTrigger("Attack");
+        yield return new WaitForSeconds(1f);
+
+        Lunge.Ability.IsActive = false;
     }
 }
 

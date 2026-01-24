@@ -4,7 +4,6 @@ public class Ability : ScriptableObject
 {
     public new string name;
     public float CooldownTime;
-    public float ActiveTime;
     public bool IsActive = false;
     public int LevelReq;
 

@@ -1,12 +1,10 @@
 using UnityEngine;
-using System.Collections;
 
 public class Player : CharacterBase
 {
     public PlayerController Input { get; set; }
 
-    public CharacterBase NearbyEnemy { get; set; }
-    public bool IsEngaging { get; set; }
+    public Enemy NearbyEnemy { get; set; }
 
     [field: SerializeField] private GameObject _engageIcon;
     private GameObject _iconRef;
@@ -34,7 +32,7 @@ public class Player : CharacterBase
         base.Update();
 
         // allow player movement all states
-        if (!IsEngaging && !IsAttacking)
+        if (!IsAttacking)
             Move(new Vector2(Input.HorizontalInput, Input.VerticalInput));
     }
 
@@ -65,31 +63,11 @@ public class Player : CharacterBase
         if (NearbyEnemy != null && Input.E)
         {
             Destroy(_iconRef);
-            StartCoroutine(Engage());
+            NearbyEnemy.InterruptIdle();
+            Opponent = NearbyEnemy;
+            // NearbyEnemy = null;
+            StartCoroutine(Attack());
         }
-    }
-
-    IEnumerator Engage()
-    {
-        IsEngaging = true;
-
-        float _distance;
-        do
-        {
-            _distance = Vector2.Distance(NearbyEnemy.transform.position, transform.position);
-            Move(NearbyEnemy.transform.position - transform.position);
-            yield return new WaitForFixedUpdate();
-        } while (_distance > .4f);
-
-        Anim.SetTrigger("Engage");
-
-        yield return new WaitForSeconds(.1f);
-
-        Opponent = NearbyEnemy;
-        NearbyEnemy = null;
-        Opponent.Opponent = this;
-
-        IsEngaging = false;
     }
 
     public override void Battle()
@@ -102,29 +80,6 @@ public class Player : CharacterBase
         {
             StartCoroutine(Attack());
         }
-    }
-
-    IEnumerator Attack()
-    {
-        IsAttacking = true;
-
-        Vector2 _targetVector = Opponent.transform.position - transform.position;
-
-        float _elapsedTime = 0f;
-        while (_elapsedTime < .12f)
-        {
-            // iterate timer
-            _elapsedTime += Time.fixedDeltaTime;
-
-            // apply force
-            RB.linearVelocity = _targetVector * MoveSpeed * 2f;
-
-            yield return new WaitForFixedUpdate();
-        }
-
-        Anim.SetTrigger("Attack");
-
-        IsAttacking = false;
     }
 }
 

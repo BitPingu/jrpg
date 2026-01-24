@@ -8,7 +8,6 @@ public class AbilityStateMachine
 
     public Ability Ability;
     public float CurrentCooldownTime;
-    public float CurrentActiveTime;
 
     public enum AbilityState
     {
@@ -45,15 +44,10 @@ public class AbilityStateMachine
                     _character.IsAttacking = true;
                     Ability.Activate(_character.gameObject);
                     State = AbilityState.active;
-                    CurrentActiveTime = Ability.ActiveTime;
                 }
             break;
             case AbilityState.active:
-                if (CurrentActiveTime > 0)
-                {
-                    CurrentActiveTime -= Time.deltaTime;
-                }
-                else
+                if (!Ability.IsActive)
                 {
                     _character.IsAttacking = false;
                     Ability.BeginCooldown(_character.gameObject);
