@@ -41,6 +41,12 @@ TagManager:
   - name: Ground
     uniqueID: 2047318591
     locked: 0
+  - name: Overworld
+    uniqueID: 378291169
+    locked: 0
+  - name: UI
+    uniqueID: 1031957809
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

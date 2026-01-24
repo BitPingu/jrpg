@@ -21,6 +21,8 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] private float _maxHealth = 3f;
     private float _currentHealth; 
 
+    [SerializeField] private float _attack = 1f;
+
     private Coroutine _damageFlashCoroutine;
 
 
@@ -109,7 +111,7 @@ public class CharacterBase : MonoBehaviour
         // attack
         if (Opponent.Opponent == null)
             Opponent.Opponent = this;
-        Opponent.Damage(1f);
+        Opponent.Damage(_attack);
 
         // return to pos
         _distance = Vector2.Distance(attackPos, transform.position);
@@ -132,13 +134,38 @@ public class CharacterBase : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Debug.Log(name + " died!");
+            StartCoroutine(Die());
         }
-
-        // damage flash
-        CallDamageFlash();
+        else
+        {
+            // damage flash
+            CallDamageFlash();
+        }
 
         // update health bar
         GetComponentInChildren<HealthBar>().UpdateHealthBar(_maxHealth, _currentHealth);
+    }
+
+    private IEnumerator Die()
+    {
+        // set color
+        GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", 1f);
+        float flashTime = 2f;
+
+        float currentFlashAmount;
+        float elapsedTime = 0f;
+        while (elapsedTime < flashTime)
+        {
+            elapsedTime += Time.deltaTime;
+            // lerp flash amount
+            currentFlashAmount = Mathf.Lerp(0f, 1f, (elapsedTime / flashTime));
+            // set flash amount
+            GetComponent<SpriteRenderer>().material.SetFloat("_Alpha", currentFlashAmount);
+            yield return null;
+        }
+
+        // Die
+        Destroy(gameObject);
     }
 
     public void CallDamageFlash()
@@ -148,8 +175,6 @@ public class CharacterBase : MonoBehaviour
 
     private IEnumerator DamageFlash()
     {
-        // set color
-        GetComponent<SpriteRenderer>().material.SetColor("_FlashColor", Color.white);
         float flashTime = .25f;
 
         float currentFlashAmount;

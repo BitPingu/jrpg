@@ -218,7 +218,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1031957809
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1 &302398368
@@ -491,7 +491,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000003f9a077a
+  m_ApplyToSortingLayers: 000000003f9a077ae1438c16316d823d
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -662,8 +662,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 378291169
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 4334783836991956000, guid: eecf23dedc1284e56a86f52facccc3f9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -691,6 +691,7 @@ MonoBehaviour:
   _moveSpeed: 3
   Abilities: []
   _maxHealth: 3
+  _attack: 5
   _engageIcon: {fileID: 5412774776041671937, guid: e27d841bbf0cb4314910d3494998508e, type: 3}
 --- !u!50 &1154683131
 Rigidbody2D:
@@ -1078,7 +1079,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2047318591
-  m_SortingLayer: -1
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -3028,8 +3029,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 378291169
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 368543389579951487, guid: 8285a414e15ad4540a5dec46b6f03260, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3105,7 +3106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 1.5
   Abilities: []
-  _maxHealth: 3
+  _maxHealth: 20
+  _attack: 1
   SightRadius: 0
   AttackRange: 0
   playerLayer:
