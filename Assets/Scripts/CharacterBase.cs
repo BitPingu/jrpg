@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,6 +16,10 @@ public class CharacterBase : MonoBehaviour
 
     [SerializeField] private float _moveSpeed = 3f;
 
+    public int Level = 1;
+    [SerializeField] private int _maxExp = 100;
+    private int _currentExp = 0;
+
     [SerializeField] private float _maxHealth = 3f;
     public float CurrentHealth { get; set; }
 
@@ -25,6 +30,8 @@ public class CharacterBase : MonoBehaviour
     private Coroutine _damageFlashCoroutine;
 
     public bool BattleTurn { get; set; }
+
+    public Bar HBar, EBar;
 
 
     protected virtual void Awake()
@@ -155,7 +162,7 @@ public class CharacterBase : MonoBehaviour
         }
 
         // update health bar
-        GetComponentInChildren<HealthBar>().UpdateHealthBar(_maxHealth, CurrentHealth);
+        HBar.UpdateBar(_maxHealth, CurrentHealth);
     }
 
     private IEnumerator Die()
@@ -200,6 +207,61 @@ public class CharacterBase : MonoBehaviour
             GetComponent<SpriteRenderer>().material.SetFloat("_FlashAmount", currentFlashAmount);
             yield return null;
         }
+    }
+
+    public void GainExperience(int amount)
+    {
+        _currentExp += amount;
+        Debug.Log(name + " gained " + amount + " exp.");
+
+        StartCoroutine(ShowEBar());
+
+        if (_currentExp >= _maxExp)
+        {
+            StartCoroutine(LevelUp());
+        }
+        else
+        {
+            Debug.Log("Until next level: " + (_maxExp-_currentExp) + " exp");
+        }
+    }
+
+    private IEnumerator ShowEBar()
+    {
+        EBar.gameObject.GetComponent<Image>().enabled = true;
+
+        // update health bar
+        EBar.UpdateBar(_maxExp, _currentExp);
+        yield return new WaitForSeconds(2f);
+
+        EBar.gameObject.GetComponent<Image>().enabled = false;
+    }
+
+    private IEnumerator LevelUp()
+    {
+        // increase level
+        Level++;
+
+        // update stats
+        _maxHealth = Level * 40;
+        CurrentHealth = _maxHealth;
+        HBar.UpdateBar(_maxHealth, CurrentHealth);
+        _attack = Level * 3 + 3;
+
+        // reset exp
+        _currentExp = 0;
+        _maxExp = Level * 100;
+
+        yield return new WaitForSeconds(.3f);
+
+        // glow up
+        Debug.Log(name + " grew to level " + Level + "!");
+        GetComponent<SpriteRenderer>().material.SetColor("_FlashColor", new Color(0, 243, 255));
+        CallDamageFlash();
+        yield return new WaitForSeconds(1f);
+        GetComponent<SpriteRenderer>().material.SetColor("_FlashColor", Color.white);
+
+        EBar.UpdateBar(_maxExp, _currentExp);
     }
 
 }

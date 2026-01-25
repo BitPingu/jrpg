@@ -17,7 +17,7 @@ public class BattleState : StateBase
         if (character.GetComponent<Player>())
             character.Anim.SetLayerWeight(1, 1);
 
-        character.GetComponentInChildren<HealthBar>().gameObject.GetComponent<Image>().enabled = true;
+        character.HBar.gameObject.GetComponent<Image>().enabled = true;
 
         // Player goes first
         // TODO: compare speed with enemy
@@ -37,7 +37,11 @@ public class BattleState : StateBase
         if (character.GetComponent<Player>())
             character.Anim.SetLayerWeight(1, 0);
 
-        character.GetComponentInChildren<HealthBar>().gameObject.GetComponent<Image>().enabled = false;
+        character.HBar.gameObject.GetComponent<Image>().enabled = false;
+
+        // Player experience
+        if (character.GetComponent<Player>())
+            character.GainExperience(40);
     }
 
     public override void FrameUpdate()

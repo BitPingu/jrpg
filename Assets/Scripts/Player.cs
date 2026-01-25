@@ -51,7 +51,7 @@ public class Player : CharacterBase
         // call base class
         base.Idle();
 
-        // allow player movement all states
+        // allow player movement
         Move(new Vector2(Input.HorizontalInput, Input.VerticalInput));
 
         // engage enemy
