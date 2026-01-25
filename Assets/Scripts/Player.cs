@@ -18,10 +18,6 @@ public class Player : CharacterBase
         // player components
         Input = GetComponent<PlayerController>();
 
-        // states
-        IdleState = new PlayerIdleState(this, StateMachine);
-        BattleState = new PlayerBattleState(this, StateMachine);
-
         // start in idle state
         StateMachine.Initialize(IdleState);
     }
@@ -30,10 +26,6 @@ public class Player : CharacterBase
     {
         // call base class
         base.Update();
-
-        // allow player movement all states
-        if (!IsAttacking)
-            Move(new Vector2(Input.HorizontalInput, Input.VerticalInput));
     }
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
@@ -59,6 +51,9 @@ public class Player : CharacterBase
         // call base class
         base.Idle();
 
+        // allow player movement all states
+        Move(new Vector2(Input.HorizontalInput, Input.VerticalInput));
+
         // engage enemy
         if (NearbyEnemy != null && Input.E)
         {
@@ -76,9 +71,10 @@ public class Player : CharacterBase
         base.Battle();
 
         // attack
-        if (Input.E)
+        if (BattleTurn && Input.E)
         {
-            StartCoroutine(Attack());
+            StartCoroutine(CallAttack());
+            BattleTurn = false;
         }
     }
 }

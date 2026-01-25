@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyBattleState : StateBase
+public class BattleState : StateBase
 {
     // pass in any parameters you need in the constructors
-    public EnemyBattleState(CharacterBase character, StateMachine stateMachine) : base(character, stateMachine)
+    public BattleState(CharacterBase character, StateMachine stateMachine) : base(character, stateMachine)
     {
 
     }
@@ -14,15 +14,28 @@ public class EnemyBattleState : StateBase
     {
         base.EnterState();
 
+        if (character.GetComponent<Player>())
+            character.Anim.SetLayerWeight(1, 1);
+
         character.GetComponentInChildren<HealthBar>().gameObject.GetComponent<Image>().enabled = true;
 
-        Debug.Log(character.name + " is attacking " + character.Opponent.name + ".");
+        // Player goes first
+        // TODO: compare speed with enemy
+        // if faster, can attack again (first)? else enemy attacks first
+        character.BattleTurn = false;
+        if (character.GetComponent<Player>())
+            character.BattleTurn = true;
+
+        Debug.Log(character.name + " engages " + character.Opponent.name + ".");
     }
 
     // code that runs when we exit the state
     public override void ExitState()
     {
         base.ExitState();
+
+        if (character.GetComponent<Player>())
+            character.Anim.SetLayerWeight(1, 0);
 
         character.GetComponentInChildren<HealthBar>().gameObject.GetComponent<Image>().enabled = false;
     }
@@ -31,9 +44,7 @@ public class EnemyBattleState : StateBase
     {
         base.FrameUpdate();
 
-        // Debug.Log(character.name + " attacking...");
-
-        // allow battling
+        // battle
         if (character.Opponent != null)
             character.Battle();
 
@@ -41,9 +52,9 @@ public class EnemyBattleState : StateBase
         if (character.Opponent == null)
             character.StateMachine.ChangeState(character.IdleState);
 
-        // enemy dies
-        // if (character.CurrentHealth <= 0f)
-        //     character.StateMachine.End();
+        // death
+        if (character.CurrentHealth <= 0)
+            character.StateMachine.End();
     }
 }
 

@@ -14,10 +14,6 @@ public class Enemy : CharacterBase
         // call base class
         base.Start();
 
-        // states
-        IdleState = new EnemyIdleState(this, StateMachine);
-        BattleState = new EnemyBattleState(this, StateMachine);
-
         // start in idle state
         StateMachine.Initialize(IdleState);
     }
@@ -98,14 +94,12 @@ public class Enemy : CharacterBase
         // call base class
         base.Battle();
 
-        // TODO: temp
-        Move(Vector2.zero);
-
-        // attack opponent
-
-
-        // opponent escapes
- 
+        // attack
+        if (BattleTurn)
+        {
+            StartCoroutine(CallAttack());
+            BattleTurn = false;
+        }
     }
 
     void OnDrawGizmosSelected()

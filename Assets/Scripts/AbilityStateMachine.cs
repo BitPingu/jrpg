@@ -38,10 +38,9 @@ public class AbilityStateMachine
         switch (State)
         {
             case AbilityState.ready:
-                if (Ability.Condition(_character.gameObject) && !_character.IsAttacking)
+                if (Ability.Condition(_character.gameObject))
                 {
                     Debug.Log(_character.name + " used " + Ability.name + ".");
-                    _character.IsAttacking = true;
                     Ability.Activate(_character.gameObject);
                     State = AbilityState.active;
                 }
@@ -49,7 +48,6 @@ public class AbilityStateMachine
             case AbilityState.active:
                 if (!Ability.IsActive)
                 {
-                    _character.IsAttacking = false;
                     Ability.BeginCooldown(_character.gameObject);
                     State = AbilityState.cooldown;
                     CurrentCooldownTime = Ability.CooldownTime;

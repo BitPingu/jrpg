@@ -7,23 +7,24 @@ public class CharacterBase : MonoBehaviour
     public Rigidbody2D RB { get; set; }
     public Animator Anim { get; set; }
 
-    [SerializeField] private float _moveSpeed = 3f;
-
-    public List<Ability> Abilities;
-
     public StateMachine StateMachine { get; set; }
     public StateBase IdleState { get; set; }
     public StateBase BattleState { get; set; }
 
     public CharacterBase Opponent { get; set; }
-    public bool IsAttacking { get; set; }
+
+    [SerializeField] private float _moveSpeed = 3f;
 
     [SerializeField] private float _maxHealth = 3f;
-    private float _currentHealth; 
+    public float CurrentHealth { get; set; }
 
     [SerializeField] private float _attack = 1f;
 
+    public List<Ability> Abilities;
+
     private Coroutine _damageFlashCoroutine;
+
+    public bool BattleTurn { get; set; }
 
 
     protected virtual void Awake()
@@ -36,10 +37,14 @@ public class CharacterBase : MonoBehaviour
     protected virtual void Start()
     {
         // set parameters
-        _currentHealth = _maxHealth;
+        CurrentHealth = _maxHealth;
 
         // state machine
         StateMachine = new StateMachine();
+
+        // states
+        IdleState = new IdleState(this, StateMachine);
+        BattleState = new BattleState(this, StateMachine);
     }
 
     protected virtual void Update()
@@ -89,12 +94,19 @@ public class CharacterBase : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = true;
     }
 
+    protected IEnumerator CallAttack()
+    {
+        Debug.Log(name + " is attacking " + Opponent.name + ".");
+        StartCoroutine(Attack());
+        yield return new WaitForSeconds(2f);
+        // opponent turn
+        Opponent.BattleTurn = true;
+    }
+
     protected IEnumerator Attack()
     {
         Vector3 attackDir = (Opponent.transform.position - transform.position).normalized;
         Vector3 attackPos = Opponent.transform.position - (attackDir*1.5f);
-
-        IsAttacking = true;
 
         // go to enemy
         float _distance = Vector2.Distance(Opponent.transform.position, transform.position);
@@ -122,16 +134,16 @@ public class CharacterBase : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        IsAttacking = false;
+        Move(Vector2.zero);
     }
 
     public void Damage(float damageAmount)
     {
         // take damage
-        _currentHealth -= damageAmount;
+        CurrentHealth -= damageAmount;
         Debug.Log(name + " took " + damageAmount + " damage.");
 
-        if (_currentHealth <= 0)
+        if (CurrentHealth <= 0)
         {
             Debug.Log(name + " died!");
             StartCoroutine(Die());
@@ -143,7 +155,7 @@ public class CharacterBase : MonoBehaviour
         }
 
         // update health bar
-        GetComponentInChildren<HealthBar>().UpdateHealthBar(_maxHealth, _currentHealth);
+        GetComponentInChildren<HealthBar>().UpdateHealthBar(_maxHealth, CurrentHealth);
     }
 
     private IEnumerator Die()
