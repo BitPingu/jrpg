@@ -4,9 +4,10 @@ public class Player : CharacterBase
 {
     public PlayerController Input { get; set; }
 
-    public Enemy NearbyEnemy { get; set; }
+    private Enemy _nearbyEnemy { get; set; }
+    private Chest _nearbyChest { get; set; }
 
-    [field: SerializeField] private GameObject _engageIcon;
+    [field: SerializeField] private GameObject _battleIcon, _interactIcon;
     private GameObject _iconRef;
 
 
@@ -30,18 +31,34 @@ public class Player : CharacterBase
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
+        // enter battle
         if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Enemy>())
         {
-            _iconRef = Instantiate(_engageIcon, hitInfo.transform);
-            NearbyEnemy = hitInfo.GetComponent<Enemy>();
+            _iconRef = Instantiate(_battleIcon, hitInfo.transform);
+            _nearbyEnemy = hitInfo.GetComponent<Enemy>();
+        }
+
+        // enter interact
+        if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Chest>())
+        {
+            _iconRef = Instantiate(_interactIcon, hitInfo.transform);
+            _nearbyChest = hitInfo.GetComponent<Chest>();
         }
     }
 
     private void OnTriggerExit2D(Collider2D hitInfo)
     {
+        // exit battle
         if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Enemy>())
         {
-            NearbyEnemy = null;
+            _nearbyEnemy = null;
+            Destroy(_iconRef);
+        }
+
+        // exit interact
+        if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Chest>())
+        {
+            _nearbyChest = null;
             Destroy(_iconRef);
         }
     }
@@ -55,13 +72,19 @@ public class Player : CharacterBase
         Move(new Vector2(Input.HorizontalInput, Input.VerticalInput));
 
         // engage enemy
-        if (NearbyEnemy != null && Input.E)
+        if (_nearbyEnemy != null && Input.E)
         {
             Destroy(_iconRef);
-            NearbyEnemy.InterruptIdle();
-            Opponent = NearbyEnemy;
-            // NearbyEnemy = null;
+            _nearbyEnemy.InterruptIdle();
+            Opponent = _nearbyEnemy;
             StartCoroutine(Attack());
+        }
+
+        // open chest
+        if (_nearbyChest != null && Input.E)
+        {
+            Destroy(_iconRef);
+            _nearbyChest.Open();
         }
     }
 
