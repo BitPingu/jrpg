@@ -69,7 +69,7 @@ public class CharacterBase : MonoBehaviour
     public virtual void Battle()
     {
         // face opponent
-        FaceOpponent(Opponent);
+        FaceCharacter(Opponent);
     }
 
     protected virtual void Move(Vector2 inputVector)
@@ -93,11 +93,11 @@ public class CharacterBase : MonoBehaviour
         Anim.SetFloat("Movement", RB.linearVelocity.magnitude / _moveSpeed);
     }
 
-    public void FaceOpponent(CharacterBase opponent)
+    public void FaceCharacter(CharacterBase character)
     {
-        if (opponent.transform.position.x > transform.position.x)
+        if (character.transform.position.x > transform.position.x)
             GetComponent<SpriteRenderer>().flipX = false;
-        else if (opponent.transform.position.x < transform.position.x)
+        else if (character.transform.position.x < transform.position.x)
             GetComponent<SpriteRenderer>().flipX = true;
     }
 

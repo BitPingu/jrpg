@@ -6,9 +6,11 @@ public class Player : CharacterBase
 
     private Enemy _nearbyEnemy { get; set; }
     private Chest _nearbyChest { get; set; }
+    private Companion _nearbyCompanion { get; set; }
+    private Companion _companion { get; set; }
 
     [field: SerializeField] private GameObject _battleIcon, _interactIcon;
-    private GameObject _iconRef;
+    private GameObject _battleIconRef, _interactIconRef;
 
 
     protected override void Start()
@@ -34,15 +36,20 @@ public class Player : CharacterBase
         // enter battle
         if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Enemy>())
         {
-            _iconRef = Instantiate(_battleIcon, hitInfo.transform);
+            _battleIconRef = Instantiate(_battleIcon, hitInfo.transform);
             _nearbyEnemy = hitInfo.GetComponent<Enemy>();
         }
 
         // enter interact
         if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Chest>())
         {
-            _iconRef = Instantiate(_interactIcon, hitInfo.transform);
+            _interactIconRef = Instantiate(_interactIcon, hitInfo.transform);
             _nearbyChest = hitInfo.GetComponent<Chest>();
+        }
+        if (StateMachine.CurrentState == IdleState && _companion == null && hitInfo.GetComponent<Companion>())
+        {
+            _interactIconRef = Instantiate(_interactIcon, hitInfo.transform);
+            _nearbyCompanion = hitInfo.GetComponent<Companion>();
         }
     }
 
@@ -52,14 +59,19 @@ public class Player : CharacterBase
         if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Enemy>())
         {
             _nearbyEnemy = null;
-            Destroy(_iconRef);
+            Destroy(_battleIconRef);
         }
 
         // exit interact
         if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Chest>())
         {
             _nearbyChest = null;
-            Destroy(_iconRef);
+            Destroy(_interactIconRef);
+        }
+        if (StateMachine.CurrentState == IdleState && _companion == null && hitInfo.GetComponent<Companion>())
+        {
+            _nearbyCompanion = null;
+            Destroy(_interactIconRef);
         }
     }
 
@@ -74,7 +86,7 @@ public class Player : CharacterBase
         // engage enemy
         if (_nearbyEnemy != null && Input.E)
         {
-            Destroy(_iconRef);
+            Destroy(_battleIconRef);
             _nearbyEnemy.InterruptIdle();
             Opponent = _nearbyEnemy;
             StartCoroutine(Attack());
@@ -83,8 +95,16 @@ public class Player : CharacterBase
         // open chest
         if (_nearbyChest != null && Input.E)
         {
-            Destroy(_iconRef);
+            Destroy(_interactIconRef);
             _nearbyChest.Open();
+        }
+
+        // talk to companion
+        if (_nearbyCompanion != null && Input.E)
+        {
+            Destroy(_interactIconRef);
+            _companion = _nearbyCompanion;
+            _companion.Join(this);
         }
     }
 
