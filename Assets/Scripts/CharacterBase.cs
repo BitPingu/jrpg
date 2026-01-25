@@ -127,9 +127,19 @@ public class CharacterBase : MonoBehaviour
         Anim.SetTrigger("Attack");
         yield return new WaitForSeconds(.1f);
 
-        // attack
-        if (Opponent.Opponent == null)
+        // player engage
+        if (GetComponent<Player>() && Opponent.Opponent == null)
+        {
             Opponent.Opponent = this;
+            // companion engage
+            if (GetComponent<Player>().Elf)
+            {
+                GetComponent<Player>().Elf.Opponent = Opponent;
+                GetComponent<Player>().Elf.CallBattlePos(attackPos);
+            }
+        }
+
+        // damage
         Opponent.Damage(_attack);
 
         // return to pos

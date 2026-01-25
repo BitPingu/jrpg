@@ -14,7 +14,7 @@ public class BattleState : StateBase
     {
         base.EnterState();
 
-        if (character.GetComponent<Player>())
+        if (character.GetComponent<Player>() || character.GetComponent<Companion>())
             character.Anim.SetLayerWeight(1, 1);
 
         character.HBar.gameObject.GetComponent<Image>().enabled = true;
@@ -34,13 +34,13 @@ public class BattleState : StateBase
     {
         base.ExitState();
 
-        if (character.GetComponent<Player>())
+        if (character.GetComponent<Player>() || character.GetComponent<Companion>())
             character.Anim.SetLayerWeight(1, 0);
 
         character.HBar.gameObject.GetComponent<Image>().enabled = false;
 
-        // Player experience
-        if (character.GetComponent<Player>())
+        // Experience
+        if (character.GetComponent<Player>() || character.GetComponent<Companion>())
             character.GainExperience(40);
     }
 

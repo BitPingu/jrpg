@@ -7,7 +7,7 @@ public class Player : CharacterBase
     private Enemy _nearbyEnemy { get; set; }
     private Chest _nearbyChest { get; set; }
     private Companion _nearbyCompanion { get; set; }
-    private Companion _companion { get; set; }
+    public Companion Elf { get; set; }
 
     [field: SerializeField] private GameObject _battleIcon, _interactIcon;
     private GameObject _battleIconRef, _interactIconRef;
@@ -46,7 +46,7 @@ public class Player : CharacterBase
             _interactIconRef = Instantiate(_interactIcon, hitInfo.transform);
             _nearbyChest = hitInfo.GetComponent<Chest>();
         }
-        if (StateMachine.CurrentState == IdleState && _companion == null && hitInfo.GetComponent<Companion>())
+        if (StateMachine.CurrentState == IdleState && Elf == null && hitInfo.GetComponent<Companion>())
         {
             _interactIconRef = Instantiate(_interactIcon, hitInfo.transform);
             _nearbyCompanion = hitInfo.GetComponent<Companion>();
@@ -68,7 +68,7 @@ public class Player : CharacterBase
             _nearbyChest = null;
             Destroy(_interactIconRef);
         }
-        if (StateMachine.CurrentState == IdleState && _companion == null && hitInfo.GetComponent<Companion>())
+        if (StateMachine.CurrentState == IdleState && Elf == null && hitInfo.GetComponent<Companion>())
         {
             _nearbyCompanion = null;
             Destroy(_interactIconRef);
@@ -103,8 +103,8 @@ public class Player : CharacterBase
         if (_nearbyCompanion != null && Input.E)
         {
             Destroy(_interactIconRef);
-            _companion = _nearbyCompanion;
-            _companion.Join(this);
+            Elf = _nearbyCompanion;
+            Elf.Join(this);
         }
     }
 
