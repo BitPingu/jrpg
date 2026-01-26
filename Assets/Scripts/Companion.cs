@@ -5,7 +5,7 @@ public class Companion : CharacterBase
 {
     public PlayerController Input;
 
-    private Player _player { get; set; }
+    public Player Leader { get; set; }
 
     [SerializeField] private float _minDistance = 1.55f;
 
@@ -29,7 +29,7 @@ public class Companion : CharacterBase
         // call base class
         base.Idle();
 
-        if (_player)
+        if (Leader)
         {
             Follow();
         }
@@ -41,16 +41,17 @@ public class Companion : CharacterBase
 
     public void Join(Player player)
     {
-        _player = player;
+        Leader = player;
 
         Debug.Log(name + " joins the party!");
     }
 
     private void Follow()
     {
-        float distance = Vector2.Distance(_player.transform.position, transform.position);
+        Debug.Log("player:" + Leader.transform.position);
+        float distance = Vector2.Distance(Leader.transform.position, transform.position);
         if (distance > _minDistance)
-            Move(_player.transform.position - transform.position);
+            Move(Leader.transform.position - transform.position);
         // Stop moving when within range
         if (distance < _minDistance-0.3)
             Move(Vector2.zero);
@@ -64,7 +65,7 @@ public class Companion : CharacterBase
     private IEnumerator BattlePos(Vector3 playerAttackPos)
     {
         Vector3 attackDir = (Opponent.transform.position - playerAttackPos).normalized;
-        Vector3 attackPos = (Opponent.transform.position - (attackDir*2.5f)) + _player.transform.up;
+        Vector3 attackPos = (Opponent.transform.position - (attackDir*2.5f)) + Leader.transform.up;
 
         // go to pos
         float _distance = Vector2.Distance(attackPos, transform.position);
@@ -84,10 +85,24 @@ public class Companion : CharacterBase
         base.Battle();
 
         // attack
-        if (BattleTurn && Input.E)
+        if (BattleTurn)
         {
-            StartCoroutine(CallAttack());
-            BattleTurn = false;
+            // show HUD
+            BattleHUD.SetActive(true);
+
+            // attack
+            if (Input.E)
+            {
+                StartCoroutine(CallAttack());
+                BattleTurn = false;
+                BattleHUD.SetActive(false);
+            }
+
+            // run
+            if (Input.Q)
+            {
+                Run();
+            }
         }
     }
 }

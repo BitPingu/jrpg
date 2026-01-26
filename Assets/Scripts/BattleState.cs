@@ -14,17 +14,22 @@ public class BattleState : StateBase
     {
         base.EnterState();
 
+        // battle anim
         if (character.GetComponent<Player>() || character.GetComponent<Companion>())
             character.Anim.SetLayerWeight(1, 1);
 
+        // show health bar
         character.HBar.gameObject.GetComponent<Image>().enabled = true;
+
+        character.BattleTurn = false;
 
         // Player goes first
         // TODO: compare speed with enemy
         // if faster, can attack again (first)? else enemy attacks first
-        character.BattleTurn = false;
         if (character.GetComponent<Player>())
             character.BattleTurn = true;
+
+        character.WinBattle = false;
 
         Debug.Log(character.name + " engages " + character.Opponent.name + ".");
     }
@@ -34,14 +39,20 @@ public class BattleState : StateBase
     {
         base.ExitState();
 
+        // battle anim
         if (character.GetComponent<Player>() || character.GetComponent<Companion>())
             character.Anim.SetLayerWeight(1, 0);
 
+        // hide health bar
         character.HBar.gameObject.GetComponent<Image>().enabled = false;
 
-        // Experience
         if (character.GetComponent<Player>() || character.GetComponent<Companion>())
-            character.GainExperience(40);
+        {
+            character.BattleHUD.SetActive(false);
+            // exp
+            if (character.WinBattle)
+                character.GainExperience(40);
+        }
     }
 
     public override void FrameUpdate()

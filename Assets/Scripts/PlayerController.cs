@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     public float VerticalInput { get; set; }
 
     public bool E { get; set; }
+    public bool Q { get; set; }
 
     private void Update()
     {
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
         // key inputs
         E = Input.GetKeyDown(KeyCode.E);
+        Q = Input.GetKeyDown(KeyCode.Q);
     }
 }
 

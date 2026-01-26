@@ -30,8 +30,11 @@ public class CharacterBase : MonoBehaviour
     private Coroutine _damageFlashCoroutine;
 
     public bool BattleTurn { get; set; }
+    public bool IsAttacking { get; set; }
+    public bool WinBattle { get; set; }
 
     public Bar HBar, EBar;
+    [SerializeField] public GameObject BattleHUD;
 
     [SerializeField] private GameObject _projectile;
 
@@ -72,6 +75,10 @@ public class CharacterBase : MonoBehaviour
     {
         // face opponent
         FaceCharacter(Opponent);
+
+        // idle when not attacking
+        if (!IsAttacking)
+            Move(Vector2.zero);
     }
 
     protected virtual void Move(Vector2 inputVector)
@@ -133,6 +140,8 @@ public class CharacterBase : MonoBehaviour
         Vector3 attackDir = (Opponent.transform.position - transform.position).normalized;
         Vector3 attackPos = Opponent.transform.position - (attackDir*1.5f);
 
+        IsAttacking = true;
+
         // go to enemy
         float _distance = Vector2.Distance(Opponent.transform.position, transform.position);
         while (_distance > 0.7f)
@@ -148,17 +157,21 @@ public class CharacterBase : MonoBehaviour
         // player engage
         if (GetComponent<Player>() && Opponent.Opponent == null)
         {
-            Opponent.Opponent = this;
             // companion engage
             if (GetComponent<Player>().Elf)
             {
                 GetComponent<Player>().Elf.Opponent = Opponent;
-                GetComponent<Player>().Elf.CallBattlePos(attackPos);
+                // GetComponent<Player>().Elf.CallBattlePos(attackPos);
             }
-        }
 
-        // damage
-        Opponent.Damage(_attack);
+            Opponent.Opponent = this;
+            Opponent.Damage(0f);
+        }
+        else
+        {
+            // damage
+            Opponent.Damage(_attack);
+        }
 
         // return to pos
         _distance = Vector2.Distance(attackPos, transform.position);
@@ -169,7 +182,7 @@ public class CharacterBase : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        Move(Vector2.zero);
+        IsAttacking = false;
     }
 
     protected IEnumerator RangedAttack()
@@ -211,6 +224,19 @@ public class CharacterBase : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             Debug.Log(name + " died!");
+            if (GetComponent<Enemy>())
+            {
+                // exp
+                Opponent.WinBattle = true;
+                if (Opponent.GetComponent<Player>() && Opponent.GetComponent<Player>().Elf)
+                {
+                    Opponent.GetComponent<Player>().Elf.WinBattle = true;
+                }
+                else if (Opponent.GetComponent<Companion>() )
+                {
+                    Opponent.GetComponent<Companion>().Leader.WinBattle = true;
+                }
+            }
             StartCoroutine(Die());
         }
         else
@@ -320,6 +346,20 @@ public class CharacterBase : MonoBehaviour
         GetComponent<SpriteRenderer>().material.SetColor("_FlashColor", Color.white);
 
         EBar.UpdateBar(_maxExp, _currentExp);
+    }
+
+    protected void Run()
+    {
+        Opponent.Opponent = null;
+        Opponent = null;
+        if (GetComponent<Player>() && GetComponent<Player>().Elf)
+        {
+            GetComponent<Player>().Elf.Opponent = null;
+        }
+        else if (GetComponent<Companion>())
+        {
+            GetComponent<Companion>().Leader.Opponent = null;
+        }
     }
 
 }

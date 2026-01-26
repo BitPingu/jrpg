@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3076224239961103163}
   - component: {fileID: 2255537575495353246}
-  - component: {fileID: 7544799131006077406}
   - component: {fileID: 8508808137680846875}
   m_Layer: 0
   m_Name: Orb
@@ -86,18 +85,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!114 &7544799131006077406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2750907310833820485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a05ab7f874604f148e1adf45c826a23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &8508808137680846875
 Rigidbody2D:
   serializedVersion: 5

@@ -33,13 +33,6 @@ public class Player : CharacterBase
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        // enter battle
-        if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Enemy>())
-        {
-            _battleIconRef = Instantiate(_battleIcon, hitInfo.transform);
-            _nearbyEnemy = hitInfo.GetComponent<Enemy>();
-        }
-
         // enter interact
         if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Chest>())
         {
@@ -50,6 +43,16 @@ public class Player : CharacterBase
         {
             _interactIconRef = Instantiate(_interactIcon, hitInfo.transform);
             _nearbyCompanion = hitInfo.GetComponent<Companion>();
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D hitInfo)
+    {
+        // enter battle
+        if (!_battleIconRef && StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Enemy>())
+        {
+            _battleIconRef = Instantiate(_battleIcon, hitInfo.transform);
+            _nearbyEnemy = hitInfo.GetComponent<Enemy>();
         }
     }
 
@@ -114,10 +117,24 @@ public class Player : CharacterBase
         base.Battle();
 
         // attack
-        if (BattleTurn && Input.E)
+        if (BattleTurn)
         {
-            StartCoroutine(CallAttack());
-            BattleTurn = false;
+            // show HUD
+            BattleHUD.SetActive(true);
+
+            // attack
+            if (Input.E)
+            {
+                StartCoroutine(CallAttack());
+                BattleTurn = false;
+                BattleHUD.SetActive(false);
+            }
+
+            // run
+            if (Input.Q)
+            {
+                Run();
+            }
         }
     }
 }
