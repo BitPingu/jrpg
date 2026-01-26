@@ -100,7 +100,7 @@ public class Player : CharacterBase
         }
 
         // talk to companion
-        if (_nearbyCompanion != null && Input.E)
+        if (Elf == null && _nearbyCompanion != null && Input.E)
         {
             Destroy(_interactIconRef);
             Elf = _nearbyCompanion;

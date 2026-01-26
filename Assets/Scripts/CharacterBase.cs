@@ -33,6 +33,8 @@ public class CharacterBase : MonoBehaviour
 
     public Bar HBar, EBar;
 
+    [SerializeField] private GameObject _projectile;
+
 
     protected virtual void Awake()
     {
@@ -104,10 +106,26 @@ public class CharacterBase : MonoBehaviour
     protected IEnumerator CallAttack()
     {
         Debug.Log(name + " is attacking " + Opponent.name + ".");
-        StartCoroutine(Attack());
+        if (GetComponent<Companion>())
+        {
+            StartCoroutine(RangedAttack());
+        }
+        else
+        {
+            StartCoroutine(Attack());
+        }
+
         yield return new WaitForSeconds(2f);
-        // opponent turn
-        Opponent.BattleTurn = true;
+
+        if (GetComponent<Player>() && GetComponent<Player>().Elf)
+        {
+            // companion turn
+            GetComponent<Player>().Elf.BattleTurn = true;
+        }
+        else
+        {
+            Opponent.BattleTurn = true;
+        }
     }
 
     protected IEnumerator Attack()
@@ -152,6 +170,36 @@ public class CharacterBase : MonoBehaviour
         }
 
         Move(Vector2.zero);
+    }
+
+    protected IEnumerator RangedAttack()
+    {
+        Anim.SetTrigger("Attack");
+
+        // summon projectile 
+        Vector3 projPos = transform.position+transform.up;
+        GameObject proj = Instantiate(_projectile, projPos, Quaternion.identity);
+
+        // launch projectile at opponent
+        Vector3 opPos = Opponent.transform.position+(Opponent.transform.up/2f);
+        float _distance = Vector2.Distance(opPos, proj.transform.position);
+        while (_distance > 0.1f)
+        {
+            _distance = Vector2.Distance(opPos, proj.transform.position);
+            Vector2 projVector = (opPos - proj.transform.position).normalized;
+            // move projectile
+            proj.GetComponent<Rigidbody2D>().linearVelocity = projVector * 6f;
+            yield return new WaitForFixedUpdate();
+        }
+
+        yield return new WaitForSeconds(.01f);
+
+        Destroy(proj);
+
+        yield return new WaitForSeconds(.1f);
+
+        // damage
+        Opponent.Damage(_attack);
     }
 
     public void Damage(float damageAmount)

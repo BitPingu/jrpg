@@ -1286,6 +1286,7 @@ MonoBehaviour:
   Abilities: []
   HBar: {fileID: 1902546768}
   EBar: {fileID: 0}
+  _projectile: {fileID: 0}
   SightRadius: 0
   AttackRange: 0
   playerLayer:
@@ -2868,6 +2869,7 @@ MonoBehaviour:
   Abilities: []
   HBar: {fileID: 1937371854}
   EBar: {fileID: 0}
+  _projectile: {fileID: 0}
   SightRadius: 0
   AttackRange: 0
   playerLayer:
@@ -8250,6 +8252,7 @@ MonoBehaviour:
   Abilities: []
   HBar: {fileID: 1022880031}
   EBar: {fileID: 1736853565}
+  _projectile: {fileID: 0}
   _battleIcon: {fileID: 5412774776041671937, guid: e27d841bbf0cb4314910d3494998508e, type: 3}
   _interactIcon: {fileID: 8449626369808748338, guid: 4496edc8b6b2347d6a25670148f0f12d, type: 3}
 --- !u!50 &1154683131
@@ -8787,6 +8790,7 @@ MonoBehaviour:
   Abilities: []
   HBar: {fileID: 1136855068}
   EBar: {fileID: 0}
+  _projectile: {fileID: 0}
   SightRadius: 0
   AttackRange: 0
   playerLayer:
@@ -10321,6 +10325,8 @@ MonoBehaviour:
   Abilities: []
   HBar: {fileID: 19928247}
   EBar: {fileID: 1053833620}
+  _projectile: {fileID: 2750907310833820485, guid: dd3dd96efcc574f1cade41a0b9c0968d, type: 3}
+  Input: {fileID: 1154683135}
   _minDistance: 1.55
 --- !u!1001 &1510931954
 PrefabInstance:
@@ -32999,6 +33005,7 @@ MonoBehaviour:
   Abilities: []
   HBar: {fileID: 745654085454898815}
   EBar: {fileID: 0}
+  _projectile: {fileID: 0}
   SightRadius: 0
   AttackRange: 0
   playerLayer:

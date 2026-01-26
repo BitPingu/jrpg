@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Companion : CharacterBase
 {
+    public PlayerController Input;
+
     private Player _player { get; set; }
 
     [SerializeField] private float _minDistance = 1.55f;
@@ -74,5 +76,18 @@ public class Companion : CharacterBase
         }
 
         Move(Vector2.zero);
+    }
+
+    public override void Battle()
+    {
+        // call base class
+        base.Battle();
+
+        // attack
+        if (BattleTurn && Input.E)
+        {
+            StartCoroutine(CallAttack());
+            BattleTurn = false;
+        }
     }
 }
