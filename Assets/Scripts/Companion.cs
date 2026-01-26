@@ -48,7 +48,6 @@ public class Companion : CharacterBase
 
     private void Follow()
     {
-        Debug.Log("player:" + Leader.transform.position);
         float distance = Vector2.Distance(Leader.transform.position, transform.position);
         if (distance > _minDistance)
             Move(Leader.transform.position - transform.position);

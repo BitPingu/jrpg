@@ -124,7 +124,7 @@ public class CharacterBase : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if (GetComponent<Player>() && GetComponent<Player>().Elf)
+        if (GetComponent<Player>() && GetComponent<Player>().Elf && !WinBattle)
         {
             // companion turn
             GetComponent<Player>().Elf.BattleTurn = true;
