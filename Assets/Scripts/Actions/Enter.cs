@@ -28,11 +28,10 @@ public class Enter : MonoBehaviour
         if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
         {
             ScreenTransition();
-            Debug.Log(_player.name + " entered a building.");
         }
     }
 
-    async void ScreenTransition()
+    private async void ScreenTransition()
     {
         Player player = _player;
         player.StateMachine.End(); // stop movement

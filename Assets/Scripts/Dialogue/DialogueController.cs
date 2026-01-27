@@ -8,7 +8,7 @@ public class DialogueController : MonoBehaviour
 
     public GameObject dialoguePanel;
     public TMP_Text dialogueText, nameText;
-    public Image portraitImage;
+    public Image portraitImage, continueImage;
 
     private void Awake()
     {

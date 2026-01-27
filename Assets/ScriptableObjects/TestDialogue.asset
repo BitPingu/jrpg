@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: TestDialogue
   m_EditorClassIdentifier: 
   npcName: Fiona
-  npcPortrait: {fileID: -6136035816655427491, guid: 26ada076623d149d6819df930fba77ac, type: 3}
+  npcPortrait: {fileID: 21300000, guid: 26ada076623d149d6819df930fba77ac, type: 3}
   dialogueLines:
   - Hey, sleepy head!
   - C'mon let's get going! We don't wanna be late!
   autoProgressLines: 
   autoProgressDelay: 1.5
   typingSpeed: 0.03
-  voiceSound: {fileID: 0}
-  voicePitch: 1
+  voiceSound: {fileID: 8300000, guid: 8bc7bbbd3ff544293933a4bce9c9108f, type: 3}
+  voicePitch: 0.7
   choices: []

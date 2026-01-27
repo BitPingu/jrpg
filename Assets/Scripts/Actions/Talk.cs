@@ -6,8 +6,8 @@ public class Talk : MonoBehaviour
     private Player _player;
     private DialogueController _dialogueUI;
 
-    public Dialogue dialogue;
-    private int _dialogueIndex;
+    public Dialogue[] dialogue;
+    private int _dialogueIndex, _currentDialogue;
     private bool _isTyping, _isDialogueActive;
 
     private void Start()
@@ -46,7 +46,12 @@ public class Talk : MonoBehaviour
             }
             else
             {
+                GetComponentInParent<CharacterBase>().FaceCharacter(_player);
+                _player.StateMachine.End(); // stop movement
+                _player.FaceCharacter(GetComponentInParent<CharacterBase>());
+
                 // start dialogue
+                _currentDialogue = 0;
                 StartDialogue();
             }
             // OnTriggerExit2D(_player.GetComponent<Collider2D>());
@@ -59,12 +64,8 @@ public class Talk : MonoBehaviour
         _isDialogueActive = true;
         _dialogueIndex = 0;
 
-        _dialogueUI.SetNPCInfo(dialogue.npcName, dialogue.npcPortrait);
+        _dialogueUI.SetNPCInfo(dialogue[_currentDialogue].npcName, dialogue[_currentDialogue].npcPortrait);
         _dialogueUI.ShowDialogueUI(true);
-
-        GetComponentInParent<CharacterBase>().FaceCharacter(_player);
-        _player.StateMachine.End(); // stop movement
-        _player.FaceCharacter(GetComponentInParent<CharacterBase>());
         
         StartCoroutine(TypeLine());
     }
@@ -75,13 +76,20 @@ public class Talk : MonoBehaviour
         {
             // skip typing animation and show the full line
             StopAllCoroutines(); // halt auto progress
-            _dialogueUI.SetDialogueText(dialogue.dialogueLines[_dialogueIndex]);
+            _dialogueUI.SetDialogueText(dialogue[_currentDialogue].dialogueLines[_dialogueIndex]);
             _isTyping = false;
+            _dialogueUI.continueImage.enabled = true;
+            StopVoice();
         }
-        else if (++_dialogueIndex < dialogue.dialogueLines.Length)
+        else if (++_dialogueIndex < dialogue[_currentDialogue].dialogueLines.Length)
         {
             // if another line, type next line
             StartCoroutine(TypeLine());
+        }
+        else if (++_currentDialogue < dialogue.Length)
+        {
+            // more dialogue
+            StartDialogue();
         }
         else
         {
@@ -92,23 +100,32 @@ public class Talk : MonoBehaviour
 
     private IEnumerator TypeLine()
     {
+        _dialogueUI.continueImage.enabled = false;
         _isTyping = true;
         _dialogueUI.SetDialogueText("");
 
-        foreach(char letter in dialogue.dialogueLines[_dialogueIndex])
+        foreach(char letter in dialogue[_currentDialogue].dialogueLines[_dialogueIndex])
         {
             _dialogueUI.SetDialogueText(_dialogueUI.dialogueText.text += letter);
-            yield return new WaitForSeconds(dialogue.typingSpeed);
+            SFXManager.PlayVoice(dialogue[_currentDialogue].voiceSound, dialogue[_currentDialogue].voicePitch);
+            yield return new WaitForSeconds(dialogue[_currentDialogue].typingSpeed);
         }
 
         _isTyping = false;
+        _dialogueUI.continueImage.enabled = true;
+        StopVoice();
 
         // auto progress
-        if (dialogue.autoProgressLines.Length > _dialogueIndex && dialogue.autoProgressLines[_dialogueIndex])
+        if (dialogue[_currentDialogue].autoProgressLines.Length > _dialogueIndex && dialogue[_currentDialogue].autoProgressLines[_dialogueIndex])
         {
-            yield return new WaitForSeconds(dialogue.autoProgressDelay);
+            yield return new WaitForSeconds(dialogue[_currentDialogue].autoProgressDelay);
             NextLine();
         }
+    }
+
+    private async void StopVoice()
+    {
+        await SFXManager.StopVoice();
     }
 
     public void EndDialogue()
