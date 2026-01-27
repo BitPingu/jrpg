@@ -2,23 +2,14 @@ using UnityEngine;
 
 public class Enter : MonoBehaviour
 {
-    [SerializeField] private GameObject _enterIcon;
-    private GameObject _enterIconRef;
-
     private Player _player;
-    private bool _reset = true;
-
     [SerializeField] private Transform _location;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.GetComponent<Player>())
         {
-            if (_reset)
-            {
-                _enterIconRef = Instantiate(_enterIcon, transform);
-                _reset = false;
-            }
+            GetComponent<SpriteRenderer>().enabled = true;
             _player = hitInfo.GetComponent<Player>();
         }
     }
@@ -27,9 +18,8 @@ public class Enter : MonoBehaviour
     {
         if (hitInfo.GetComponent<Player>())
         {
-            Destroy(_enterIconRef);
+            GetComponent<SpriteRenderer>().enabled = false;
             _player = null;
-            _reset = true;
         }
     }
 
@@ -37,7 +27,7 @@ public class Enter : MonoBehaviour
     {
         if (_player && _player.Input.E)
         {
-            _player.transform.position = _location.position;
+            _player.transform.position = _location.position + new Vector3(_location.GetComponent<BoxCollider2D>().offset.x, _location.GetComponent<BoxCollider2D>().offset.y);
             Debug.Log(_player.name + " entered a building.");
         }
     }

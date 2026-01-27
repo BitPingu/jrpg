@@ -142,7 +142,7 @@ public class CharacterBase : MonoBehaviour
 
         IsAttacking = true;
 
-        // go to enemy
+        // go to opponent
         float _distance = Vector2.Distance(Opponent.transform.position, transform.position);
         while (_distance > 0.7f)
         {
@@ -154,24 +154,8 @@ public class CharacterBase : MonoBehaviour
         Anim.SetTrigger("Attack");
         yield return new WaitForSeconds(.1f);
 
-        // player engage
-        if (GetComponent<Player>() && Opponent.Opponent == null)
-        {
-            // companion engage
-            if (GetComponent<Player>().Elf)
-            {
-                GetComponent<Player>().Elf.Opponent = Opponent;
-                // GetComponent<Player>().Elf.CallBattlePos(attackPos);
-            }
-
-            Opponent.Opponent = this;
-            Opponent.Damage(0f);
-        }
-        else
-        {
-            // damage
-            Opponent.Damage(_attack);
-        }
+        // damage
+        Opponent.Damage(_attack);
 
         // return to pos
         _distance = Vector2.Distance(attackPos, transform.position);

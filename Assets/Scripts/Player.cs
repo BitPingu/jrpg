@@ -1,17 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : CharacterBase
 {
     public PlayerController Input { get; set; }
 
-    private Enemy _nearbyEnemy { get; set; }
-    private Chest _nearbyChest { get; set; }
-    private Companion _nearbyCompanion { get; set; }
     public Companion Elf { get; set; }
-
-    [field: SerializeField] private GameObject _battleIcon, _interactIcon;
-    private GameObject _battleIconRef, _interactIconRef;
-
 
     protected override void Start()
     {
@@ -31,53 +25,6 @@ public class Player : CharacterBase
         base.Update();
     }
 
-    private void OnTriggerEnter2D(Collider2D hitInfo)
-    {
-        // enter interact
-        if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Chest>())
-        {
-            _interactIconRef = Instantiate(_interactIcon, hitInfo.transform);
-            _nearbyChest = hitInfo.GetComponent<Chest>();
-        }
-        if (StateMachine.CurrentState == IdleState && Elf == null && hitInfo.GetComponent<Companion>())
-        {
-            _interactIconRef = Instantiate(_interactIcon, hitInfo.transform);
-            _nearbyCompanion = hitInfo.GetComponent<Companion>();
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D hitInfo)
-    {
-        // enter battle
-        if (!_battleIconRef && StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Enemy>())
-        {
-            _battleIconRef = Instantiate(_battleIcon, hitInfo.transform);
-            _nearbyEnemy = hitInfo.GetComponent<Enemy>();
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D hitInfo)
-    {
-        // exit battle
-        if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Enemy>())
-        {
-            _nearbyEnemy = null;
-            Destroy(_battleIconRef);
-        }
-
-        // exit interact
-        if (StateMachine.CurrentState == IdleState && hitInfo.GetComponent<Chest>())
-        {
-            _nearbyChest = null;
-            Destroy(_interactIconRef);
-        }
-        if (StateMachine.CurrentState == IdleState && Elf == null && hitInfo.GetComponent<Companion>())
-        {
-            _nearbyCompanion = null;
-            Destroy(_interactIconRef);
-        }
-    }
-
     public override void Idle()
     {
         // call base class
@@ -85,30 +32,6 @@ public class Player : CharacterBase
 
         // allow player movement
         Move(new Vector2(Input.HorizontalInput, Input.VerticalInput));
-
-        // engage enemy
-        if (_nearbyEnemy != null && Input.E)
-        {
-            Destroy(_battleIconRef);
-            _nearbyEnemy.InterruptIdle();
-            Opponent = _nearbyEnemy;
-            StartCoroutine(Attack());
-        }
-
-        // open chest
-        if (_nearbyChest != null && Input.E)
-        {
-            Destroy(_interactIconRef);
-            _nearbyChest.Open();
-        }
-
-        // talk to companion
-        if (Elf == null && _nearbyCompanion != null && Input.E)
-        {
-            Destroy(_interactIconRef);
-            Elf = _nearbyCompanion;
-            Elf.Join(this);
-        }
     }
 
     public override void Battle()
@@ -136,6 +59,49 @@ public class Player : CharacterBase
                 Run();
             }
         }
+    }
+
+    public IEnumerator Engage(Enemy enemy)
+    {
+        Opponent = enemy;
+
+        Vector3 attackDir = (Opponent.transform.position - transform.position).normalized;
+        Vector3 attackPos = Opponent.transform.position - (attackDir*1.5f);
+
+        IsAttacking = true;
+
+        // go to enemy
+        float _distance = Vector2.Distance(Opponent.transform.position, transform.position);
+        while (_distance > 0.7f)
+        {
+            _distance = Vector2.Distance(Opponent.transform.position, transform.position);
+            Move(Opponent.transform.position - transform.position);
+            yield return new WaitForFixedUpdate();
+        }
+
+        Anim.SetTrigger("Attack");
+        yield return new WaitForSeconds(.1f);
+
+        // companion engage
+        if (GetComponent<Player>().Elf)
+        {
+            GetComponent<Player>().Elf.Opponent = Opponent;
+            // GetComponent<Player>().Elf.CallBattlePos(attackPos);
+        }
+
+        Opponent.Opponent = this;
+        Opponent.Damage(0f);
+
+        // return to pos
+        _distance = Vector2.Distance(attackPos, transform.position);
+        while (_distance > 0.1f)
+        {
+            _distance = Vector2.Distance(attackPos, transform.position);
+            Move(attackPos - transform.position);
+            yield return new WaitForFixedUpdate();
+        }
+
+        IsAttacking = false;
     }
 }
 
