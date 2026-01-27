@@ -124,10 +124,10 @@ public class CharacterBase : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if (GetComponent<Player>() && GetComponent<Player>().Elf && !WinBattle)
+        if (GetComponent<Player>() && GetComponent<Player>().CurrentCompanion && !WinBattle)
         {
             // companion turn
-            GetComponent<Player>().Elf.BattleTurn = true;
+            GetComponent<Player>().CurrentCompanion.BattleTurn = true;
         }
         else
         {
@@ -212,9 +212,9 @@ public class CharacterBase : MonoBehaviour
             {
                 // exp
                 Opponent.WinBattle = true;
-                if (Opponent.GetComponent<Player>() && Opponent.GetComponent<Player>().Elf)
+                if (Opponent.GetComponent<Player>() && Opponent.GetComponent<Player>().CurrentCompanion)
                 {
-                    Opponent.GetComponent<Player>().Elf.WinBattle = true;
+                    Opponent.GetComponent<Player>().CurrentCompanion.WinBattle = true;
                 }
                 else if (Opponent.GetComponent<Companion>() )
                 {
@@ -336,9 +336,9 @@ public class CharacterBase : MonoBehaviour
     {
         Opponent.Opponent = null;
         Opponent = null;
-        if (GetComponent<Player>() && GetComponent<Player>().Elf)
+        if (GetComponent<Player>() && GetComponent<Player>().CurrentCompanion)
         {
-            GetComponent<Player>().Elf.Opponent = null;
+            GetComponent<Player>().CurrentCompanion.Opponent = null;
         }
         else if (GetComponent<Companion>())
         {

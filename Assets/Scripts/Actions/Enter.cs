@@ -35,10 +35,10 @@ public class Enter : MonoBehaviour
     async void ScreenTransition()
     {
         Player player = _player;
-        player.StateMachine.End();
+        player.StateMachine.End(); // stop movement
         await Transition.Instance.FadeOut();
-        player.transform.position = _location.position + new Vector3(_location.GetComponent<BoxCollider2D>().offset.x, _location.GetComponent<BoxCollider2D>().offset.y);
+        player.transform.position = _location.position + new Vector3(_location.GetComponent<BoxCollider2D>().offset.x/2f, _location.GetComponent<BoxCollider2D>().offset.y/2f);
         await Transition.Instance.FadeIn();
-        player.StateMachine.Initialize(player.IdleState);
+        player.StateMachine.Initialize(player.IdleState); // enable movement
     }
 }

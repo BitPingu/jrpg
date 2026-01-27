@@ -5,7 +5,7 @@ public class Player : CharacterBase
 {
     public PlayerController Input { get; set; }
 
-    public Companion Elf { get; set; }
+    public Companion CurrentCompanion { get; set; }
 
     protected override void Start()
     {
@@ -83,9 +83,9 @@ public class Player : CharacterBase
         yield return new WaitForSeconds(.1f);
 
         // companion engage
-        if (GetComponent<Player>().Elf)
+        if (CurrentCompanion)
         {
-            GetComponent<Player>().Elf.Opponent = Opponent;
+            CurrentCompanion.Opponent = Opponent;
             // GetComponent<Player>().Elf.CallBattlePos(attackPos);
         }
 
