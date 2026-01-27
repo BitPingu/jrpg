@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 2670f593e5d554f59abf5f5098381a8f
+guid: 1cb0dcefc7612440883b392ab2350ae6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3402756264589476801
-    second: fiona_0
+      213: 4097239316992917258
+    second: fiona 1_0
   - first:
-      213: -7261248601833800800
-    second: fiona_1
+      213: 6684044230902615353
+    second: fiona 1_1
   - first:
-      213: 881425480425151189
-    second: fiona_2
+      213: -4019099765132251164
+    second: fiona 1_2
   - first:
-      213: -9133279087423790953
-    second: fiona_3
+      213: -9193372066516617060
+    second: fiona 1_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -135,10 +135,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 1c347184bc4093f20800000000000000
-      internalID: 3402756264589476801
+      spriteID: fb4ab98ee37c842aa8fd153163007d03
+      internalID: 1213028593
       vertices: []
       indices: 
       edges: []
@@ -157,10 +157,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 0abf4ed4edcda3b90800000000000000
-      internalID: -7261248601833800800
+      spriteID: 5b416581e3be04498a2246d5dffb400b
+      internalID: -343779310
       vertices: []
       indices: 
       edges: []
@@ -179,10 +179,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 5da18b0fdc37b3c00800000000000000
-      internalID: 881425480425151189
+      spriteID: ff21d50b3d10e4a6bbb1cfa011dc8a5c
+      internalID: -2035464626
       vertices: []
       indices: 
       edges: []
@@ -201,10 +201,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 790e9976f03104180800000000000000
-      internalID: -9133279087423790953
+      spriteID: cfcd3590c1bad46d89d0a4da776ec34e
+      internalID: -1443534817
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 142986b929f944ba783d4248527b3bfe
+    spriteID: c8d5ad3bc42984d6cb71c5dc2699b20e
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      fiona_0: 3402756264589476801
-      fiona_1: -7261248601833800800
-      fiona_2: 881425480425151189
-      fiona_3: -9133279087423790953
+      fiona_0: 1213028593
+      fiona_1: -343779310
+      fiona_2: -2035464626
+      fiona_3: -1443534817
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
