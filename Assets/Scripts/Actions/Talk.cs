@@ -40,7 +40,12 @@ public class Talk : MonoBehaviour
             DialogueController.Instance.DelaySkip = true;
             StartCoroutine(DelaySkip());
             DialogueController.Instance.StartDialogue();
-            // OnTriggerExit2D(_player.GetComponent<Collider2D>());
+        }
+
+        if (_player && DialogueController.Instance.IsDialogueFinished)
+        {
+            _player.StateMachine.Initialize(_player.IdleState); // enable movement
+            DialogueController.Instance.IsDialogueFinished = false;
         }
     }
 

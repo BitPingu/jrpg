@@ -23,13 +23,4 @@ public class Prologue : StoryBase
     {
 
     }
-
-    public void OutOfBounds()
-    {
-        // Talk dia = Instantiate(_fionaDialogue3, _fiona.transform);
-        // _player.StateMachine.End(); // stop movement
-        Debug.Log("out of bounds");
-        // dia.StartDialogue();
-        // Destroy(dia);
-    }
 }

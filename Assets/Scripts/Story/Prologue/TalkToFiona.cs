@@ -4,6 +4,7 @@ public class TalkToFiona : MonoBehaviour
 {
     private Player _player;
     [SerializeField] private Companion _fiona;
+    [SerializeField] private Dialogue _dialogue;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
@@ -25,9 +26,15 @@ public class TalkToFiona : MonoBehaviour
             _fiona.GetComponent<Companion>().Join(_player);
 
             // start dialogue
-            DialogueController.Instance.dialogue = _fiona.Dialogues[0];
+            DialogueController.Instance.dialogue = _dialogue;
             DialogueController.Instance.StartDialogue();
-            Destroy(gameObject);
+        }
+
+        if (_player && DialogueController.Instance.IsDialogueFinished)
+        {
+            _player.StateMachine.Initialize(_player.IdleState); // enable movement
+            DialogueController.Instance.IsDialogueFinished = false;
+            Destroy(gameObject); // end event
         }
     }
 }

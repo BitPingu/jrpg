@@ -12,11 +12,13 @@ public class DialogueController : MonoBehaviour
     public TMP_Text dialogueText, nameText;
     public Image portraitImage, continueImage;
 
-    private int _dialogueIndex = 0, _currentDialogue = 0;
+    private int _dialogueIndex = 0;
     public bool IsDialogueActive { get; set; }
     private bool _isTyping;
-
     public bool DelaySkip { get; set; }
+    public bool IsDialogueFinished { get; set; }
+
+    [SerializeField] private PlayerController _input;
 
     private void Awake()
     {
@@ -42,7 +44,7 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (GameObject.Find("Player").GetComponent<Player>().Input.E && IsDialogueActive && !DelaySkip)
+        if (_input.E && IsDialogueActive && !DelaySkip)
         {
             // next line
             NextLine();
@@ -124,6 +126,6 @@ public class DialogueController : MonoBehaviour
         IsDialogueActive = false;
         SetDialogueText("");
         ShowDialogueUI(false);
-        GameObject.Find("Player").GetComponent<Player>().StateMachine.Initialize(GameObject.Find("Player").GetComponent<Player>().IdleState); // enable movement
+        IsDialogueFinished = true;
     }
 }
