@@ -627,6 +627,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6a6b4328b34d82ad9ca503f942388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charName: Nico
+  portrait: {fileID: 21300000, guid: e245040fe73614549b6c09cf96483718, type: 3}
+  voiceSound: {fileID: 8300000, guid: 8bc7bbbd3ff544293933a4bce9c9108f, type: 3}
+  voicePitch: 0.4
   _moveSpeed: 3
   Level: 1
   _maxExp: 100
@@ -638,6 +642,7 @@ MonoBehaviour:
   BattleHUD: {fileID: 8015278021862394909}
   _projectile: {fileID: 0}
   _hitSound: {fileID: 8300000, guid: c9c39983af9d441278cf44370e151cf1, type: 3}
+  Dialogues: []
 --- !u!114 &1737939773625099332
 MonoBehaviour:
   m_ObjectHideFlags: 0

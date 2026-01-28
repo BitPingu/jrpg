@@ -26,6 +26,8 @@ public class TalkToFiona : MonoBehaviour
             _fiona.GetComponent<Companion>().Join(_player);
 
             // start dialogue
+            DialogueController.Instance.CharsInDialogue.Add(_fiona.charName, _fiona);
+            DialogueController.Instance.CharsInDialogue.Add(_player.charName, _player);
             DialogueController.Instance.dialogue = _dialogue;
             DialogueController.Instance.StartDialogue();
         }

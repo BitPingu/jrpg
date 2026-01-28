@@ -28,15 +28,17 @@ public class Talk : MonoBehaviour
         if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
         {
             // face player
+            CharacterBase character = GetComponentInParent<CharacterBase>();
             // GetComponentInParent<CharacterBase>().StateMachine.End(); // stop movement
-            GetComponentInParent<CharacterBase>().FaceCharacter(_player);
+            character.FaceCharacter(_player);
 
             // player faces
             _player.StateMachine.End(); // stop movement
-            _player.FaceCharacter(GetComponentInParent<CharacterBase>());
+            _player.FaceCharacter(character);
 
             // start dialogue
-            DialogueController.Instance.dialogue = GetComponentInParent<CharacterBase>().Dialogues[0];
+            DialogueController.Instance.CharsInDialogue.Add(character.charName, character);
+            DialogueController.Instance.dialogue = character.Dialogues[0];
             DialogueController.Instance.DelaySkip = true;
             StartCoroutine(DelaySkip());
             DialogueController.Instance.StartDialogue();

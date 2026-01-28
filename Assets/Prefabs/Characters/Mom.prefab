@@ -176,6 +176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab13a353f43c647b985e68084b315151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charName: Mom
+  portrait: {fileID: 21300000, guid: c062523b1f40e4d4cba376776b47a610, type: 3}
+  voiceSound: {fileID: 8300000, guid: 8bc7bbbd3ff544293933a4bce9c9108f, type: 3}
+  voicePitch: 0.6
   _moveSpeed: 3
   Level: 1
   _maxExp: 100

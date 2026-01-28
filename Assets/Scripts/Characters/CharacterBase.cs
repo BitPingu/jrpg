@@ -12,7 +12,10 @@ public class CharacterBase : MonoBehaviour
     public StateBase IdleState { get; set; }
     public StateBase BattleState { get; set; }
 
-    public CharacterBase Opponent { get; set; }
+    public string charName;
+    public Sprite portrait;
+    public AudioClip voiceSound;
+    public float voicePitch = 1f;
 
     [SerializeField] private float _moveSpeed = 3f;
 
@@ -27,11 +30,13 @@ public class CharacterBase : MonoBehaviour
 
     public List<Ability> Abilities;
 
-    private Coroutine _damageFlashCoroutine;
+    public CharacterBase Opponent { get; set; }
 
     public bool BattleTurn { get; set; }
     public bool IsAttacking { get; set; }
     public bool WinBattle { get; set; }
+
+    private Coroutine _damageFlashCoroutine;
 
     public Bar HBar, EBar;
     [SerializeField] public GameObject BattleHUD;

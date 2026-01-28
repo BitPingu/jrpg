@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DialogueController : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class DialogueController : MonoBehaviour
     public TMP_Text dialogueText, nameText;
     public Image portraitImage, continueImage;
 
+    public float autoProgressDelay = 1.5f;
+    public float typingSpeed = 0.05f;
+
     private int _dialogueIndex = 0;
     public bool IsDialogueActive { get; set; }
     private bool _isTyping;
@@ -19,6 +23,9 @@ public class DialogueController : MonoBehaviour
     public bool IsDialogueFinished { get; set; }
 
     [SerializeField] private PlayerController _input;
+
+    public Dictionary<string, CharacterBase> CharsInDialogue = new Dictionary<string, CharacterBase>();
+    private CharacterBase _currentChar;
 
     private void Awake()
     {
@@ -29,6 +36,12 @@ public class DialogueController : MonoBehaviour
     public void ShowDialogueUI(bool show)
     {
         dialoguePanel.SetActive(show); // Toggle UI visability
+    }
+
+    public void SetNPC()
+    {
+        _currentChar = CharsInDialogue[dialogue.Lines[_dialogueIndex].charName];
+        SetNPCInfo(_currentChar.charName, _currentChar.portrait);
     }
 
     public void SetNPCInfo(string npcName, Sprite portrait)
@@ -56,7 +69,8 @@ public class DialogueController : MonoBehaviour
         IsDialogueActive = true;
         _dialogueIndex = 0;
 
-        SetNPCInfo(dialogue.npcName, dialogue.npcPortrait);
+        // set npc
+        SetNPC();
         ShowDialogueUI(true);
         
         StartCoroutine(TypeLine());
@@ -68,21 +82,18 @@ public class DialogueController : MonoBehaviour
         {
             // skip typing animation and show the full line
             StopAllCoroutines(); // halt auto progress
-            SetDialogueText(dialogue.dialogueLines[_dialogueIndex]);
+            SetDialogueText(dialogue.Lines[_dialogueIndex].line);
             _isTyping = false;
             continueImage.enabled = true;
             StopVoice();
         }
-        else if (++_dialogueIndex < dialogue.dialogueLines.Length)
+        else if (++_dialogueIndex < dialogue.Lines.Length)
         {
+            // set npc
+            SetNPC();
             // if another line, type next line
             StartCoroutine(TypeLine());
         }
-        // else if (++_currentDialogue < dialogue.Length)
-        // {
-        //     // more dialogue
-        //     StartDialogue();
-        // }
         else
         {
             // end dialogue
@@ -96,11 +107,11 @@ public class DialogueController : MonoBehaviour
         _isTyping = true;
         SetDialogueText("");
 
-        foreach(char letter in dialogue.dialogueLines[_dialogueIndex])
+        foreach(char letter in dialogue.Lines[_dialogueIndex].line)
         {
             SetDialogueText(dialogueText.text += letter);
-            SFXManager.PlayVoice(dialogue.voiceSound, dialogue.voicePitch);
-            yield return new WaitForSeconds(dialogue.typingSpeed);
+            SFXManager.PlayVoice(_currentChar.voiceSound, _currentChar.voicePitch);
+            yield return new WaitForSeconds(typingSpeed);
         }
 
         _isTyping = false;
@@ -108,9 +119,9 @@ public class DialogueController : MonoBehaviour
         StopVoice();
 
         // auto progress
-        if (dialogue.autoProgressLines.Length > _dialogueIndex && dialogue.autoProgressLines[_dialogueIndex])
+        if (dialogue.Lines[_dialogueIndex].autoProgressLines.Length > _dialogueIndex && dialogue.Lines[_dialogueIndex].autoProgressLines[_dialogueIndex])
         {
-            yield return new WaitForSeconds(dialogue.autoProgressDelay);
+            yield return new WaitForSeconds(autoProgressDelay);
             NextLine();
         }
     }
@@ -127,5 +138,6 @@ public class DialogueController : MonoBehaviour
         SetDialogueText("");
         ShowDialogueUI(false);
         IsDialogueFinished = true;
+        CharsInDialogue.Clear();
     }
 }

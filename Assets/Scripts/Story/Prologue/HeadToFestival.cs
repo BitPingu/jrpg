@@ -4,6 +4,7 @@ using UnityEngine;
 public class HeadToFestival : MonoBehaviour
 {
     private Player _player;
+    [SerializeField] Companion _fiona;
     [SerializeField] private Dialogue _dialogue;
 
     private void OnTriggerExit2D(Collider2D hitInfo)
@@ -16,11 +17,13 @@ public class HeadToFestival : MonoBehaviour
 
     private void Update()
     {
+        // out of bounds check
         if (_player && _player.StateMachine.CurrentState == _player.IdleState)
         {
             _player.StateMachine.End(); // stop movement
 
             // start dialogue
+            DialogueController.Instance.CharsInDialogue.Add(_fiona.charName, _fiona);
             DialogueController.Instance.dialogue = _dialogue;
             DialogueController.Instance.StartDialogue();
         }
@@ -34,8 +37,8 @@ public class HeadToFestival : MonoBehaviour
 
     private IEnumerator GoBack()
     {
-        Vector3 returnDir = (_player.CurrentCompanion.transform.position - transform.position).normalized;
-        Vector3 returnPos = _player.CurrentCompanion.transform.position;
+        Vector3 returnDir = (_fiona.transform.position - transform.position).normalized;
+        Vector3 returnPos = _fiona.transform.position;
 
         // go back
         float _distance = Vector2.Distance(returnPos, _player.transform.position);
@@ -46,7 +49,7 @@ public class HeadToFestival : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        _player.FaceCharacter(_player.CurrentCompanion);
+        _player.FaceCharacter(_fiona);
         _player.StateMachine.Initialize(_player.IdleState); // enable movement
         _player = null;
     }
