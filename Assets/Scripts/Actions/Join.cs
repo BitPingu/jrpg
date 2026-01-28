@@ -26,7 +26,6 @@ public class Join : MonoBehaviour
     {
         if (_player && _player.Input.E)
         {
-            _player.CurrentCompanion = GetComponentInParent<Companion>();
             GetComponentInParent<Companion>().Join(_player);
             OnTriggerExit2D(_player.GetComponent<Collider2D>());
             Destroy(this);

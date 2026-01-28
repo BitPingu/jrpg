@@ -702,6 +702,7 @@ MonoBehaviour:
   EBar: {fileID: 8792345666785891725}
   BattleHUD: {fileID: 5598363155657312378}
   _projectile: {fileID: 0}
+  _hitSound: {fileID: 8300000, guid: c9c39983af9d441278cf44370e151cf1, type: 3}
   Input: {fileID: 0}
   _minDistance: 1.55
 --- !u!1 &8055145863579301283

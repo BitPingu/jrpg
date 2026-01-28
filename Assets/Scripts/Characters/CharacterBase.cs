@@ -38,6 +38,8 @@ public class CharacterBase : MonoBehaviour
 
     [SerializeField] private GameObject _projectile;
 
+    [SerializeField] private AudioClip _hitSound;
+
 
     protected virtual void Awake()
     {
@@ -228,6 +230,9 @@ public class CharacterBase : MonoBehaviour
             // damage flash
             CallDamageFlash();
         }
+
+        // damage sound
+        SFXManager.Play(_hitSound);
 
         // update health bar
         HBar.UpdateBar(_maxHealth, CurrentHealth);

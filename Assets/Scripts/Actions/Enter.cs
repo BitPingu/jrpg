@@ -38,8 +38,16 @@ public class Enter : MonoBehaviour
         Player player = _player;
         player.StateMachine.End(); // stop movement
         await Transition.Instance.FadeOut();
+
         SFXManager.Play(_sound, _pitch);
+
+        // move characters
         player.transform.position = _location.position + new Vector3(_location.GetComponent<BoxCollider2D>().offset.x/2f, _location.GetComponent<BoxCollider2D>().offset.y/2f);
+        if (player.CurrentCompanion)
+        {
+            player.CurrentCompanion.transform.position = player.transform.position;
+        }
+
         await Transition.Instance.FadeIn();
         player.StateMachine.Initialize(player.IdleState); // enable movement
     }

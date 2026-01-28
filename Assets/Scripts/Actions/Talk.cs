@@ -7,7 +7,7 @@ public class Talk : MonoBehaviour
     private DialogueController _dialogueUI;
 
     public Dialogue[] dialogue;
-    private int _dialogueIndex, _currentDialogue;
+    private int _dialogueIndex = 0, _currentDialogue = 0;
     private bool _isTyping, _isDialogueActive;
 
     private void Start()
@@ -59,13 +59,17 @@ public class Talk : MonoBehaviour
         }
     }
 
-    private void StartDialogue()
+    public void StartDialogue()
     {
+        Debug.Log("in dia:");
         _isDialogueActive = true;
         _dialogueIndex = 0;
 
+        Debug.Log("dia 2: " + _dialogueUI);
         _dialogueUI.SetNPCInfo(dialogue[_currentDialogue].npcName, dialogue[_currentDialogue].npcPortrait);
         _dialogueUI.ShowDialogueUI(true);
+
+        Debug.Log("done!");
         
         StartCoroutine(TypeLine());
     }
@@ -95,7 +99,6 @@ public class Talk : MonoBehaviour
         {
             // end dialogue
             EndDialogue();
-            OnTriggerExit2D(_player.GetComponent<Collider2D>());
         }
     }
 
@@ -135,7 +138,7 @@ public class Talk : MonoBehaviour
         _isDialogueActive = false;
         _dialogueUI.SetDialogueText("");
         _dialogueUI.ShowDialogueUI(false);
-
         _player.StateMachine.Initialize(_player.IdleState); // enable movement
+        OnTriggerExit2D(_player.GetComponent<Collider2D>());
     }
 }

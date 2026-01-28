@@ -5,7 +5,7 @@ public class StoryManager : MonoBehaviour
     private static StoryManager Instance;
 
     [SerializeField] private StoryBase[] _stories;
-    public StoryBase ActiveStory { get; set; }
+    public static StoryBase CurrentStory { get; set; }
     private int _storyIndex;
 
     private void Awake()
@@ -22,9 +22,13 @@ public class StoryManager : MonoBehaviour
 
     private void Start()
     {
-        ActiveStory = _stories[0];
-        ActiveStory.BeginStory();
+        CurrentStory = _stories[0];
+        CurrentStory.BeginStory();
     }
 
+    private void Update()
+    {
+        CurrentStory.Active();
+    }
 
 }

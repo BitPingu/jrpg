@@ -41,8 +41,8 @@ public class Companion : CharacterBase
 
     public void Join(Player player)
     {
+        player.CurrentCompanion = this;
         Leader = player;
-
         Debug.Log(name + " joins the party!");
     }
 
