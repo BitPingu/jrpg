@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Talk : MonoBehaviour
 {
-    private Player _player;
+    protected Player _player;
     private DialogueController _dialogueUI;
 
     public Dialogue[] dialogue;
@@ -95,6 +95,7 @@ public class Talk : MonoBehaviour
         {
             // end dialogue
             EndDialogue();
+            OnTriggerExit2D(_player.GetComponent<Collider2D>());
         }
     }
 
@@ -128,7 +129,7 @@ public class Talk : MonoBehaviour
         await SFXManager.StopVoice();
     }
 
-    public void EndDialogue()
+    public virtual void EndDialogue()
     {
         StopAllCoroutines();
         _isDialogueActive = false;
@@ -136,6 +137,5 @@ public class Talk : MonoBehaviour
         _dialogueUI.ShowDialogueUI(false);
 
         _player.StateMachine.Initialize(_player.IdleState); // enable movement
-        OnTriggerExit2D(_player.GetComponent<Collider2D>());
     }
 }

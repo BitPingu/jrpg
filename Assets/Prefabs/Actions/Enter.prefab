@@ -148,3 +148,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _location: {fileID: 0}
+  _sound: {fileID: 8300000, guid: 89f64b305e8ce41d0843b9c2b290fcae, type: 3}
+  _pitch: 0.7

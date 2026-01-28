@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SFXManager : MonoBehaviour
 {
@@ -8,8 +7,6 @@ public class SFXManager : MonoBehaviour
 
     private static AudioSource _audioSource;
     private static AudioSource _voiceAudioSource;
-    private static SFX _sFXLibrary;
-    [SerializeField] private Slider _sFXSlider;
 
     private static float _voiceVol;
 
@@ -22,7 +19,6 @@ public class SFXManager : MonoBehaviour
             _audioSource = audioSources[0];
             _voiceAudioSource = audioSources[1];
             _voiceVol = audioSources[1].volume;
-            _sFXLibrary = GetComponent<SFX>();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -31,18 +27,10 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public static void Play(AudioClip audioClip, float pitch = 1f)
     {
-        // _sFXSlider.onValueChanged.AddListener(delegate { OnValueChanged(); });
-    }
-
-    public static void Play(string soundName)
-    {
-        AudioClip audioClip = _sFXLibrary.GetClip(soundName);
-        if (audioClip != null)
-        {
-            _audioSource.PlayOneShot(audioClip);
-        }
+        _audioSource.pitch = pitch;
+        _audioSource.PlayOneShot(audioClip);
     }
 
     public static void PlayVoice(AudioClip audioClip, float pitch = 1f)
@@ -73,10 +61,5 @@ public class SFXManager : MonoBehaviour
     {
         _audioSource.volume = volume;
         _voiceAudioSource.volume = volume;
-    }
-
-    public void OnValueChanged()
-    {
-        SetVolume(_sFXSlider.value);
     }
 }
