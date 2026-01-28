@@ -2,22 +2,16 @@ using UnityEngine;
 
 public class StoryManager : MonoBehaviour
 {
-    private static StoryManager Instance;
+    public static StoryManager Instance { get; private set; } // Singleton instance
 
     [SerializeField] private StoryBase[] _stories;
-    public static StoryBase CurrentStory { get; set; }
+    public StoryBase CurrentStory { get; set; }
     private int _storyIndex;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject); // Make sure only one instance
     }
 
     private void Start()

@@ -186,6 +186,9 @@ MonoBehaviour:
   EBar: {fileID: 0}
   BattleHUD: {fileID: 0}
   _projectile: {fileID: 0}
+  _hitSound: {fileID: 0}
+  Dialogues:
+  - {fileID: 11400000, guid: 294e3e61d107a4fc58109350eb7d6ec7, type: 2}
 --- !u!1001 &6861241493471904285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -234,14 +237,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5135848863861485733, guid: 675cbe5f88ab24ad8ab585f7a94b2ba5, type: 3}
-      propertyPath: dialogue.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5135848863861485733, guid: 675cbe5f88ab24ad8ab585f7a94b2ba5, type: 3}
-      propertyPath: 'dialogue.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 294e3e61d107a4fc58109350eb7d6ec7, type: 2}
     - target: {fileID: 9002851882244230898, guid: 675cbe5f88ab24ad8ab585f7a94b2ba5, type: 3}
       propertyPath: m_Name
       value: Talk

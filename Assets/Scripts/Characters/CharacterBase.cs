@@ -40,6 +40,7 @@ public class CharacterBase : MonoBehaviour
 
     [SerializeField] private AudioClip _hitSound;
 
+    public List<Dialogue> Dialogues = new List<Dialogue>();
 
     protected virtual void Awake()
     {

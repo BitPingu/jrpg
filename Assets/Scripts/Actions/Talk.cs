@@ -4,16 +4,6 @@ using UnityEngine;
 public class Talk : MonoBehaviour
 {
     protected Player _player;
-    private DialogueController _dialogueUI;
-
-    public Dialogue[] dialogue;
-    private int _dialogueIndex = 0, _currentDialogue = 0;
-    private bool _isTyping, _isDialogueActive;
-
-    private void Start()
-    {
-        _dialogueUI = DialogueController.Instance;
-    }
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
@@ -35,110 +25,28 @@ public class Talk : MonoBehaviour
 
     private void Update()
     {
-        if (_player && _player.Input.E)
+        if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
         {
-            // _player.CurrentCompanion = GetComponentInParent<Companion>();
-            // GetComponentInParent<Companion>().Join(_player);
-            if (_isDialogueActive)
-            {
-                // next line
-                NextLine();
-            }
-            else
-            {
-                GetComponentInParent<CharacterBase>().FaceCharacter(_player);
-                _player.StateMachine.End(); // stop movement
-                _player.FaceCharacter(GetComponentInParent<CharacterBase>());
+            // face player
+            // GetComponentInParent<CharacterBase>().StateMachine.End(); // stop movement
+            GetComponentInParent<CharacterBase>().FaceCharacter(_player);
 
-                // start dialogue
-                _currentDialogue = 0;
-                StartDialogue();
-            }
+            // player faces
+            _player.StateMachine.End(); // stop movement
+            _player.FaceCharacter(GetComponentInParent<CharacterBase>());
+
+            // start dialogue
+            DialogueController.Instance.dialogue = GetComponentInParent<CharacterBase>().Dialogues[0];
+            DialogueController.Instance.DelaySkip = true;
+            StartCoroutine(DelaySkip());
+            DialogueController.Instance.StartDialogue();
             // OnTriggerExit2D(_player.GetComponent<Collider2D>());
-            // Destroy(this);
         }
     }
 
-    public void StartDialogue()
+    private IEnumerator DelaySkip()
     {
-        Debug.Log("in dia:");
-        _isDialogueActive = true;
-        _dialogueIndex = 0;
-
-        Debug.Log("dia 2: " + _dialogueUI);
-        _dialogueUI.SetNPCInfo(dialogue[_currentDialogue].npcName, dialogue[_currentDialogue].npcPortrait);
-        _dialogueUI.ShowDialogueUI(true);
-
-        Debug.Log("done!");
-        
-        StartCoroutine(TypeLine());
-    }
-
-    private void NextLine()
-    {
-        if (_isTyping)
-        {
-            // skip typing animation and show the full line
-            StopAllCoroutines(); // halt auto progress
-            _dialogueUI.SetDialogueText(dialogue[_currentDialogue].dialogueLines[_dialogueIndex]);
-            _isTyping = false;
-            _dialogueUI.continueImage.enabled = true;
-            StopVoice();
-        }
-        else if (++_dialogueIndex < dialogue[_currentDialogue].dialogueLines.Length)
-        {
-            // if another line, type next line
-            StartCoroutine(TypeLine());
-        }
-        else if (++_currentDialogue < dialogue.Length)
-        {
-            // more dialogue
-            StartDialogue();
-        }
-        else
-        {
-            // end dialogue
-            EndDialogue();
-        }
-    }
-
-    private IEnumerator TypeLine()
-    {
-        _dialogueUI.continueImage.enabled = false;
-        _isTyping = true;
-        _dialogueUI.SetDialogueText("");
-
-        foreach(char letter in dialogue[_currentDialogue].dialogueLines[_dialogueIndex])
-        {
-            _dialogueUI.SetDialogueText(_dialogueUI.dialogueText.text += letter);
-            SFXManager.PlayVoice(dialogue[_currentDialogue].voiceSound, dialogue[_currentDialogue].voicePitch);
-            yield return new WaitForSeconds(dialogue[_currentDialogue].typingSpeed);
-        }
-
-        _isTyping = false;
-        _dialogueUI.continueImage.enabled = true;
-        StopVoice();
-
-        // auto progress
-        if (dialogue[_currentDialogue].autoProgressLines.Length > _dialogueIndex && dialogue[_currentDialogue].autoProgressLines[_dialogueIndex])
-        {
-            yield return new WaitForSeconds(dialogue[_currentDialogue].autoProgressDelay);
-            NextLine();
-        }
-    }
-
-    private async void StopVoice()
-    {
-        await SFXManager.StopVoice();
-    }
-
-    public virtual void EndDialogue()
-    {
-        StopAllCoroutines();
-        _isDialogueActive = false;
-        _dialogueUI.SetDialogueText("");
-        _dialogueUI.ShowDialogueUI(false);
-        _player.StateMachine.Initialize(_player.IdleState); // enable movement
-        OnTriggerExit2D(_player.GetComponent<Collider2D>());
+        yield return new WaitForSeconds(.1f);
+        DialogueController.Instance.DelaySkip = false;
     }
 }

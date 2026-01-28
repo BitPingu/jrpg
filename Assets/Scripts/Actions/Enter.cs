@@ -11,7 +11,6 @@ public class Enter : MonoBehaviour
     {
         if (hitInfo.GetComponent<Player>())
         {
-            GetComponent<SpriteRenderer>().enabled = true;
             _player = hitInfo.GetComponent<Player>();
         }
     }
@@ -20,16 +19,21 @@ public class Enter : MonoBehaviour
     {
         if (hitInfo.GetComponent<Player>())
         {
-            GetComponent<SpriteRenderer>().enabled = false;
             _player = null;
         }
     }
 
     private void Update()
     {
-        if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
+        if (_player && _player.StateMachine.CurrentState == _player.IdleState)
         {
-            ScreenTransition();
+            GetComponent<SpriteRenderer>().enabled = true;
+            if (_player.Input.E)
+                ScreenTransition();
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 

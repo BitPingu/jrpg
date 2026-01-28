@@ -6,7 +6,7 @@ public class Marker : MonoBehaviour
     {
         if (hitInfo.GetComponent<Player>())
         {
-            StoryManager.CurrentStory.GetComponent<Prologue>().OutOfBounds();
+            // StoryManager.Instance.GetComponent<Prologue>().OutOfBounds();
         }
     }
 }
