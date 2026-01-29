@@ -16,7 +16,7 @@ public class HeadToFestival : EventBase
     private void Start()
     {
         // destination marker
-        _destination = Instantiate(_marker, new Vector2(-1.9f, 14.45f), Quaternion.identity, transform.parent);
+        _destination = Instantiate(_marker, new Vector2(-1.9f, 18.05f), Quaternion.identity, transform.parent);
     }
 
     private void OnTriggerExit2D(Collider2D hitInfo)
@@ -35,6 +35,7 @@ public class HeadToFestival : EventBase
             _destination.Reached = false;
             Destroy(_destination.gameObject);
             PlayerChar.StateMachine.End(); // stop movement
+            // Fiona.StateMachine.End(); // stop movement
             _reached = true;
 
             Fiona.Anim.SetTrigger("Talk");
@@ -45,8 +46,9 @@ public class HeadToFestival : EventBase
             DialogueController.Instance.StartDialogue();
         }
 
-        if (_reached)
+        if (_reached && DialogueController.Instance.IsDialogueFinished)
         {
+            DialogueController.Instance.IsDialogueFinished = false;
             _reached = false;
             Fiona.Anim.SetTrigger("Talk");
             EventIsDone = true; // event done
@@ -69,16 +71,16 @@ public class HeadToFestival : EventBase
 
         if (_playerCol && DialogueController.Instance.IsDialogueFinished)
         {
+            DialogueController.Instance.IsDialogueFinished = false;
             Fiona.Anim.SetTrigger("Talk");
             StartCoroutine(GoBack());
-            DialogueController.Instance.IsDialogueFinished = false;
         }
 
         if (_entered && DialogueController.Instance.IsDialogueFinished)
         {
+            DialogueController.Instance.IsDialogueFinished = false;
             _entered = false;
             Fiona.Anim.SetTrigger("Talk");
-            DialogueController.Instance.IsDialogueFinished = false;
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
         }
     }

@@ -27,6 +27,8 @@ public class DialogueController : MonoBehaviour
     public Dictionary<string, CharacterBase> CharsInDialogue = new Dictionary<string, CharacterBase>();
     private CharacterBase _currentChar;
 
+    [SerializeField] private Sprite _defPortrait;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -40,8 +42,17 @@ public class DialogueController : MonoBehaviour
 
     public void SetNPC()
     {
-        _currentChar = CharsInDialogue[dialogue.Lines[_dialogueIndex].charName];
-        SetNPCInfo(_currentChar.charName, _currentChar.portrait);
+        string npcName = dialogue.Lines[_dialogueIndex].charName;
+        if (CharsInDialogue.ContainsKey(npcName))
+        {
+            _currentChar = CharsInDialogue[npcName];
+            SetNPCInfo(_currentChar.charName, _currentChar.portrait);
+        }
+        else
+        {
+            // not in dict
+            SetNPCInfo(dialogue.Lines[_dialogueIndex].charName, _defPortrait);
+        }
     }
 
     public void SetNPCInfo(string npcName, Sprite portrait)

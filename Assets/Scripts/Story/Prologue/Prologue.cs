@@ -5,7 +5,7 @@ public class Prologue : StoryBase
 {
     [SerializeField] private Player _player;
     [SerializeField] private Companion _fiona;
-    [SerializeField] private Villager _mom, _villager1, _villager2;
+    [SerializeField] private Villager _mom, _villager1, _villager2, _chief;
     [SerializeField] private Dialogue _momDialogue, _vDialogue1, _vDialogue2;
 
     public override void BeginStory()
@@ -13,7 +13,7 @@ public class Prologue : StoryBase
         base.BeginStory();
 
         // player
-        _player.transform.position = new Vector3(-14.77f,-42.68f,0);
+        _player.transform.position = new Vector3(-14.77f,-42f,0);
         _player.CanEnter = true;
 
         // mom
@@ -52,6 +52,13 @@ public class Prologue : StoryBase
         {
             CurrentEvent.GetComponent<HeadToFestival>().PlayerChar = _player;
             CurrentEvent.GetComponent<HeadToFestival>().Fiona = _fiona;
+        }
+        else if (CurrentEvent.GetComponent<Festival>())
+        {
+            CurrentEvent.GetComponent<Festival>().PlayerChar = _player;
+            CurrentEvent.GetComponent<Festival>().Fiona = _fiona;
+            CurrentEvent.GetComponent<Festival>().Mom = _mom;
+            CurrentEvent.GetComponent<Festival>().Chief = _chief;
         }
     }
 }

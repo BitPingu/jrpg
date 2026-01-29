@@ -37,11 +37,11 @@ public class TalkToFiona : EventBase
 
         if (_playerCol && DialogueController.Instance.IsDialogueFinished)
         {
+            DialogueController.Instance.IsDialogueFinished = false;
             Fiona.Anim.SetTrigger("Talk");
             _playerCol.StateMachine.Initialize(_playerCol.IdleState); // enable movement
-            DialogueController.Instance.IsDialogueFinished = false;
-            Fiona.CurrentDialogue = _nextDialogue; // set next dialogue
             _playerCol.CanEnter = false; // disable enter action
+            Fiona.CurrentDialogue = _nextDialogue; // set next dialogue
             EventIsDone = true; // event done
         }
     }

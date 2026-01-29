@@ -44,3 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8fd651237263464baa3a20dc6170f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EventIsDone: 0
+  _chiefDialogue: {fileID: 11400000, guid: a57eade50fde54347a8208253a190bce, type: 2}
+  _chiefDialogue2: {fileID: 11400000, guid: 728ae53c705f6488c892fdb97162a0b3, type: 2}
+  _fionaDialogue: {fileID: 11400000, guid: be3b0149d99c54e61b4939e889c61ef5, type: 2}
+  _fionaDialogue2: {fileID: 11400000, guid: a587db563756847978696bd31b64a5cc, type: 2}
+  _momDialogue: {fileID: 11400000, guid: 8c5ab3262f3704f9cb7c0df5a21be8f4, type: 2}

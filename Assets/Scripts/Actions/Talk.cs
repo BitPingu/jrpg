@@ -31,7 +31,7 @@ public class Talk : MonoBehaviour
             // face player
             _character = GetComponentInParent<CharacterBase>();
             // GetComponentInParent<CharacterBase>().StateMachine.End(); // stop movement
-            if (_character.Anim)
+            if (_character && _character.Anim)
                 _character.Anim.SetTrigger("Talk");
             _character.FaceCharacter(_player);
 
@@ -49,10 +49,10 @@ public class Talk : MonoBehaviour
 
         if (_player && DialogueController.Instance.IsDialogueFinished)
         {
-            if (_character.Anim)
+            DialogueController.Instance.IsDialogueFinished = false;
+            if (_character && _character.Anim)
                 _character.Anim.SetTrigger("Talk");
             _player.StateMachine.Initialize(_player.IdleState); // enable movement
-            DialogueController.Instance.IsDialogueFinished = false;
         }
     }
 
