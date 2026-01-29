@@ -6,8 +6,18 @@ public class HeadToFestival : EventBase
     private Player _playerCol;
     public Player PlayerChar { get; set; }
     public Companion Fiona { get; set; }
-    [SerializeField] private Dialogue _dialogue;
-    private bool _entered;
+    [SerializeField] private Dialogue _targetDialogue;
+    [SerializeField] private Dialogue _outBoundsDialogue;
+    private bool _entered, _reached;
+
+    [SerializeField] private Destination _marker;
+    private Destination _destination;
+
+    private void Start()
+    {
+        // destination marker
+        _destination = Instantiate(_marker, new Vector2(-1.9f, 14.45f), Quaternion.identity, transform.parent);
+    }
 
     private void OnTriggerExit2D(Collider2D hitInfo)
     {
@@ -19,6 +29,29 @@ public class HeadToFestival : EventBase
 
     private void Update()
     {
+        // target reached
+        if (_destination.Reached)
+        {
+            _destination.Reached = false;
+            Destroy(_destination.gameObject);
+            PlayerChar.StateMachine.End(); // stop movement
+            _reached = true;
+
+            Fiona.Anim.SetTrigger("Talk");
+
+            // start dialogue
+            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
+            DialogueController.Instance.dialogue = _targetDialogue;
+            DialogueController.Instance.StartDialogue();
+        }
+
+        if (_reached)
+        {
+            _reached = false;
+            Fiona.Anim.SetTrigger("Talk");
+            EventIsDone = true; // event done
+        }
+
         // out of bounds check
         if ((_playerCol && PlayerChar.StateMachine.CurrentState == PlayerChar.IdleState) || PlayerChar.Entered)
         {
@@ -26,14 +59,17 @@ public class HeadToFestival : EventBase
             PlayerChar.Entered = false;
             _entered = true;
 
+            Fiona.Anim.SetTrigger("Talk");
+
             // start dialogue
             DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
-            DialogueController.Instance.dialogue = _dialogue;
+            DialogueController.Instance.dialogue = _outBoundsDialogue;
             DialogueController.Instance.StartDialogue();
         }
 
         if (_playerCol && DialogueController.Instance.IsDialogueFinished)
         {
+            Fiona.Anim.SetTrigger("Talk");
             StartCoroutine(GoBack());
             DialogueController.Instance.IsDialogueFinished = false;
         }
@@ -41,6 +77,7 @@ public class HeadToFestival : EventBase
         if (_entered && DialogueController.Instance.IsDialogueFinished)
         {
             _entered = false;
+            Fiona.Anim.SetTrigger("Talk");
             DialogueController.Instance.IsDialogueFinished = false;
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
         }

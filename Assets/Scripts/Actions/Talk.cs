@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Talk : MonoBehaviour
 {
-    protected Player _player;
+    private Player _player;
+    private CharacterBase _character;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
@@ -28,17 +29,19 @@ public class Talk : MonoBehaviour
         if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
         {
             // face player
-            CharacterBase character = GetComponentInParent<CharacterBase>();
+            _character = GetComponentInParent<CharacterBase>();
             // GetComponentInParent<CharacterBase>().StateMachine.End(); // stop movement
-            character.FaceCharacter(_player);
+            if (_character.Anim)
+                _character.Anim.SetTrigger("Talk");
+            _character.FaceCharacter(_player);
 
             // player faces
             _player.StateMachine.End(); // stop movement
-            _player.FaceCharacter(character);
+            _player.FaceCharacter(_character);
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(character.charName, character);
-            DialogueController.Instance.dialogue = character.CurrentDialogue;
+            DialogueController.Instance.CharsInDialogue.Add(_character.charName, _character);
+            DialogueController.Instance.dialogue = _character.CurrentDialogue;
             DialogueController.Instance.DelaySkip = true;
             StartCoroutine(DelaySkip());
             DialogueController.Instance.StartDialogue();
@@ -46,6 +49,8 @@ public class Talk : MonoBehaviour
 
         if (_player && DialogueController.Instance.IsDialogueFinished)
         {
+            if (_character.Anim)
+                _character.Anim.SetTrigger("Talk");
             _player.StateMachine.Initialize(_player.IdleState); // enable movement
             DialogueController.Instance.IsDialogueFinished = false;
         }

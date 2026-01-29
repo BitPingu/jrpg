@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TalkToFiona : EventBase
@@ -22,6 +23,8 @@ public class TalkToFiona : EventBase
             _playerCol.StateMachine.End(); // stop movement
             _playerCol.FaceCharacter(Fiona);
 
+            StartCoroutine(DelayAnim());
+
             // fiona joins
             Fiona.GetComponent<Companion>().Join(_playerCol);
 
@@ -34,11 +37,18 @@ public class TalkToFiona : EventBase
 
         if (_playerCol && DialogueController.Instance.IsDialogueFinished)
         {
+            Fiona.Anim.SetTrigger("Talk");
             _playerCol.StateMachine.Initialize(_playerCol.IdleState); // enable movement
             DialogueController.Instance.IsDialogueFinished = false;
             Fiona.CurrentDialogue = _nextDialogue; // set next dialogue
             _playerCol.CanEnter = false; // disable enter action
             EventIsDone = true; // event done
         }
+    }
+
+    private IEnumerator DelayAnim()
+    {
+        yield return new WaitForSeconds(1f);
+        Fiona.Anim.SetTrigger("Talk");
     }
 }

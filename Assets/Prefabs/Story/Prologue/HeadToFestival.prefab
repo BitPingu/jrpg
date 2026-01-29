@@ -81,6 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fa4e10d2bf6423cb8bb5b39618575d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _fiona: {fileID: 0}
-  _dialogue: {fileID: 11400000, guid: 1cba9b3744285411e94cd8c5edd890c5, type: 2}
+  EventIsDone: 0
+  _targetDialogue: {fileID: 11400000, guid: c998a2fade45c40399454dd063761d6a, type: 2}
+  _outBoundsDialogue: {fileID: 11400000, guid: 1cba9b3744285411e94cd8c5edd890c5, type: 2}
+  _marker: {fileID: 2731604681085015529, guid: 008b80281a55b467db7f43714d05a494, type: 3}
