@@ -17,6 +17,8 @@ public class CharacterBase : MonoBehaviour
     public AudioClip voiceSound;
     public float voicePitch = 1f;
 
+    public Dialogue CurrentDialogue { get; set; }
+
     [SerializeField] private float _moveSpeed = 3f;
 
     public int Level = 1;
@@ -45,7 +47,6 @@ public class CharacterBase : MonoBehaviour
 
     [SerializeField] private AudioClip _hitSound;
 
-    public List<Dialogue> Dialogues = new List<Dialogue>();
 
     protected virtual void Awake()
     {

@@ -1,42 +1,44 @@
 using UnityEngine;
 
-public class TalkToFiona : MonoBehaviour
+public class TalkToFiona : EventBase
 {
-    private Player _player;
-    [SerializeField] private Companion _fiona;
-    [SerializeField] private Dialogue _dialogue;
+    private Player _playerCol;
+    public CharacterBase Fiona { get; set; }
+    [SerializeField] private Dialogue _dialogue, _nextDialogue;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.GetComponent<Player>())
         {
-            _player = hitInfo.GetComponent<Player>();
+            _playerCol = hitInfo.GetComponent<Player>();
         }
     }
 
     private void Update()
     {
-        if (_player && _player.StateMachine.CurrentState == _player.IdleState)
+        if (_playerCol && _playerCol.StateMachine.CurrentState == _playerCol.IdleState)
         {
             // player faces
-            _player.StateMachine.End(); // stop movement
-            _player.FaceCharacter(_fiona);
+            _playerCol.StateMachine.End(); // stop movement
+            _playerCol.FaceCharacter(Fiona);
 
             // fiona joins
-            _fiona.GetComponent<Companion>().Join(_player);
+            Fiona.GetComponent<Companion>().Join(_playerCol);
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(_fiona.charName, _fiona);
-            DialogueController.Instance.CharsInDialogue.Add(_player.charName, _player);
+            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
+            DialogueController.Instance.CharsInDialogue.Add(_playerCol.charName, _playerCol);
             DialogueController.Instance.dialogue = _dialogue;
             DialogueController.Instance.StartDialogue();
         }
 
-        if (_player && DialogueController.Instance.IsDialogueFinished)
+        if (_playerCol && DialogueController.Instance.IsDialogueFinished)
         {
-            _player.StateMachine.Initialize(_player.IdleState); // enable movement
+            _playerCol.StateMachine.Initialize(_playerCol.IdleState); // enable movement
             DialogueController.Instance.IsDialogueFinished = false;
-            Destroy(gameObject); // end event
+            Fiona.CurrentDialogue = _nextDialogue; // set next dialogue
+            _playerCol.CanEnter = false; // disable enter action
+            EventIsDone = true; // event done
         }
     }
 }

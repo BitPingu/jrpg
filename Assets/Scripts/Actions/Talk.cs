@@ -38,7 +38,7 @@ public class Talk : MonoBehaviour
 
             // start dialogue
             DialogueController.Instance.CharsInDialogue.Add(character.charName, character);
-            DialogueController.Instance.dialogue = character.Dialogues[0];
+            DialogueController.Instance.dialogue = character.CurrentDialogue;
             DialogueController.Instance.DelaySkip = true;
             StartCoroutine(DelaySkip());
             DialogueController.Instance.StartDialogue();

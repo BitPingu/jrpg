@@ -7,6 +7,9 @@ public class Player : CharacterBase
 
     public Companion CurrentCompanion { get; set; }
 
+    public bool CanEnter { get; set; }
+    public bool Entered { get; set; }
+
     protected override void Start()
     {
         // call base class

@@ -28,8 +28,10 @@ public class Enter : MonoBehaviour
         if (_player && _player.StateMachine.CurrentState == _player.IdleState)
         {
             GetComponent<SpriteRenderer>().enabled = true;
-            if (_player.Input.E)
+            if (_player.Input.E && _player.CanEnter)
                 ScreenTransition();
+            else if (_player.Input.E && !_player.CanEnter)
+                _player.Entered = true;
         }
         else
         {
