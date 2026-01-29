@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 1252b9c8c2b344b0d9c7c84ee7954f9a
+guid: 320933757ca4c4fba950d1abfa47228c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6138364590476525427
-    second: villager_male_0
+      213: -6497548451808794980
+    second: villager_male 1_0
   - first:
-      213: -7297194134139073524
-    second: villager_male_1
+      213: -685080452143544076
+    second: villager_male 1_1
   - first:
-      213: 3356939638624010429
-    second: villager_male_2
+      213: -7151020266919670475
+    second: villager_male 1_2
   - first:
-      213: 7232353140783643474
-    second: villager_male_3
+      213: 7205246130633669621
+    second: villager_male 1_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -135,10 +135,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d808fca6de520daa0800000000000000
-      internalID: -6138364590476525427
+      spriteID: 471f5e1e532c24f9c8f4a77181fb4c74
+      internalID: 1319817925
       vertices: []
       indices: 
       edges: []
@@ -157,10 +157,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c0c8391e8982bba90800000000000000
-      internalID: -7297194134139073524
+      spriteID: e49c07a2a79604ab8a0ed1fe0ebdd4e4
+      internalID: -1493320764
       vertices: []
       indices: 
       edges: []
@@ -179,10 +179,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: db0cc94c0de369e20800000000000000
-      internalID: 3356939638624010429
+      spriteID: def7be4c496064072b9c3337334807f9
+      internalID: -414093956
       vertices: []
       indices: 
       edges: []
@@ -201,10 +201,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 25bf696ecda7e5460800000000000000
-      internalID: 7232353140783643474
+      spriteID: 646f06669c43742f3b2185b2a481a8e0
+      internalID: -624530750
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 356f2994ce7a244e48eb668570554cab
+    spriteID: f396bc4dd66f440aea860d08baa9464c
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      villager_male_0: -6138364590476525427
-      villager_male_1: -7297194134139073524
-      villager_male_2: 3356939638624010429
-      villager_male_3: 7232353140783643474
+      villager_male_0: 1319817925
+      villager_male_1: -1493320764
+      villager_male_2: -414093956
+      villager_male_3: -624530750
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

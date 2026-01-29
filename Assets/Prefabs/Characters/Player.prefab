@@ -628,7 +628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charName: Nico
-  portrait: {fileID: 21300000, guid: 250c20f05182a4671b5aae4fdf45c685, type: 3}
+  portrait: {fileID: 21300000, guid: ec79da9ff4feb4abc80da0d3e1320bfe, type: 3}
   voiceSound: {fileID: 8300000, guid: 8bc7bbbd3ff544293933a4bce9c9108f, type: 3}
   voicePitch: 0.4
   _moveSpeed: 3

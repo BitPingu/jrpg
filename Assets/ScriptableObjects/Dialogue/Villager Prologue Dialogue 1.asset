@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Villager Prologue Dialogue 1
   m_EditorClassIdentifier: 
   Lines:
-  - charName: Villager
+  - charName: Jordan
     line: Hey, Nico!
     autoProgressLines: 
     choices: []

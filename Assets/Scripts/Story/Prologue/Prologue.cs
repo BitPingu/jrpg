@@ -5,8 +5,8 @@ public class Prologue : StoryBase
 {
     [SerializeField] private Player _player;
     [SerializeField] private Companion _fiona;
-    [SerializeField] private Villager _mom, _villager1, _villager2, _chief;
-    [SerializeField] private Dialogue _momDialogue, _vDialogue1, _vDialogue2;
+    [SerializeField] private Villager _mom, _villager1, _villager2, _villager3, _villager4, _chief;
+    [SerializeField] private Dialogue _momDialogue, _vDialogue1, _vDialogue2, _vDialogue3, _vDialogue4;
 
     public override void BeginStory()
     {
@@ -22,6 +22,8 @@ public class Prologue : StoryBase
         // villagers
         _villager1.CurrentDialogue = _vDialogue1;
         _villager2.CurrentDialogue = _vDialogue2;
+        _villager3.CurrentDialogue = _vDialogue3;
+        _villager4.CurrentDialogue = _vDialogue4;
 
         // start first event
         CurrentEvent = Instantiate(Events[EventIndex], transform);
