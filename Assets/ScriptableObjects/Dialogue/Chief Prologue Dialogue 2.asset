@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Chief Vandham
-    line: Hey Nico! I hope you enjoyed my speech.
-    autoProgressLines: 
+    line: Hey Eli! I hope you enjoyed my speech.
     choices: []
+    redirectDialogueIndex: -1

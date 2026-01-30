@@ -21,7 +21,7 @@ public class TalkToFiona : EventBase
         {
             // player faces
             _playerCol.StateMachine.End(); // stop movement
-            _playerCol.FaceCharacter(Fiona);
+            _playerCol.Face(Fiona);
 
             StartCoroutine(DelayAnim());
 

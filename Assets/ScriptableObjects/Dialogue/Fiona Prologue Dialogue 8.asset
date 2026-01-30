@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Whew! That was fun! You sure are strong Nico!
+    line: Whew! That was fun! You sure are strong Eli!
     choices: []
     redirectDialogueIndex: -1

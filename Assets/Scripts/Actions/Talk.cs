@@ -33,11 +33,11 @@ public class Talk : MonoBehaviour
             // GetComponentInParent<CharacterBase>().StateMachine.End(); // stop movement
             if (_character && _character.Anim)
                 _character.Anim.SetTrigger("Talk");
-            _character.FaceCharacter(_player);
+            _character.Face(_player);
 
             // player faces
             _player.StateMachine.End(); // stop movement
-            _player.FaceCharacter(_character);
+            _player.Face(_character);
 
             // start dialogue
             DialogueController.Instance.CharsInDialogue.Add(_character.charName, _character);

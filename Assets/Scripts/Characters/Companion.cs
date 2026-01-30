@@ -1,30 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-public class Companion : CharacterBase
+public class Companion : PartyBase
 {
-    public PlayerController Input;
-
     public Player Leader { get; set; }
 
     [SerializeField] private float _minDistance = 1.55f;
 
     public bool Sparring { get; set; }
-
-    protected override void Start()
-    {
-        // call base class
-        base.Start();
-
-        // start in idle state
-        StateMachine.Initialize(IdleState);
-    }
-
-    protected override void Update()
-    {
-        // call base class
-        base.Update();
-    }
 
     public override void Idle()
     {
@@ -114,4 +97,13 @@ public class Companion : CharacterBase
             }
         }
     }
+
+    protected override void Run()
+    {
+        // call base class
+        base.Run();
+
+        Leader.Opponent = null;
+    }
 }
+

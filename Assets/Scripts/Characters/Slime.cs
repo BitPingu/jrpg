@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Slime : Enemy
 {
-    public AbilityStateMachine Lunge;
+    // public AbilityStateMachine Lunge;
 
     protected override void Awake()
     {
@@ -11,31 +11,31 @@ public class Slime : Enemy
         base.Awake();
 
         // ability
-        foreach (Ability ability in Abilities)
-        {
-            if (ability.name == "Lunge")
-            {
-                Lunge = new AbilityStateMachine(ability, GetComponent<Enemy>(), KeyCode.None);
-                Lunge.State = AbilityStateMachine.AbilityState.cooldown;
-                Lunge.CurrentCooldownTime = 1f;
-            }
-        }
+        // foreach (Ability ability in Abilities)
+        // {
+        //     if (ability.name == "Lunge")
+        //     {
+        //         Lunge = new AbilityStateMachine(ability, GetComponent<Enemy>(), KeyCode.None);
+        //         Lunge.State = AbilityStateMachine.AbilityState.cooldown;
+        //         Lunge.CurrentCooldownTime = 1f;
+        //     }
+        // }
     }
 
-    public void UseLunge()
-    {
-        StartCoroutine(LungeRaycast());
-    }
+    // public void UseLunge()
+    // {
+    //     StartCoroutine(LungeRaycast());
+    // }
 
-    IEnumerator LungeRaycast()
-    {
-        Lunge.Ability.IsActive = true;
+    // IEnumerator LungeRaycast()
+    // {
+    //     Lunge.Ability.IsActive = true;
 
-        yield return new WaitForSeconds(1f);
-        Anim.SetTrigger("Attack");
-        yield return new WaitForSeconds(1f);
+    //     yield return new WaitForSeconds(1f);
+    //     Anim.SetTrigger("Attack");
+    //     yield return new WaitForSeconds(1f);
 
-        Lunge.Ability.IsActive = false;
-    }
+    //     Lunge.Ability.IsActive = false;
+    // }
 }
 

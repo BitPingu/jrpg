@@ -90,7 +90,7 @@ public class HeadToFestival : EventBase
         Vector3 returnDir = (Fiona.transform.position - transform.position).normalized;
         Vector3 returnPos = Fiona.transform.position;
 
-        PlayerChar.FaceCharacter(Fiona);
+        PlayerChar.Face(Fiona);
 
         // go back
         float _distance = Vector2.Distance(returnPos, PlayerChar.transform.position);

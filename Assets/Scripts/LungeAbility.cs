@@ -12,7 +12,7 @@ public class LungeAbility : Ability
         Slime slime =  parent.GetComponent<Slime>();
 
         // call ability from character
-        slime.UseLunge();
+        // slime.UseLunge();
 
         // Debug.Log(name + " activated.");
     }

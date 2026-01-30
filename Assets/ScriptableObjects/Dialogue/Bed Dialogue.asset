@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bed Dialogue
   m_EditorClassIdentifier: 
   Lines:
-  - charName: Nico
+  - charName: Eli
     line: (The bed looks so cosy...)
-    autoProgressLines: 
     choices: []
+    redirectDialogueIndex: -1

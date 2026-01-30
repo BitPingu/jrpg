@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Jordan
-    line: Hey, Nico!
-    autoProgressLines: 
+    line: Hey, Eli!
     choices: []
+    redirectDialogueIndex: -1

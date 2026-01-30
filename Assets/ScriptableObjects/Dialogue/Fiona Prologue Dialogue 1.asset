@@ -15,13 +15,13 @@ MonoBehaviour:
   Lines:
   - charName: Fiona
     line: Hey, sleepy head!
-    autoProgressLines: 
     choices: []
+    redirectDialogueIndex: -1
   - charName: Fiona
     line: C'mon let's get going! We don't wanna be late!
-    autoProgressLines: 
     choices: []
-  - charName: Nico
+    redirectDialogueIndex: -1
+  - charName: Eli
     line: ...
-    autoProgressLines: 
     choices: []
+    redirectDialogueIndex: -1

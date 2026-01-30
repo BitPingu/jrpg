@@ -200,15 +200,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb5a8e516150492ea81c5c21ff5f64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charName: Slime
+  portrait: {fileID: 0}
+  voiceSound: {fileID: 0}
+  voicePitch: 1
   _moveSpeed: 1.5
   Level: 1
-  _maxExp: 100
-  _maxHealth: 20
-  _attack: 4
-  Abilities: []
+  MaxHealth: 20
+  Strength: 4
   HBar: {fileID: 6348836242550008932}
-  EBar: {fileID: 0}
-  BattleHUD: {fileID: 0}
   _projectile: {fileID: 0}
   _hitSound: {fileID: 8300000, guid: 35960fccc016f4913a9c6ec5fea7c48f, type: 3}
   SightRadius: 0

@@ -1,28 +1,12 @@
+using System.Collections;
 using UnityEngine;
 
-public class Enemy : CharacterBase
+public class Enemy : FighterBase
 {
     public float SightRadius;
-    public float AttackRange;
     public LayerMask playerLayer;
     private Vector2 _curDir;
     private float _moveCounter, _waitCounter, _waitTime;
-
-
-    protected override void Start()
-    {
-        // call base class
-        base.Start();
-
-        // start in idle state
-        StateMachine.Initialize(IdleState);
-    }
-
-    protected override void Update()
-    {
-        // call base class
-        base.Update();
-    }
 
     public void SetRandomDir()
     {
@@ -79,7 +63,7 @@ public class Enemy : CharacterBase
     {
         // chase opponent
         float distance = Vector2.Distance(opponent.transform.position, transform.position);
-        if (distance > AttackRange)
+        if (distance > SightRadius)
         {
             Move(opponent.transform.position - transform.position);
         }
@@ -100,6 +84,52 @@ public class Enemy : CharacterBase
             StartCoroutine(CallAttack());
             BattleTurn = false;
         }
+    }
+
+    public override void Damage(float damageAmount)
+    {
+        // call base class
+        base.Damage(damageAmount);
+
+        if (CurrentHealth <= 0)
+        {
+            Debug.Log(name + " died!");
+            StartCoroutine(Die());
+
+            // exp
+            // TODO: move this so that exp also gained from fighting non enemy?
+            Opponent.WinBattle = true;
+            if (Opponent.GetComponent<Player>().CurrentCompanion)
+            {
+                Opponent.GetComponent<Player>().CurrentCompanion.WinBattle = true;
+            }
+            else if (Opponent.GetComponent<Companion>() )
+            {
+                Opponent.GetComponent<Companion>().Leader.WinBattle = true;
+            }
+        }
+    }
+
+    private IEnumerator Die()
+    {
+        // set color
+        Sprite.material.SetFloat("_FlashAmount", 1f);
+        float flashTime = 2f;
+
+        float currentFlashAmount;
+        float elapsedTime = 0f;
+        while (elapsedTime < flashTime)
+        {
+            elapsedTime += Time.deltaTime;
+            // lerp flash amount
+            currentFlashAmount = Mathf.Lerp(0f, 1f, (elapsedTime / flashTime));
+            // set flash amount
+            Sprite.material.SetFloat("_Alpha", currentFlashAmount);
+            yield return null;
+        }
+
+        // Die
+        Destroy(gameObject);
     }
 
     void OnDrawGizmosSelected()

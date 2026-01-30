@@ -104,7 +104,7 @@ public class Festival : EventBase
         }
 
         character.Move(Vector2.zero);
-        character.FaceCharacter(Chief);
+        character.Face(Chief);
 
         _inPos++;
     }

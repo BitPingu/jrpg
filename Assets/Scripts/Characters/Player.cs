@@ -1,26 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class Player : CharacterBase
+public class Player : PartyBase
 {
-    public PlayerController Input { get; set; }
-
     public Companion CurrentCompanion { get; set; }
 
     public bool CanEnter { get; set; }
     public bool Entered { get; set; }
-
-    protected override void Start()
-    {
-        // call base class
-        base.Start();
-
-        // player components
-        Input = GetComponent<PlayerController>();
-
-        // start in idle state
-        StateMachine.Initialize(IdleState);
-    }
 
     protected override void Update()
     {
@@ -42,30 +28,7 @@ public class Player : CharacterBase
         // call base class
         base.Battle();
 
-        // attack
-        if (BattleTurn)
-        {
-            // show HUD
-            BattleHUD.SetActive(true);
-
-            // attack
-            if (Input.E)
-            {
-                StartCoroutine(CallAttack());
-                BattleTurn = false;
-                BattleHUD.SetActive(false);
-            }
-
-            // run (if wild)
-            if (Opponent.GetComponent<Enemy>() && Input.Q)
-            {
-                Run();
-            }
-            else
-            {
-                BattleHUD.transform.Find("RunImage").gameObject.SetActive(false);
-            }
-        }
+        // player only battle options go here
     }
 
     public IEnumerator Engage(Enemy enemy)
@@ -109,6 +72,36 @@ public class Player : CharacterBase
         }
 
         IsAttacking = false;
+    }
+
+    protected override IEnumerator CallAttack()
+    {
+        Debug.Log(name + " is attacking " + Opponent.name + ".");
+        StartCoroutine(Attack());
+
+        yield return new WaitForSeconds(2f);
+
+        if (CurrentCompanion && !WinBattle)
+        {
+            // companion turn
+            CurrentCompanion.BattleTurn = true;
+        }
+        else
+        {
+            // enemy turn
+            Opponent.BattleTurn = true;
+        }
+    }
+
+    protected override void Run()
+    {
+        // call base class
+        base.Run();
+
+        if (CurrentCompanion)
+        {
+            CurrentCompanion.Opponent = null;
+        }
     }
 }
 
