@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 05988817946514d9e9f5037844297ba5
+guid: b661360d88e6d442989214e7a54b0ecb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7042148765498627501
-    second: player_battle_0
+      213: 3296723903060209260
+    second: player_battle 1_0
   - first:
-      213: -2569108303386328012
-    second: player_battle_1
+      213: -989168466838208826
+    second: player_battle 1_1
   - first:
-      213: -3916739770125411117
-    second: player_battle_2
+      213: -8646435103187297631
+    second: player_battle 1_2
   - first:
-      213: -284425073388797931
-    second: player_battle_3
+      213: -7677908728630006047
+    second: player_battle 1_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -135,10 +135,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 35aaff83203454e90800000000000000
-      internalID: -7042148765498627501
+      spriteID: 31d42ab0a764340169861752cf7dde5d
+      internalID: 1926456271
       vertices: []
       indices: 
       edges: []
@@ -157,10 +157,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 434c62b1c91b85cd0800000000000000
-      internalID: -2569108303386328012
+      spriteID: a3f0346cf24d34c86915b0ddf20f77c4
+      internalID: -1176609844
       vertices: []
       indices: 
       edges: []
@@ -179,10 +179,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 3dc970c4ee1f4a9c0800000000000000
-      internalID: -3916739770125411117
+      spriteID: ed40d826d86d64e5e8cf7e807a2d1a96
+      internalID: 1047660138
       vertices: []
       indices: 
       edges: []
@@ -201,10 +201,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 510427717e48d0cf0800000000000000
-      internalID: -284425073388797931
+      spriteID: df1cf3b046b7e41058a362b5aaa7be87
+      internalID: 118856646
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 45226f386dc0c4cddbcf0607c257b161
+    spriteID: 9f0ac9f0bcd734db3a9c83e3e289a619
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      player_battle_0: -7042148765498627501
-      player_battle_1: -2569108303386328012
-      player_battle_2: -3916739770125411117
-      player_battle_3: -284425073388797931
+      player_battle_0: 1926456271
+      player_battle_1: -1176609844
+      player_battle_2: 1047660138
+      player_battle_3: 118856646
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -473,7 +473,7 @@ SpriteRenderer:
   m_SortingLayerID: 378291169
   m_SortingLayer: -2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4334783836991956000, guid: eecf23dedc1284e56a86f52facccc3f9, type: 3}
+  m_Sprite: {fileID: 437890139, guid: c1584fdbf5ed740d5813b685c538c1d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -628,7 +628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charName: Eli
-  portrait: {fileID: 21300000, guid: ec79da9ff4feb4abc80da0d3e1320bfe, type: 3}
+  portrait: {fileID: 21300000, guid: f18c432def1684663b6d416516b840cd, type: 3}
   voiceSound: {fileID: 8300000, guid: 8bc7bbbd3ff544293933a4bce9c9108f, type: 3}
   voicePitch: 0.4
   _moveSpeed: 3

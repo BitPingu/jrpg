@@ -505,6 +505,7 @@ GameObject:
   - component: {fileID: 739479309176889996}
   - component: {fileID: 3804833762167933900}
   - component: {fileID: 4934509859316880787}
+  - component: {fileID: 4716680468274926434}
   m_Layer: 0
   m_Name: Fiona
   m_TagString: Untagged
@@ -694,22 +695,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charName: Fiona
-  portrait: {fileID: 21300000, guid: 87852a0693b5e459899693331cced6b7, type: 3}
+  portrait: {fileID: 21300000, guid: 0f6cb95353de243809cee5ebb7920bd4, type: 3}
   voiceSound: {fileID: 8300000, guid: 8bc7bbbd3ff544293933a4bce9c9108f, type: 3}
   voicePitch: 0.67
   _moveSpeed: 3
   Level: 1
-  _maxExp: 100
-  _maxHealth: 30
-  _attack: 8
-  Abilities: []
+  MaxHealth: 20
+  Strength: 4
   HBar: {fileID: 2643750145137607703}
-  EBar: {fileID: 8792345666785891725}
-  BattleHUD: {fileID: 5598363155657312378}
   _projectile: {fileID: 0}
   _hitSound: {fileID: 8300000, guid: c9c39983af9d441278cf44370e151cf1, type: 3}
-  Input: {fileID: 0}
+  _maxExp: 100
+  EBar: {fileID: 8792345666785891725}
+  BattleHUD: {fileID: 5598363155657312378}
   _minDistance: 1.55
+--- !u!114 &4716680468274926434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990249944024980896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a02e1d46b3647468090f588c4b53017d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8055145863579301283
 GameObject:
   m_ObjectHideFlags: 0
