@@ -62,5 +62,10 @@ public class Prologue : StoryBase
             CurrentEvent.GetComponent<Festival>().Mom = _mom;
             CurrentEvent.GetComponent<Festival>().Chief = _chief;
         }
+        else if (CurrentEvent.GetComponent<FightFiona>())
+        {
+            CurrentEvent.GetComponent<FightFiona>().PlayerChar = _player;
+            CurrentEvent.GetComponent<FightFiona>().Fiona = _fiona;
+        }
     }
 }

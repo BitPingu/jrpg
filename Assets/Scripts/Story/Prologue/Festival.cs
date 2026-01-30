@@ -9,7 +9,7 @@ public class Festival : EventBase
     public Villager Chief { get; set; }
     [SerializeField] private Dialogue _chiefDialogue, _chiefDialogue2, _fionaDialogue, _fionaDialogue2, _fionaDialogue3, _momDialogue;
     private int _inPos;
-    private bool _chiefDialogueFinish, _fionaDialogueFinish;
+    private bool _chiefDialogueFinish, _fionaDialogueFinish, _fionaDialogue2Finish;
 
     [SerializeField] private Destination _marker;
     private Destination _destination;
@@ -80,6 +80,15 @@ public class Festival : EventBase
             DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
             DialogueController.Instance.dialogue = _fionaDialogue3;
             DialogueController.Instance.StartDialogue();
+
+            _fionaDialogue2Finish = true;
+        }
+
+        if (_fionaDialogue2Finish && DialogueController.Instance.IsDialogueFinished)
+        {
+            DialogueController.Instance.IsDialogueFinished = false;
+            _fionaDialogue2Finish = false;
+            EventIsDone = true; // event done
         }
     }
 

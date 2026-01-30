@@ -9,6 +9,8 @@ public class Companion : CharacterBase
 
     [SerializeField] private float _minDistance = 1.55f;
 
+    public bool Sparring { get; set; }
+
     protected override void Start()
     {
         // call base class
@@ -86,21 +88,29 @@ public class Companion : CharacterBase
         // attack
         if (BattleTurn)
         {
-            // show HUD
-            BattleHUD.SetActive(true);
+            if (!Sparring)
+            {
+                // show HUD
+                BattleHUD.SetActive(true);
 
-            // attack
-            if (Input.E)
+                // attack
+                if (Input.E)
+                {
+                    StartCoroutine(CallAttack());
+                    BattleTurn = false;
+                    BattleHUD.SetActive(false);
+                }
+
+                // run
+                if (Input.Q)
+                {
+                    Run();
+                }
+            }
+            else
             {
                 StartCoroutine(CallAttack());
                 BattleTurn = false;
-                BattleHUD.SetActive(false);
-            }
-
-            // run
-            if (Input.Q)
-            {
-                Run();
             }
         }
     }

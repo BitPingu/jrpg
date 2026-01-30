@@ -56,10 +56,14 @@ public class Player : CharacterBase
                 BattleHUD.SetActive(false);
             }
 
-            // run
-            if (Input.Q)
+            // run (if wild)
+            if (Opponent.GetComponent<Enemy>() && Input.Q)
             {
                 Run();
+            }
+            else
+            {
+                BattleHUD.transform.Find("RunImage").gameObject.SetActive(false);
             }
         }
     }

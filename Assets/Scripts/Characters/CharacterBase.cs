@@ -26,6 +26,7 @@ public class CharacterBase : MonoBehaviour
     private int _currentExp = 0;
 
     [SerializeField] private float _maxHealth = 3f;
+    public float MaxHealth { get => _maxHealth; }
     public float CurrentHealth { get; set; }
 
     [SerializeField] private float _attack = 1f;
@@ -175,6 +176,8 @@ public class CharacterBase : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
+        Move(Vector2.zero);
+
         IsAttacking = false;
     }
 
@@ -230,7 +233,15 @@ public class CharacterBase : MonoBehaviour
                     Opponent.GetComponent<Companion>().Leader.WinBattle = true;
                 }
             }
-            StartCoroutine(Die());
+            if (GetComponent<Enemy>())
+            {
+                StartCoroutine(Die());
+            }
+            else
+            {
+                Opponent.Opponent = null;
+                Opponent = null;
+            }
         }
         else
         {
