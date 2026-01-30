@@ -22,6 +22,6 @@ MonoBehaviour:
     autoProgressLines: 
     choices: []
   - charName: 
-    line: (No AI was used in making this game)
+    line: (No AI was used in making this game.)
     autoProgressLines: 
     choices: []

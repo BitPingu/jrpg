@@ -11,15 +11,15 @@ public class DialogueLine
 {
     public string charName;
     public string line;
-    public bool[] autoProgressLines;
+    // public bool[] autoProgressLines;
 
     public DialogueChoice[] choices;
+    public int redirectDialogueIndex = -1;
 }
 
 [System.Serializable]
 public class DialogueChoice
 {
-    public int dialogueIndex; // Dialogue line where choices appear
-    public string[] choices; // Player response options
-    public int[] nextDialogueIndexes; // Where choice leads
+    public string choiceText; // Player response option
+    public int nextDialogueIndex; // Where choice leads
 }

@@ -8,26 +8,32 @@ public class DialogueController : MonoBehaviour
 {
     public static DialogueController Instance { get; private set; } // Singleton instance
 
-    public Dialogue dialogue;
-    public GameObject dialoguePanel;
-    public TMP_Text dialogueText, nameText;
-    public Image portraitImage, continueImage;
+    public Dialogue dialogue { get; set; }
+
+    [SerializeField] private GameObject _dialoguePanel;
+    [SerializeField] private TMP_Text _dialogueText, _nameText;
+    [SerializeField] private Image _portraitImage, _continueImage;
+    [SerializeField] private Sprite _defPortrait;
+
+    [SerializeField] private Transform _choiceContainer;
+    [SerializeField] private GameObject _choiceButton;
+
+    [SerializeField] private PlayerController _input;
 
     public float autoProgressDelay = 1.5f;
     public float typingSpeed = 0.05f;
 
+    private DialogueLine _currentDialogue;
     private int _dialogueIndex = 0;
-    public bool IsDialogueActive { get; set; }
-    private bool _isTyping;
-    public bool DelaySkip { get; set; }
-    public bool IsDialogueFinished { get; set; }
 
-    [SerializeField] private PlayerController _input;
+    private bool _isTyping;
+    public bool IsDialogueActive { get; set; }
+    public bool DelaySkip { get; set; }
+    public bool Prompt { get; set; }
+    public bool IsDialogueFinished { get; set; }
 
     public Dictionary<string, CharacterBase> CharsInDialogue = new Dictionary<string, CharacterBase>();
     private CharacterBase _currentChar;
-
-    [SerializeField] private Sprite _defPortrait;
 
     private void Awake()
     {
@@ -35,40 +41,9 @@ public class DialogueController : MonoBehaviour
         else Destroy(gameObject); // Make sure only one instance
     }
 
-    public void ShowDialogueUI(bool show)
-    {
-        dialoguePanel.SetActive(show); // Toggle UI visability
-    }
-
-    public void SetNPC()
-    {
-        string npcName = dialogue.Lines[_dialogueIndex].charName;
-        if (CharsInDialogue.ContainsKey(npcName))
-        {
-            _currentChar = CharsInDialogue[npcName];
-            SetNPCInfo(_currentChar.charName, _currentChar.portrait);
-        }
-        else
-        {
-            // not in dict
-            SetNPCInfo(dialogue.Lines[_dialogueIndex].charName, _defPortrait);
-        }
-    }
-
-    public void SetNPCInfo(string npcName, Sprite portrait)
-    {
-        nameText.text = npcName;
-        portraitImage.sprite = portrait;
-    }
-
-    public void SetDialogueText(string text)
-    {
-        dialogueText.text = text;
-    }
-
     private void Update()
     {
-        if (_input.E && IsDialogueActive && !DelaySkip)
+        if (_input.E && IsDialogueActive && !DelaySkip && !Prompt)
         {
             // next line
             NextLine();
@@ -80,30 +55,42 @@ public class DialogueController : MonoBehaviour
         IsDialogueActive = true;
         _dialogueIndex = 0;
 
-        // set npc
-        SetNPC();
+        // show dialogue
         ShowDialogueUI(true);
         
-        StartCoroutine(TypeLine());
+        DisplayCurrentLine();
     }
 
-    public void NextLine()
+    private void ShowDialogueUI(bool show)
     {
+        _dialoguePanel.SetActive(show); // Toggle UI visability
+    }
+
+    private void NextLine()
+    {
+        // on key press
+
         if (_isTyping)
         {
             // skip typing animation and show the full line
             StopAllCoroutines(); // halt auto progress
-            SetDialogueText(dialogue.Lines[_dialogueIndex].line);
-            _isTyping = false;
-            continueImage.enabled = true;
-            StopVoice();
+            SetDialogueText(_currentDialogue.line);
+            LineFinish();
         }
-        else if (++_dialogueIndex < dialogue.Lines.Length)
+        else if (_dialogueIndex+1 < dialogue.Lines.Length)
         {
-            // set npc
-            SetNPC();
+            if (_currentDialogue.redirectDialogueIndex > -1)
+            {
+                // redirect next line
+                _dialogueIndex = _currentDialogue.redirectDialogueIndex;
+            }
+            else
+            {
+                // next line in dialogue list
+                _dialogueIndex++;
+            }
             // if another line, type next line
-            StartCoroutine(TypeLine());
+            DisplayCurrentLine();
         }
         else
         {
@@ -112,34 +99,116 @@ public class DialogueController : MonoBehaviour
         }
     }
 
+    private void DisplayCurrentLine()
+    {
+        StopAllCoroutines();
+        UpdateDialogue(); // update dialogue
+        StartCoroutine(TypeLine());
+    }
+
+    private void UpdateDialogue()
+    {
+        _currentDialogue = dialogue.Lines[_dialogueIndex];
+
+        if (CharsInDialogue.ContainsKey(_currentDialogue.charName))
+        {
+            _currentChar = CharsInDialogue[_currentDialogue.charName];
+            SetCharInfo(_currentChar.charName, _currentChar.portrait);
+        }
+        else
+        {
+            // not in dict
+            SetCharInfo(_currentDialogue.charName, _defPortrait);
+        }
+    }
+
+    private void SetCharInfo(string charName, Sprite portrait)
+    {
+        _nameText.text = charName;
+        _portraitImage.sprite = portrait;
+    }
+
+    private void SetDialogueText(string text)
+    {
+        _dialogueText.text = text;
+    }
+
     private IEnumerator TypeLine()
     {
-        continueImage.enabled = false;
         _isTyping = true;
-        SetDialogueText("");
+        _continueImage.enabled = false;
 
-        foreach(char letter in dialogue.Lines[_dialogueIndex].line)
+        SetDialogueText("");
+        foreach(char letter in _currentDialogue.line)
         {
-            SetDialogueText(dialogueText.text += letter);
+            SetDialogueText(_dialogueText.text += letter);
             SFXManager.PlayVoice(_currentChar.voiceSound, _currentChar.voicePitch);
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        _isTyping = false;
-        continueImage.enabled = true;
-        StopVoice();
+        LineFinish();
 
         // auto progress
-        if (dialogue.Lines[_dialogueIndex].autoProgressLines.Length > _dialogueIndex && dialogue.Lines[_dialogueIndex].autoProgressLines[_dialogueIndex])
+        // if (_currentDialogue.autoProgressLines.Length > _dialogueIndex && _currentDialogue.autoProgressLines[_dialogueIndex])
+        // {
+        //     yield return new WaitForSeconds(autoProgressDelay);
+        //     NextLine();
+        // }
+    }
+
+    private void LineFinish()
+    {
+        StopVoice();
+
+        if (_currentDialogue.choices.Length > 0)
         {
-            yield return new WaitForSeconds(autoProgressDelay);
-            NextLine();
+            Prompt = true;
+
+            // check if choices and display
+            foreach (DialogueChoice choice in _currentDialogue.choices)
+            {
+                // display
+                DisplayChoices(choice);
+            }
         }
+        else
+        {
+            _continueImage.enabled = true;
+        }
+
+        _isTyping = false;
     }
 
     private async void StopVoice()
     {
         await SFXManager.StopVoice();
+    }
+
+    private void DisplayChoices(DialogueChoice choice)
+    {
+        int nextIndex = choice.nextDialogueIndex;
+        CreateChoiceButton(choice.choiceText, () => ChooseOption(nextIndex));
+    }
+
+    private void CreateChoiceButton(string choiceText, UnityEngine.Events.UnityAction onClick)
+    {
+        GameObject choiceButton = Instantiate(_choiceButton, _choiceContainer);
+        choiceButton.GetComponentInChildren<TMP_Text>().text = choiceText;
+        choiceButton.GetComponent<Button>().onClick.AddListener(onClick);
+        // choiceButton.GetComponent<Button>().onClick.Invoke();
+    }
+
+    private void ChooseOption(int nextIndex)
+    {
+        _dialogueIndex = nextIndex;
+        ClearChoices();
+        Prompt = false;
+        DisplayCurrentLine();
+    }
+
+    private void ClearChoices()
+    {
+        foreach (Transform child in _choiceContainer) Destroy(child.gameObject);
     }
 
     private void EndDialogue()
