@@ -30,7 +30,7 @@ public class Festival : EventBase
             // start chief dialogue
             DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief});
 
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", true);
 
             _chiefDialogueFinish = true;
         }
@@ -53,7 +53,7 @@ public class Festival : EventBase
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
             PlayerChar.CanEnter = true; // enable enter action
             Fiona.CurrentDialogue = _fionaDialogue2; // set next dialogue
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", false);
 
             Mom.CurrentDialogue = _momDialogue; // set next dialogue
             Chief.CurrentDialogue = _chiefDialogue2; // set next dialogue
@@ -71,7 +71,7 @@ public class Festival : EventBase
             // Fiona.StateMachine.End(); // stop movement
             // _reached = true;
 
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_fionaDialogue3, new List<CharacterBase>{Fiona});

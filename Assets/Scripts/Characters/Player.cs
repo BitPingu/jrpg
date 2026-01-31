@@ -5,7 +5,9 @@ public class Player : PartyBase
 {
     public Companion CurrentCompanion { get; set; }
 
+    // conditions
     public bool CanEnter { get; set; }
+    public bool IsEntering { get; set; }
     public bool Entered { get; set; }
 
     protected override void Update()

@@ -21,16 +21,17 @@ public class DialogueController : MonoBehaviour
 
     [SerializeField] private PlayerController _input;
 
-    public float autoProgressDelay = 1.5f;
-    public float typingSpeed = 0.05f;
+    [SerializeField] private float _autoProgressDelay = 1.5f;
+    [SerializeField] private float _typingSpeed = 0.05f;
+    [SerializeField] private float _skipDelay = 0.1f;
 
     private DialogueLine _currentDialogue;
     private int _dialogueIndex = 0;
 
     private bool _isTyping;
-    private bool _isDialogueActive { get; set; }
-    private bool _canSkip { get; set; }
-    private bool _prompt { get; set; }
+    public bool IsDialogueActive { get; set; }
+    private bool _canSkip;
+    private bool _prompt;
     public bool IsDialogueFinished { get; set; }
 
     private Dictionary<string, CharacterBase> _charsInDialogue = new Dictionary<string, CharacterBase>();
@@ -44,7 +45,7 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (_input.E && _isDialogueActive && _canSkip && !_prompt)
+        if (_input.E && IsDialogueActive && _canSkip && !_prompt)
         {
             // next line
             NextLine();
@@ -60,7 +61,7 @@ public class DialogueController : MonoBehaviour
             _charsInDialogue.Add(character.charName, character);
         }
 
-        _isDialogueActive = true;
+        IsDialogueActive = true;
         _dialogueIndex = 0;
 
         // show dialogue
@@ -110,7 +111,7 @@ public class DialogueController : MonoBehaviour
     private IEnumerator DelaySkip()
     {
         _canSkip = false;
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(_skipDelay);
         _canSkip = true;
     }
 
@@ -163,7 +164,7 @@ public class DialogueController : MonoBehaviour
                 SFXManager.PlayVoice(_currentChar.voiceSound, _currentChar.voicePitch);
             else
                 SFXManager.PlayVoice(_defaultVoice, .6f); // def voice
-            yield return new WaitForSeconds(typingSpeed);
+            yield return new WaitForSeconds(_typingSpeed);
         }
 
         LineFinish();
@@ -234,15 +235,14 @@ public class DialogueController : MonoBehaviour
     private void EndDialogue()
     {
         StopAllCoroutines();
-        _isDialogueActive = false;
+
+        // reset ui
         SetDialogueText("");
         ShowDialogueUI(false);
-        IsDialogueFinished = true;
         _charsInDialogue.Clear();
-    }
 
-    public void FinishDialogue()
-    {
-        
+        // reset conditions
+        IsDialogueActive = false;
+        IsDialogueFinished = true;
     }
 }

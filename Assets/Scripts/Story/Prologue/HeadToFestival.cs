@@ -38,7 +38,7 @@ public class HeadToFestival : EventBase
             // Fiona.StateMachine.End(); // stop movement
             _reached = true;
 
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona});
@@ -46,20 +46,19 @@ public class HeadToFestival : EventBase
 
         if (_reached && DialogueController.Instance.IsDialogueFinished)
         {
-            DialogueController.Instance.IsDialogueFinished = false;
+            // DialogueController.Instance.IsDialogueFinished = false;
             _reached = false;
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", false);
             EventIsDone = true; // event done
         }
 
         // out of bounds check
-        if ((_detectPlayer && PlayerChar.StateMachine.CurrentState == PlayerChar.IdleState) || PlayerChar.Entered)
+        if ((_detectPlayer && PlayerChar.StateMachine.CurrentState == PlayerChar.IdleState) || (!_entered && PlayerChar.Entered))
         {
             PlayerChar.StateMachine.End(); // stop movement
-            PlayerChar.Entered = false;
             _entered = true;
 
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
@@ -68,15 +67,16 @@ public class HeadToFestival : EventBase
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", false);
             StartCoroutine(GoBack());
         }
 
         if (_entered && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
+            PlayerChar.Entered = false;
             _entered = false;
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", false);
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
         }
     }

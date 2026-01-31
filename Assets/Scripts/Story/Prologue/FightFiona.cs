@@ -45,7 +45,7 @@ public class FightFiona : EventBase
             _fionaDialogueFinish = false;
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
             Fiona.StateMachine.Initialize(Fiona.IdleState); // enable movement
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", false);
 
             // destination marker
             _destination = Instantiate(_marker, new Vector2(10f, 18.05f), Quaternion.identity, transform.parent);
@@ -58,7 +58,7 @@ public class FightFiona : EventBase
             Destroy(_destination.gameObject);
             PlayerChar.StateMachine.End(); // stop movement
 
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_fionaDialogue2, new List<CharacterBase>{Fiona});

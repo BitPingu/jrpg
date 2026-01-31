@@ -32,8 +32,8 @@ public class TalkToFiona : EventBase
 
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
-            // DialogueController.Instance.IsDialogueFinished = false;
-            Fiona.Anim.SetTrigger("Talk");
+            DialogueController.Instance.IsDialogueFinished = false;
+            Fiona.Anim.SetBool("Talk", false);
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
             _detectPlayer.CanEnter = false; // disable enter action
             Fiona.CurrentDialogue = _nextDialogue;
@@ -45,6 +45,6 @@ public class TalkToFiona : EventBase
     private IEnumerator DelayAnim()
     {
         yield return new WaitForSeconds(1f);
-        Fiona.Anim.SetTrigger("Talk");
+        Fiona.Anim.SetBool("Talk", true);
     }
 }

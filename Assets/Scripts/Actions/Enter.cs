@@ -2,16 +2,22 @@ using UnityEngine;
 
 public class Enter : MonoBehaviour
 {
-    private Player _player;
+    private Player _detectPlayer;
+    private GameObject _activeIcon;
     [SerializeField] private Transform _location;
+    [SerializeField] private GameObject _icon;
     [SerializeField] private AudioClip _sound;
     [SerializeField] private float _pitch = 1f;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if (hitInfo.GetComponent<Player>())
+        if (hitInfo.GetComponent<Player>() && !_detectPlayer)
         {
-            _player = hitInfo.GetComponent<Player>();
+            _detectPlayer = hitInfo.GetComponent<Player>();
+            _detectPlayer.IsEntering = true;
+
+            Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
+            _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
         }
     }
 
@@ -19,30 +25,43 @@ public class Enter : MonoBehaviour
     {
         if (hitInfo.GetComponent<Player>())
         {
-            _player = null;
+            Destroy(_activeIcon);
+
+            _detectPlayer = hitInfo.GetComponent<Player>();
+            _detectPlayer.IsEntering = false;
+            _detectPlayer = null;
         }
     }
 
     private void Update()
     {
-        if (_player && _player.StateMachine.CurrentState == _player.IdleState)
+        if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState && !DialogueController.Instance.IsDialogueActive)
         {
-            GetComponent<SpriteRenderer>().enabled = true;
-            if (_player.Input.E && _player.CanEnter)
+            if (_detectPlayer.Input.E && _detectPlayer.CanEnter)
+            {
                 ScreenTransition();
-            else if (_player.Input.E && !_player.CanEnter)
-                _player.Entered = true;
+            }
+            else if (_detectPlayer.Input.E && !_detectPlayer.CanEnter)
+            {
+                _detectPlayer.Entered = true;
+                _activeIcon.SetActive(false);
+            }
+            else if (!_detectPlayer.Entered)
+            {
+                _activeIcon.SetActive(true);
+            }
         }
-        else
+        else if (_detectPlayer && DialogueController.Instance.IsDialogueActive)
         {
-            GetComponent<SpriteRenderer>().enabled = false;
+            _activeIcon.SetActive(false);
         }
     }
 
     private async void ScreenTransition()
     {
-        Player player = _player;
-        player.StateMachine.End(); // stop movement
+        Player player = _detectPlayer;
+        player.StateMachine.End(); // disable movement
+        _activeIcon.SetActive(false);
         await Transition.Instance.FadeOut();
 
         SFXManager.Play(_sound, _pitch);

@@ -3,15 +3,20 @@ using UnityEngine;
 
 public class Talk : MonoBehaviour
 {
-    private Player _player;
+    private Player _detectPlayer;
+    private GameObject _activeIcon;
     private CharacterBase _character;
+    [SerializeField] private GameObject _icon;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if (hitInfo.GetComponent<Player>())
+        if (hitInfo.GetComponent<Player>() && !_detectPlayer)
         {
-            GetComponent<SpriteRenderer>().enabled = true;
-            _player = hitInfo.GetComponent<Player>();
+            _detectPlayer = hitInfo.GetComponent<Player>();
+
+            Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
+            if (_detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
+                _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
         }
     }
 
@@ -19,34 +24,50 @@ public class Talk : MonoBehaviour
     {
         if (hitInfo.GetComponent<Player>())
         {
-            GetComponent<SpriteRenderer>().enabled = false;
-            _player = null;
+            Destroy(_activeIcon);
+
+            _detectPlayer = null;
         }
     }
 
     private void Update()
     {
-        if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
+        if (_detectPlayer && _detectPlayer.Input.E && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
             _character = GetComponentInParent<CharacterBase>();
-            // GetComponentInParent<CharacterBase>().StateMachine.End(); // stop movement
+            // GetComponentInParent<CharacterBase>().StateMachine.End(); // disable movement
+            _activeIcon.SetActive(false);
             if (_character && _character.Anim)
-                _character.Anim.SetTrigger("Talk");
-            _character.Face(_player);
+                _character.Anim.SetBool("Talk", true);
+            _character.Face(_detectPlayer);
 
-            _player.StateMachine.End(); // disable movement
-            _player.Face(_character);
+            _detectPlayer.StateMachine.End(); // disable movement
+            _detectPlayer.Face(_character);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_character.CurrentDialogue, new List<CharacterBase>{_character});
         }
 
-        if (_player && DialogueController.Instance.IsDialogueFinished)
+        if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
+            if (_activeIcon)
+            {
+                _activeIcon.SetActive(true);
+            }
+            else
+            {
+                Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
+                _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
+            }
             if (_character && _character.Anim)
-                _character.Anim.SetTrigger("Talk");
-            _player.StateMachine.Initialize(_player.IdleState); // enable movement
+                _character.Anim.SetBool("Talk", false);
+            _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
+        }
+
+        if (_detectPlayer && _detectPlayer.IsEntering)
+        {
+            OnTriggerExit2D(_detectPlayer.GetComponent<Collider2D>()); // cancel when on enter
         }
     }
 }

@@ -1,18 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Interact : MonoBehaviour
 {
-    private Player _player;
+    private Player _detectPlayer;
+    private GameObject _activeIcon;
     [SerializeField] private Dialogue _dialogue;
+    [SerializeField] private GameObject _icon;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if (hitInfo.GetComponent<Player>())
+        if (hitInfo.GetComponent<Player>() && !_detectPlayer)
         {
-            GetComponent<SpriteRenderer>().enabled = true;
-            _player = hitInfo.GetComponent<Player>();
+            _detectPlayer = hitInfo.GetComponent<Player>();
+
+            Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
+            _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
         }
     }
 
@@ -20,24 +23,27 @@ public class Interact : MonoBehaviour
     {
         if (hitInfo.GetComponent<Player>())
         {
-            GetComponent<SpriteRenderer>().enabled = false;
-            _player = null;
+            Destroy(_activeIcon);
+
+            _detectPlayer = null;
         }
     }
 
     private void Update()
     {
-        if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
+        if (_detectPlayer && _detectPlayer.Input.E && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
-            _player.StateMachine.End(); // disable movement
+            _detectPlayer.StateMachine.End(); // disable movement
+            _activeIcon.SetActive(false);
             // start dialogue
-            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{_player});
+            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{_detectPlayer});
         }
 
-        if (_player && DialogueController.Instance.IsDialogueFinished)
+        if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
-            _player.StateMachine.Initialize(_player.IdleState); // enable movement
+            _activeIcon.SetActive(true);
+            _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
         }
     }
 }
