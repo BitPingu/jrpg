@@ -1,9 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TalkToFiona : EventBase
 {
-    private Player _playerCol;
+    private Player _detectPlayer;
     public CharacterBase Fiona { get; set; }
     [SerializeField] private Dialogue _dialogue, _nextDialogue;
 
@@ -11,37 +12,32 @@ public class TalkToFiona : EventBase
     {
         if (hitInfo.GetComponent<Player>())
         {
-            _playerCol = hitInfo.GetComponent<Player>();
+            _detectPlayer = hitInfo.GetComponent<Player>();
         }
     }
 
     private void Update()
     {
-        if (_playerCol && _playerCol.StateMachine.CurrentState == _playerCol.IdleState)
+        if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
-            // player faces
-            _playerCol.StateMachine.End(); // stop movement
-            _playerCol.Face(Fiona);
+            _detectPlayer.StateMachine.End(); // disable movement
+            _detectPlayer.Face(Fiona);
 
             StartCoroutine(DelayAnim());
-
-            // fiona joins
-            Fiona.GetComponent<Companion>().Join(_playerCol);
+            Fiona.GetComponent<Companion>().Join(_detectPlayer);
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
-            DialogueController.Instance.CharsInDialogue.Add(_playerCol.charName, _playerCol);
-            DialogueController.Instance.dialogue = _dialogue;
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona, _detectPlayer});
         }
 
-        if (_playerCol && DialogueController.Instance.IsDialogueFinished)
+        if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
-            DialogueController.Instance.IsDialogueFinished = false;
+            // DialogueController.Instance.IsDialogueFinished = false;
             Fiona.Anim.SetTrigger("Talk");
-            _playerCol.StateMachine.Initialize(_playerCol.IdleState); // enable movement
-            _playerCol.CanEnter = false; // disable enter action
-            Fiona.CurrentDialogue = _nextDialogue; // set next dialogue
+            _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
+            _detectPlayer.CanEnter = false; // disable enter action
+            Fiona.CurrentDialogue = _nextDialogue;
+            _detectPlayer = null;
             EventIsDone = true; // event done
         }
     }

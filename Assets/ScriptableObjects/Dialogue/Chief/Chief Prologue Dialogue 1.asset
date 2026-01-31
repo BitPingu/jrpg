@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a0ebe69b3164f6e91f94a88da27730, type: 3}
+  m_Name: Chief Prologue Dialogue 1
+  m_EditorClassIdentifier: 
+  Lines:
+  - charName: Chief Vandham
+    line: My friends! Thank you all for coming!
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: We gather here today to celebrate the achievements of the great hero Duncan!
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: He who had vanquished the evil demon king 1000 years ago!
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Everyone
+    line: Hoorah!!!!
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: He is an inspiration to us all, as we all must follow in his example to
+      muster the courage to keep fighting on towards a better future, and prevail
+      against darkness!
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: He was the shining ray of hope which had allowed all of us here to exist
+      today.
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: Now, we shall enjoy and nourish the life that he had given and allowed
+      us to have which we are truly blessed with!
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: With that everyone, enjoy the festival!
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Everyone
+    line: '*clap* *clap* *clap*'
+    choices: []
+    redirectDialogueIndex: -1
+  repeatIndex: 0

@@ -1,13 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HeadToFestival : EventBase
 {
-    private Player _playerCol;
+    private Player _detectPlayer;
     public Player PlayerChar { get; set; }
     public Companion Fiona { get; set; }
-    [SerializeField] private Dialogue _targetDialogue;
-    [SerializeField] private Dialogue _outBoundsDialogue;
+    [SerializeField] private Dialogue _targetDialogue, _outBoundsDialogue;
     private bool _entered, _reached;
 
     [SerializeField] private Destination _marker;
@@ -23,7 +23,7 @@ public class HeadToFestival : EventBase
     {
         if (hitInfo.GetComponent<Player>())
         {
-            _playerCol = hitInfo.GetComponent<Player>();
+            _detectPlayer = hitInfo.GetComponent<Player>();
         }
     }
 
@@ -41,9 +41,7 @@ public class HeadToFestival : EventBase
             Fiona.Anim.SetTrigger("Talk");
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
-            DialogueController.Instance.dialogue = _targetDialogue;
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona});
         }
 
         if (_reached && DialogueController.Instance.IsDialogueFinished)
@@ -55,7 +53,7 @@ public class HeadToFestival : EventBase
         }
 
         // out of bounds check
-        if ((_playerCol && PlayerChar.StateMachine.CurrentState == PlayerChar.IdleState) || PlayerChar.Entered)
+        if ((_detectPlayer && PlayerChar.StateMachine.CurrentState == PlayerChar.IdleState) || PlayerChar.Entered)
         {
             PlayerChar.StateMachine.End(); // stop movement
             PlayerChar.Entered = false;
@@ -64,12 +62,10 @@ public class HeadToFestival : EventBase
             Fiona.Anim.SetTrigger("Talk");
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
-            DialogueController.Instance.dialogue = _outBoundsDialogue;
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
         }
 
-        if (_playerCol && DialogueController.Instance.IsDialogueFinished)
+        if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
             Fiona.Anim.SetTrigger("Talk");
@@ -102,6 +98,6 @@ public class HeadToFestival : EventBase
         }
 
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
-        _playerCol = null;
+        _detectPlayer = null;
     }
 }

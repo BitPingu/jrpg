@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class Prologue : StoryBase
 {
+    // characters
     [SerializeField] private Player _player;
     [SerializeField] private Companion _fiona;
     [SerializeField] private Villager _mom, _villager1, _villager2, _villager3, _villager4, _chief;
-    [SerializeField] private Dialogue _momDialogue, _vDialogue1, _vDialogue2, _vDialogue3, _vDialogue4;
+
+    // dialogue
+    [SerializeField] private Dialogue _vDialogue1, _vDialogue2, _vDialogue3, _vDialogue4;
 
     public override void BeginStory()
     {
@@ -16,9 +19,6 @@ public class Prologue : StoryBase
         _player.transform.position = new Vector3(-14.77f,-42f,0);
         _player.CanEnter = true;
 
-        // mom
-        _mom.CurrentDialogue = _momDialogue;
-
         // villagers
         _villager1.CurrentDialogue = _vDialogue1;
         _villager2.CurrentDialogue = _vDialogue2;
@@ -27,7 +27,7 @@ public class Prologue : StoryBase
 
         // start first event
         CurrentEvent = Instantiate(Events[EventIndex], transform);
-        CurrentEvent.GetComponent<TalkToFiona>().Fiona = _fiona;
+        CurrentEvent.GetComponent<TalkToMom>().Mom = _mom;
     }
 
     public override void Active()
@@ -50,6 +50,10 @@ public class Prologue : StoryBase
 
         CurrentEvent = Instantiate(Events[++EventIndex], transform); // next event
 
+        if (CurrentEvent.GetComponent<TalkToFiona>())
+        {
+            CurrentEvent.GetComponent<TalkToFiona>().Fiona = _fiona;
+        }
         if (CurrentEvent.GetComponent<HeadToFestival>())
         {
             CurrentEvent.GetComponent<HeadToFestival>().PlayerChar = _player;

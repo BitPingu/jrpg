@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FightFiona : EventBase
@@ -33,9 +34,7 @@ public class FightFiona : EventBase
             Fiona.CurrentHealth = Fiona.MaxHealth;
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
-            DialogueController.Instance.dialogue = _fionaDialogue;
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona});
 
             _fionaDialogueFinish = true;
         }
@@ -62,9 +61,7 @@ public class FightFiona : EventBase
             Fiona.Anim.SetTrigger("Talk");
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
-            DialogueController.Instance.dialogue = _fionaDialogue2;
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_fionaDialogue2, new List<CharacterBase>{Fiona});
 
             _fionaDialogue2Finish = true;
         }

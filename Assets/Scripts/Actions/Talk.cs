@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Talk : MonoBehaviour
@@ -28,23 +28,17 @@ public class Talk : MonoBehaviour
     {
         if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
         {
-            // face player
             _character = GetComponentInParent<CharacterBase>();
             // GetComponentInParent<CharacterBase>().StateMachine.End(); // stop movement
             if (_character && _character.Anim)
                 _character.Anim.SetTrigger("Talk");
             _character.Face(_player);
 
-            // player faces
-            _player.StateMachine.End(); // stop movement
+            _player.StateMachine.End(); // disable movement
             _player.Face(_character);
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(_character.charName, _character);
-            DialogueController.Instance.dialogue = _character.CurrentDialogue;
-            DialogueController.Instance.DelaySkip = true;
-            StartCoroutine(DelaySkip());
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_character.CurrentDialogue, new List<CharacterBase>{_character});
         }
 
         if (_player && DialogueController.Instance.IsDialogueFinished)
@@ -54,11 +48,5 @@ public class Talk : MonoBehaviour
                 _character.Anim.SetTrigger("Talk");
             _player.StateMachine.Initialize(_player.IdleState); // enable movement
         }
-    }
-
-    private IEnumerator DelaySkip()
-    {
-        yield return new WaitForSeconds(.1f);
-        DialogueController.Instance.DelaySkip = false;
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Interact : MonoBehaviour
@@ -28,14 +29,9 @@ public class Interact : MonoBehaviour
     {
         if (_player && _player.Input.E && _player.StateMachine.CurrentState == _player.IdleState)
         {
-            _player.StateMachine.End(); // stop movement
-
+            _player.StateMachine.End(); // disable movement
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(_player.charName, _player);
-            DialogueController.Instance.dialogue = _dialogue;
-            DialogueController.Instance.DelaySkip = true;
-            StartCoroutine(DelaySkip());
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{_player});
         }
 
         if (_player && DialogueController.Instance.IsDialogueFinished)
@@ -43,11 +39,5 @@ public class Interact : MonoBehaviour
             DialogueController.Instance.IsDialogueFinished = false;
             _player.StateMachine.Initialize(_player.IdleState); // enable movement
         }
-    }
-
-    private IEnumerator DelaySkip()
-    {
-        yield return new WaitForSeconds(.1f);
-        DialogueController.Instance.DelaySkip = false;
     }
 }

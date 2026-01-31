@@ -8,12 +8,13 @@ public class DialogueController : MonoBehaviour
 {
     public static DialogueController Instance { get; private set; } // Singleton instance
 
-    public Dialogue dialogue { get; set; }
+    private Dialogue _dialogue { get; set; }
 
     [SerializeField] private GameObject _dialoguePanel;
     [SerializeField] private TMP_Text _dialogueText, _nameText;
     [SerializeField] private Image _portraitImage, _continueImage;
-    [SerializeField] private Sprite _defPortrait;
+    [SerializeField] private Sprite _defaultPortrait;
+    [SerializeField] private AudioClip _defaultVoice;
 
     [SerializeField] private Transform _choiceContainer;
     [SerializeField] private GameObject _choiceButton;
@@ -27,12 +28,12 @@ public class DialogueController : MonoBehaviour
     private int _dialogueIndex = 0;
 
     private bool _isTyping;
-    public bool IsDialogueActive { get; set; }
-    public bool DelaySkip { get; set; }
-    public bool Prompt { get; set; }
+    private bool _isDialogueActive { get; set; }
+    private bool _canSkip { get; set; }
+    private bool _prompt { get; set; }
     public bool IsDialogueFinished { get; set; }
 
-    public Dictionary<string, CharacterBase> CharsInDialogue = new Dictionary<string, CharacterBase>();
+    private Dictionary<string, CharacterBase> _charsInDialogue = new Dictionary<string, CharacterBase>();
     private CharacterBase _currentChar;
 
     private void Awake()
@@ -43,16 +44,23 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (_input.E && IsDialogueActive && !DelaySkip && !Prompt)
+        if (_input.E && _isDialogueActive && _canSkip && !_prompt)
         {
             // next line
             NextLine();
         }
     }
 
-    public void StartDialogue()
+    public void StartDialogue(Dialogue dialogue, List<CharacterBase> characters)
     {
-        IsDialogueActive = true;
+        // set params
+        _dialogue = dialogue;
+        foreach (CharacterBase character in characters)
+        {
+            _charsInDialogue.Add(character.charName, character);
+        }
+
+        _isDialogueActive = true;
         _dialogueIndex = 0;
 
         // show dialogue
@@ -77,7 +85,7 @@ public class DialogueController : MonoBehaviour
             SetDialogueText(_currentDialogue.line);
             LineFinish();
         }
-        else if (_dialogueIndex+1 < dialogue.Lines.Length)
+        else if (_dialogueIndex+1 < _dialogue.Lines.Length)
         {
             if (_currentDialogue.redirectDialogueIndex > -1)
             {
@@ -99,26 +107,35 @@ public class DialogueController : MonoBehaviour
         }
     }
 
+    private IEnumerator DelaySkip()
+    {
+        _canSkip = false;
+        yield return new WaitForSeconds(.1f);
+        _canSkip = true;
+    }
+
     private void DisplayCurrentLine()
     {
         StopAllCoroutines();
         UpdateDialogue(); // update dialogue
+        StartCoroutine(DelaySkip());
         StartCoroutine(TypeLine());
     }
 
     private void UpdateDialogue()
     {
-        _currentDialogue = dialogue.Lines[_dialogueIndex];
+        _currentDialogue = _dialogue.Lines[_dialogueIndex];
 
-        if (CharsInDialogue.ContainsKey(_currentDialogue.charName))
+        if (_charsInDialogue.ContainsKey(_currentDialogue.charName))
         {
-            _currentChar = CharsInDialogue[_currentDialogue.charName];
+            _currentChar = _charsInDialogue[_currentDialogue.charName];
             SetCharInfo(_currentChar.charName, _currentChar.portrait);
         }
         else
         {
-            // not in dict
-            SetCharInfo(_currentDialogue.charName, _defPortrait);
+            // character name not in dict
+            _currentChar = null;
+            SetCharInfo(_currentDialogue.charName, _defaultPortrait);
         }
     }
 
@@ -142,7 +159,10 @@ public class DialogueController : MonoBehaviour
         foreach(char letter in _currentDialogue.line)
         {
             SetDialogueText(_dialogueText.text += letter);
-            SFXManager.PlayVoice(_currentChar.voiceSound, _currentChar.voicePitch);
+            if (_currentChar)
+                SFXManager.PlayVoice(_currentChar.voiceSound, _currentChar.voicePitch);
+            else
+                SFXManager.PlayVoice(_defaultVoice, .6f); // def voice
             yield return new WaitForSeconds(typingSpeed);
         }
 
@@ -162,7 +182,7 @@ public class DialogueController : MonoBehaviour
 
         if (_currentDialogue.choices.Length > 0)
         {
-            Prompt = true;
+            _prompt = true;
 
             // check if choices and display
             foreach (DialogueChoice choice in _currentDialogue.choices)
@@ -202,7 +222,7 @@ public class DialogueController : MonoBehaviour
     {
         _dialogueIndex = nextIndex;
         ClearChoices();
-        Prompt = false;
+        _prompt = false;
         DisplayCurrentLine();
     }
 
@@ -214,10 +234,15 @@ public class DialogueController : MonoBehaviour
     private void EndDialogue()
     {
         StopAllCoroutines();
-        IsDialogueActive = false;
+        _isDialogueActive = false;
         SetDialogueText("");
         ShowDialogueUI(false);
         IsDialogueFinished = true;
-        CharsInDialogue.Clear();
+        _charsInDialogue.Clear();
+    }
+
+    public void FinishDialogue()
+    {
+        
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class Dialogue : ScriptableObject
 {
     public DialogueLine[] Lines;
+    // public int repeatIndex;
 }
 
 [System.Serializable]

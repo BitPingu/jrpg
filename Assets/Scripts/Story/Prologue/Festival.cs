@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Festival : EventBase
@@ -27,9 +28,7 @@ public class Festival : EventBase
             _inPos++;
 
             // start chief dialogue
-            DialogueController.Instance.CharsInDialogue.Add(Chief.charName, Chief);
-            DialogueController.Instance.dialogue = _chiefDialogue;
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief});
 
             Fiona.Anim.SetTrigger("Talk");
 
@@ -42,9 +41,7 @@ public class Festival : EventBase
             _chiefDialogueFinish = false;
 
             // start fiona dialogue
-            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
-            DialogueController.Instance.dialogue = _fionaDialogue;
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona});
 
             _fionaDialogueFinish = true;
         }
@@ -77,9 +74,7 @@ public class Festival : EventBase
             Fiona.Anim.SetTrigger("Talk");
 
             // start dialogue
-            DialogueController.Instance.CharsInDialogue.Add(Fiona.charName, Fiona);
-            DialogueController.Instance.dialogue = _fionaDialogue3;
-            DialogueController.Instance.StartDialogue();
+            DialogueController.Instance.StartDialogue(_fionaDialogue3, new List<CharacterBase>{Fiona});
 
             _fionaDialogue2Finish = true;
         }

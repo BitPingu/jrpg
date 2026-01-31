@@ -69,32 +69,12 @@ public class Companion : PartyBase
         base.Battle();
 
         // attack
-        if (BattleTurn)
+        if (BattleTurn && Sparring)
         {
-            if (!Sparring)
-            {
-                // show HUD
-                BattleHUD.SetActive(true);
-
-                // attack
-                if (Input.E)
-                {
-                    StartCoroutine(CallAttack());
-                    BattleTurn = false;
-                    BattleHUD.SetActive(false);
-                }
-
-                // run
-                if (Input.Q)
-                {
-                    Run();
-                }
-            }
-            else
-            {
-                StartCoroutine(CallAttack());
-                BattleTurn = false;
-            }
+            // hide HUD
+            BattleHUD.SetActive(false);
+            StartCoroutine(CallAttack());
+            BattleTurn = false;
         }
     }
 
