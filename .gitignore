@@ -87,6 +87,6 @@ crashlytics-build.properties
 # Misc
 *.DS_Store
 *.vscode
-
-
+*.shader linguist-detectable=false
+*.cginc linguist-detectable=false
 
