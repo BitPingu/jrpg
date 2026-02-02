@@ -17,8 +17,8 @@ public class Festival : EventBase
 
     private void Start()
     {
-        StartCoroutine(Go(PlayerChar, new Vector2(-1.23f, 16.99f)));
-        StartCoroutine(Go(Fiona, new Vector2(-2.57f, 16.99f)));
+        StartCoroutine(Go(PlayerChar, new Vector2(15.79f, 7.44f)));
+        StartCoroutine(Go(Fiona, new Vector2(14.39f, 7.44f)));
     }
 
     private void Update()
@@ -59,7 +59,7 @@ public class Festival : EventBase
             Chief.CurrentDialogue = _chiefDialogue2; // set next dialogue
 
             // destination marker
-            _destination = Instantiate(_marker, new Vector2(-1.9f, 10.05f), Quaternion.identity, transform.parent);
+            _destination = Instantiate(_marker, new Vector2(15f, 4f), Quaternion.identity, transform.parent);
         }
 
         // target reached

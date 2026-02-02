@@ -16,7 +16,7 @@ public class HeadToFestival : EventBase
     private void Start()
     {
         // destination marker
-        _destination = Instantiate(_marker, new Vector2(-1.9f, 18.05f), Quaternion.identity, transform.parent);
+        _destination = Instantiate(_marker, new Vector2(12.48f,8.09f), Quaternion.identity, transform.parent);
     }
 
     private void OnTriggerEnter2D(Collider2D hitInfo)

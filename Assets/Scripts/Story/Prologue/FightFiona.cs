@@ -55,7 +55,7 @@ public class FightFiona : EventBase
             Fiona.Anim.SetBool("Talk", false);
 
             // destination marker
-            _destination = Instantiate(_marker, new Vector2(10f, 18.05f), Quaternion.identity, transform.parent);
+            _destination = Instantiate(_marker, new Vector2(21.36f,6.26f), Quaternion.identity, transform.parent);
         }
 
         // target reached

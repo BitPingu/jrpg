@@ -15,9 +15,5 @@ MonoBehaviour:
   Lines:
   - charName: Fiona
     line: Ow! That hurt!
-    choices:
-    - choiceText: Yes
-      nextDialogueIndex: 3
-    - choiceText: No
-      nextDialogueIndex: 2
+    choices: []
     redirectDialogueIndex: -1
