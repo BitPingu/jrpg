@@ -16,7 +16,9 @@ public class Talk : MonoBehaviour
 
             Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
             if (_detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
+            {
                 _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
+            }
         }
     }
 
@@ -36,7 +38,12 @@ public class Talk : MonoBehaviour
         {
             _character = GetComponentInParent<CharacterBase>();
             // GetComponentInParent<CharacterBase>().StateMachine.End(); // disable movement
-            _activeIcon.SetActive(false);
+
+            if (_activeIcon)
+            {
+                _activeIcon.SetActive(false);
+            }
+
             if (_character && _character.Anim)
                 _character.Anim.SetBool("Talk", true);
             _character.Face(_detectPlayer);
@@ -68,6 +75,12 @@ public class Talk : MonoBehaviour
         if (_detectPlayer && _detectPlayer.IsEntering)
         {
             OnTriggerExit2D(_detectPlayer.GetComponent<Collider2D>()); // cancel when on enter
+        }
+
+        if (_detectPlayer && !_activeIcon && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
+        {
+            Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
+            _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
         }
     }
 }

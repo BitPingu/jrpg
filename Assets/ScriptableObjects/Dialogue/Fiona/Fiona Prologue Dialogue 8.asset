@@ -14,6 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Whew! That was fun! You sure are strong Eli!
+    line: Hey, how about a sparring match?
+    choices:
+    - choiceText: Yes
+      nextDialogueIndex: 3
+    - choiceText: No
+      nextDialogueIndex: 2
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: How about a sparring match?
+    choices:
+    - choiceText: Yes
+      nextDialogueIndex: 3
+    - choiceText: No
+      nextDialogueIndex: 2
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Oh, come on! Don't be like that!
+    choices: []
+    redirectDialogueIndex: 1
+  - charName: Fiona
+    line: Yay! Bring it on!
     choices: []
     redirectDialogueIndex: -1

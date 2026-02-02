@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a0ebe69b3164f6e91f94a88da27730, type: 3}
+  m_Name: Fiona Prologue Dialogue 10
+  m_EditorClassIdentifier: 
+  Lines:
+  - charName: Fiona
+    line: By the way, I quickly need to run an errand for my grandpa. Do you mind
+      coming along?
+    choices:
+    - choiceText: Yes
+      nextDialogueIndex: 2
+    - choiceText: No
+      nextDialogueIndex: 1
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Pretty please? I need your help!
+    choices:
+    - choiceText: Yes
+      nextDialogueIndex: 2
+    - choiceText: No
+      nextDialogueIndex: 1
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Thanks! I'll need to gather some materials for a new weapon he's making.
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: We'll need to head to the forest and kill some slimes.
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: You'll need a map to get there. Here have mine!
+    choices: []
+    redirectDialogueIndex: -1

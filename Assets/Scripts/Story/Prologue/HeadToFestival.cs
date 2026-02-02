@@ -19,9 +19,17 @@ public class HeadToFestival : EventBase
         _destination = Instantiate(_marker, new Vector2(-1.9f, 18.05f), Quaternion.identity, transform.parent);
     }
 
-    private void OnTriggerExit2D(Collider2D hitInfo)
+    private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.GetComponent<Player>())
+        {
+            _detectPlayer = null;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D hitInfo)
+    {
+        if (hitInfo.GetComponent<Player>() && !_detectPlayer)
         {
             _detectPlayer = hitInfo.GetComponent<Player>();
         }
@@ -53,10 +61,10 @@ public class HeadToFestival : EventBase
         }
 
         // out of bounds check
-        if ((_detectPlayer && PlayerChar.StateMachine.CurrentState == PlayerChar.IdleState) || (!_entered && PlayerChar.Entered))
+        if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
-            PlayerChar.StateMachine.End(); // stop movement
-            _entered = true;
+            _detectPlayer.StateMachine.End(); // stop movement
+            // _entered = true;
 
             Fiona.Anim.SetBool("Talk", true);
 
@@ -68,7 +76,19 @@ public class HeadToFestival : EventBase
         {
             DialogueController.Instance.IsDialogueFinished = false;
             Fiona.Anim.SetBool("Talk", false);
-            StartCoroutine(GoBack());
+            StartCoroutine(GoBack(_detectPlayer));
+        }
+
+        // enter building check
+        if (!_entered && PlayerChar.Entered)
+        {
+            PlayerChar.StateMachine.End(); // stop movement
+            _entered = true;
+
+            Fiona.Anim.SetBool("Talk", true);
+
+            // start dialogue
+            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
         }
 
         if (_entered && DialogueController.Instance.IsDialogueFinished)
@@ -81,23 +101,23 @@ public class HeadToFestival : EventBase
         }
     }
 
-    private IEnumerator GoBack()
+    private IEnumerator GoBack(Player player)
     {
         Vector3 returnDir = (Fiona.transform.position - transform.position).normalized;
         Vector3 returnPos = Fiona.transform.position;
 
-        PlayerChar.Face(Fiona);
+        player.Face(Fiona);
 
         // go back
-        float _distance = Vector2.Distance(returnPos, PlayerChar.transform.position);
+        float _distance = Vector2.Distance(returnPos, player.transform.position);
         while (_distance > 0.6f)
         {
-            _distance = Vector2.Distance(returnPos, PlayerChar.transform.position);
-            PlayerChar.Move(returnPos - PlayerChar.transform.position);
+            _distance = Vector2.Distance(returnPos, player.transform.position);
+            player.Move(returnPos - player.transform.position);
             yield return new WaitForFixedUpdate();
         }
 
-        PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
+        player.StateMachine.Initialize(player.IdleState); // enable movement
         _detectPlayer = null;
     }
 }
