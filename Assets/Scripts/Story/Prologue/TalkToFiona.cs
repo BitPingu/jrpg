@@ -27,7 +27,7 @@ public class TalkToFiona : EventBase
             Fiona.GetComponent<Companion>().Join(_detectPlayer);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona, _detectPlayer});
+            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona, _detectPlayer}, false);
         }
 
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)

@@ -32,6 +32,7 @@ public class DialogueController : MonoBehaviour
     public bool IsDialogueActive { get; set; }
     private bool _canSkip;
     private bool _prompt;
+    private bool _autoProgress;
     public bool IsDialogueFinished { get; set; }
 
     private Dictionary<string, CharacterBase> _charsInDialogue = new Dictionary<string, CharacterBase>();
@@ -45,14 +46,14 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (_input.E && IsDialogueActive && _canSkip && !_prompt)
+        if (_input.E && IsDialogueActive && _canSkip && !_prompt && !_autoProgress)
         {
             // next line
             NextLine();
         }
     }
 
-    public void StartDialogue(Dialogue dialogue, List<CharacterBase> characters)
+    public void StartDialogue(Dialogue dialogue, List<CharacterBase> characters, bool autoProgress)
     {
         // set params
         _dialogue = dialogue;
@@ -60,6 +61,7 @@ public class DialogueController : MonoBehaviour
         {
             _charsInDialogue.Add(character.charName, character);
         }
+        _autoProgress = autoProgress;
 
         IsDialogueActive = true;
         _dialogueIndex = 0;
@@ -170,11 +172,11 @@ public class DialogueController : MonoBehaviour
         LineFinish();
 
         // auto progress
-        // if (_currentDialogue.autoProgressLines.Length > _dialogueIndex && _currentDialogue.autoProgressLines[_dialogueIndex])
-        // {
-        //     yield return new WaitForSeconds(autoProgressDelay);
-        //     NextLine();
-        // }
+        if (_autoProgress && _dialogue.Lines.Length > _dialogueIndex)
+        {
+            yield return new WaitForSeconds(_autoProgressDelay);
+            NextLine();
+        }
     }
 
     private void LineFinish()
@@ -192,7 +194,7 @@ public class DialogueController : MonoBehaviour
                 DisplayChoices(choice);
             }
         }
-        else
+        else if (!_autoProgress)
         {
             _continueImage.enabled = true;
         }
@@ -243,6 +245,7 @@ public class DialogueController : MonoBehaviour
 
         // reset conditions
         IsDialogueActive = false;
+        _autoProgress = false;
         IsDialogueFinished = true;
     }
 }

@@ -49,12 +49,12 @@ public class HeadToFestival : EventBase
             Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona}, false);
         }
 
         if (_reached && DialogueController.Instance.IsDialogueFinished)
         {
-            // DialogueController.Instance.IsDialogueFinished = false;
+            DialogueController.Instance.IsDialogueFinished = false;
             _reached = false;
             Fiona.Anim.SetBool("Talk", false);
             EventIsDone = true; // event done
@@ -69,7 +69,7 @@ public class HeadToFestival : EventBase
             Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
         }
 
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
@@ -88,7 +88,7 @@ public class HeadToFestival : EventBase
             Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
         }
 
         if (_entered && DialogueController.Instance.IsDialogueFinished)

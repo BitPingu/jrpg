@@ -28,7 +28,7 @@ public class Festival : EventBase
             _inPos++;
 
             // start chief dialogue
-            DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief});
+            DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief}, false);
 
             Fiona.Anim.SetBool("Talk", true);
 
@@ -41,7 +41,7 @@ public class Festival : EventBase
             _chiefDialogueFinish = false;
 
             // start fiona dialogue
-            DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona}, false);
 
             _fionaDialogueFinish = true;
         }
@@ -74,7 +74,7 @@ public class Festival : EventBase
             Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_fionaDialogue3, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_fionaDialogue3, new List<CharacterBase>{Fiona}, false);
 
             _fionaDialogue2Finish = true;
         }

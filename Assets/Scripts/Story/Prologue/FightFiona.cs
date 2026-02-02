@@ -5,8 +5,8 @@ public class FightFiona : EventBase
 {
     public Player PlayerChar { get; set; }
     public Companion Fiona { get; set; }
-    [SerializeField] private Dialogue _fionaDialogue, _fionaDialogue2;
-    private bool _fionaDialogueFinish, _fionaDialogue2Finish;
+    [SerializeField] private Dialogue _fightDialogue, _fionaDialogue, _fionaDialogue2;
+    private bool _fionaHurt, _fionaDialogueFinish, _fionaDialogue2Finish;
     [SerializeField] private Destination _marker;
     private Destination _destination;
 
@@ -24,6 +24,13 @@ public class FightFiona : EventBase
 
     private void Update()
     {
+        if (PlayerChar.Opponent && !_fionaHurt && Fiona.CurrentHealth <= Fiona.MaxHealth/2f)
+        {
+            // start dialogue
+            DialogueController.Instance.StartDialogue(_fightDialogue, new List<CharacterBase>{Fiona}, true);
+            _fionaHurt = true;
+        }
+
         if (!PlayerChar.Opponent && Fiona.Sparring)
         {
             Fiona.Sparring = false;
@@ -34,7 +41,7 @@ public class FightFiona : EventBase
             Fiona.CurrentHealth = Fiona.MaxHealth;
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona}, false);
 
             _fionaDialogueFinish = true;
         }
@@ -61,7 +68,7 @@ public class FightFiona : EventBase
             Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_fionaDialogue2, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_fionaDialogue2, new List<CharacterBase>{Fiona}, false);
 
             _fionaDialogue2Finish = true;
         }

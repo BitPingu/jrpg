@@ -51,6 +51,6 @@ public class TalkToMom : EventBase
         Mom.Move(Vector2.zero);
 
         // dialogue
-        DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Mom});
+        DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Mom}, false);
     }
 }

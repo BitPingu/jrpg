@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Where are you going? It's not that way!
-    autoProgressLines: 
+    line: Hey! Where are you going? It's not that way!
     choices: []
+    redirectDialogueIndex: -1

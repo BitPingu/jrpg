@@ -52,7 +52,7 @@ public class Talk : MonoBehaviour
             _detectPlayer.Face(_character);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_character.CurrentDialogue, new List<CharacterBase>{_character});
+            DialogueController.Instance.StartDialogue(_character.CurrentDialogue, new List<CharacterBase>{_character}, false);
         }
 
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
