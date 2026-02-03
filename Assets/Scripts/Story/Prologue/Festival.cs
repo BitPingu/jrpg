@@ -17,8 +17,8 @@ public class Festival : EventBase
 
     private void Start()
     {
-        StartCoroutine(Go(PlayerChar, new Vector2(15.79f, 7.44f)));
-        StartCoroutine(Go(Fiona, new Vector2(14.39f, 7.44f)));
+        StartCoroutine(Go(PlayerChar, new Vector2(13.17f, 4.27f)));
+        StartCoroutine(Go(Fiona, new Vector2(14.3f, 4.69f)));
     }
 
     private void Update()
@@ -91,7 +91,7 @@ public class Festival : EventBase
     {
         // go
         float _distance = Vector2.Distance(destination, character.transform.position);
-        while (_distance > 0.3f)
+        while (_distance > 0.7f)
         {
             _distance = Vector2.Distance(destination, character.transform.position);
             PlayerChar.Move(destination - character.transform.position);
