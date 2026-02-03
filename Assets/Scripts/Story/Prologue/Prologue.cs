@@ -16,7 +16,7 @@ public class Prologue : StoryBase
         base.BeginStory();
 
         // player
-        _player.transform.position = new Vector3(-14.77f,-42f,0);
+        _player.transform.position = new Vector3(-13.79f,-41.41f);
         _player.CanEnter = true;
 
         // villagers
