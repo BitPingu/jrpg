@@ -51,8 +51,18 @@ public class Enter : MonoBehaviour
             {
                 _activeIcon.SetActive(true);
             }
+
+            if (_activeIcon && !_activeIcon.activeSelf && !DialogueController.Instance.IsDialogueActive)
+            {
+                _activeIcon.SetActive(true);
+            }
         }
         else if (_detectPlayer && DialogueController.Instance.IsDialogueActive)
+        {
+            _activeIcon.SetActive(false);
+        }
+
+        if (_detectPlayer && Status.Instance.IsOn)
         {
             _activeIcon.SetActive(false);
         }

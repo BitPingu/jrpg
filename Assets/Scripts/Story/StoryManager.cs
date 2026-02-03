@@ -17,7 +17,7 @@ public class StoryManager : MonoBehaviour
     private void Start()
     {
         CurrentChapter = _chapters[0];
-        CurrentChapter.BeginStory();
+        CurrentChapter.BeginChapter();
     }
 
     private void Update()

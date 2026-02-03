@@ -3,16 +3,17 @@ using UnityEngine;
 public class Prologue : ChapterBase
 {
     // characters
-    [SerializeField] private Player _player;
-    [SerializeField] private Companion _fiona;
-    [SerializeField] private Villager _mom, _villager1, _villager2, _villager3, _villager4, _chief;
+    [SerializeField] protected Player _player;
+    [SerializeField] protected Companion _fiona;
+    [SerializeField] protected Villager _mom, _villager1, _villager2, _villager3, _villager4, _chief;
 
     // dialogue
-    [SerializeField] private Dialogue _vDialogue1, _vDialogue2, _vDialogue3, _vDialogue4;
+    [SerializeField] protected Dialogue _fionaDialogue1, _fionaDialogue2;
+    [SerializeField] protected Dialogue _vDialogue1, _vDialogue2, _vDialogue3, _vDialogue4;
 
-    public override void BeginStory()
+    public override void BeginChapter()
     {
-        base.BeginStory();
+        base.BeginChapter();
 
         // player
         _player.transform.position = new Vector3(-13.79f,-41.41f);
@@ -26,20 +27,25 @@ public class Prologue : ChapterBase
 
         // start first event
         CurrentEvent = Instantiate(Events[EventIndex], transform);
-        CurrentEvent.GetComponent<TalkToMom>().Mom = _mom;
+        SetupEvent();
     }
 
-    public override void NextEvent()
+    public override void SetupEvent()
     {
-        base.NextEvent();
+        base.SetupEvent();
 
-        if (CurrentEvent.GetComponent<TalkToFiona>())
+        if (CurrentEvent.GetComponent<TalkToMom>())
+        {
+            CurrentEvent.GetComponent<TalkToMom>().Mom = _mom;
+        }
+        else if (CurrentEvent.GetComponent<TalkToFiona>())
         {
             CurrentEvent.GetComponent<TalkToFiona>().Fiona = _fiona;
         }
-        if (CurrentEvent.GetComponent<HeadToFestival>())
+        else if (CurrentEvent.GetComponent<HeadToFestival>())
         {
             CurrentEvent.GetComponent<HeadToFestival>().PlayerChar = _player;
+            _fiona.CurrentDialogue = _fionaDialogue1;
             CurrentEvent.GetComponent<HeadToFestival>().Fiona = _fiona;
         }
         else if (CurrentEvent.GetComponent<Festival>())
@@ -53,6 +59,10 @@ public class Prologue : ChapterBase
         {
             CurrentEvent.GetComponent<FightFiona>().PlayerChar = _player;
             CurrentEvent.GetComponent<FightFiona>().Fiona = _fiona;
+        }
+        else if (CurrentEvent.GetComponent<FetchQuest>())
+        {
+            _fiona.CurrentDialogue = _fionaDialogue2;
         }
     }
 }

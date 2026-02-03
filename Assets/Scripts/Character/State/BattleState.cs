@@ -17,6 +17,9 @@ public class BattleState : StateBase
     {
         base.EnterState();
 
+        // camera
+        CameraController.Instance.follow = false;
+
         // battle anim
         if (_fighter.GetComponent<PartyBase>())
             _fighter.Anim.SetLayerWeight(1, 1);
@@ -41,6 +44,9 @@ public class BattleState : StateBase
     public override void ExitState()
     {
         base.ExitState();
+
+        // camera
+        CameraController.Instance.follow = true;
 
         // battle anim
         if (_fighter.GetComponent<PartyBase>())

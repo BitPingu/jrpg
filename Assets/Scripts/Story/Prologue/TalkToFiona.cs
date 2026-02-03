@@ -6,7 +6,7 @@ public class TalkToFiona : EventBase
 {
     private Player _detectPlayer;
     public CharacterBase Fiona { get; set; }
-    [SerializeField] private Dialogue _dialogue, _nextDialogue;
+    [SerializeField] private Dialogue _dialogue;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
@@ -36,7 +36,6 @@ public class TalkToFiona : EventBase
             Fiona.Anim.SetBool("Talk", false);
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
             _detectPlayer.CanEnter = false; // disable enter action
-            Fiona.CurrentDialogue = _nextDialogue;
             _detectPlayer = null;
             EventIsDone = true; // event done
         }

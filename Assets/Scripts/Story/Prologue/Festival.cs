@@ -8,7 +8,7 @@ public class Festival : EventBase
     public Companion Fiona { get; set; }
     public Villager Mom { get; set; }
     public Villager Chief { get; set; }
-    [SerializeField] private Dialogue _chiefDialogue, _chiefDialogue2, _fionaDialogue, _fionaDialogue2, _fionaDialogue3, _momDialogue;
+    [SerializeField] private Dialogue _chiefDialogue, _chiefDialogue2, _fionaDialogue, _fionaDialogue2, _momDialogue;
     private int _inPos;
     private bool _chiefDialogueFinish, _fionaDialogueFinish, _fionaDialogue2Finish;
 
@@ -53,7 +53,6 @@ public class Festival : EventBase
             _fionaDialogueFinish = false;
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
             PlayerChar.CanEnter = true; // enable enter action
-            Fiona.CurrentDialogue = _fionaDialogue2; // set next dialogue
             Fiona.Anim.SetBool("Talk", false);
 
             Mom.CurrentDialogue = _momDialogue; // set next dialogue
@@ -76,7 +75,7 @@ public class Festival : EventBase
             Fiona.transform.Find("Talk").gameObject.SetActive(false);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_fionaDialogue3, new List<CharacterBase>{Fiona}, false);
+            DialogueController.Instance.StartDialogue(_fionaDialogue2, new List<CharacterBase>{Fiona}, false);
 
             _fionaDialogue2Finish = true;
         }

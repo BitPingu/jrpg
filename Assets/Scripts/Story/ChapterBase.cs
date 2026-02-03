@@ -8,7 +8,7 @@ public class ChapterBase : MonoBehaviour
     public EventBase CurrentEvent;
     public int EventIndex;
 
-    public virtual void BeginStory()
+    public virtual void BeginChapter()
     {
         // start at first event
         EventIndex = 0;
@@ -22,10 +22,13 @@ public class ChapterBase : MonoBehaviour
         }
     }
 
+    public virtual void SetupEvent() { }
+
     public virtual void NextEvent()
     {
         Destroy(CurrentEvent.gameObject); // end current event
         CurrentEvent = Instantiate(Events[++EventIndex], transform); // next event
+        SetupEvent(); // setup
     }
 
     public virtual bool Advance() { return false; }

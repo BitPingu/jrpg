@@ -31,12 +31,20 @@ public class Interact : MonoBehaviour
 
     private void Update()
     {
-        if (_detectPlayer && _detectPlayer.Input.E && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
+        if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
-            _detectPlayer.StateMachine.End(); // disable movement
-            _activeIcon.SetActive(false);
-            // start dialogue
-            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{_detectPlayer}, false);
+            if (_detectPlayer.Input.E)
+            {
+                _detectPlayer.StateMachine.End(); // disable movement
+                _activeIcon.SetActive(false);
+                // start dialogue
+                DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{_detectPlayer}, false);
+            }
+
+            if (_activeIcon && !_activeIcon.activeSelf && !DialogueController.Instance.IsDialogueActive)
+            {
+                _activeIcon.SetActive(true);
+            }
         }
 
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
@@ -44,6 +52,11 @@ public class Interact : MonoBehaviour
             DialogueController.Instance.IsDialogueFinished = false;
             _activeIcon.SetActive(true);
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
+        }
+
+        if (_detectPlayer && Status.Instance.IsOn)
+        {
+            _activeIcon.SetActive(false);
         }
     }
 }
