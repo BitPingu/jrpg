@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Hurry! We don't wanna be late!
+    line: Hurry let's go! We don't wanna be late!
     choices: []
     redirectDialogueIndex: -1
-  repeatIndex: 0

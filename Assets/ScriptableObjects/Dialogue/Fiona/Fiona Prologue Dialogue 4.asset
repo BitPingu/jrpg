@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Looks like we just made it.
-    autoProgressLines: 
+    line: Phew! Looks like we just made it.
     choices: []
+    redirectDialogueIndex: -1

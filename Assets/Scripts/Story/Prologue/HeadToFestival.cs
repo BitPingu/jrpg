@@ -43,7 +43,7 @@ public class HeadToFestival : EventBase
             _destination.Reached = false;
             Destroy(_destination.gameObject);
             PlayerChar.StateMachine.End(); // stop movement
-            // Fiona.StateMachine.End(); // stop movement
+            Fiona.StateMachine.End(); // stop movement
             _reached = true;
 
             Fiona.Anim.SetBool("Talk", true);
@@ -64,7 +64,6 @@ public class HeadToFestival : EventBase
         if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
             _detectPlayer.StateMachine.End(); // stop movement
-            // _entered = true;
 
             Fiona.Anim.SetBool("Talk", true);
 

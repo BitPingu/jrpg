@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: By the way, I quickly need to run an errand for my grandpa. Do you mind
-      coming along?
+    line: That reminds me, I quickly need to run an errand for my grandpa. Do you
+      mind coming along?
     choices:
     - choiceText: Yes
       nextDialogueIndex: 2
@@ -31,14 +31,24 @@ MonoBehaviour:
       nextDialogueIndex: 1
     redirectDialogueIndex: -1
   - charName: Fiona
-    line: Thanks! I'll need to gather some materials for a new weapon he's making.
+    line: Thanks!
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
-    line: We'll need to head to the forest and kill some slimes.
+    line: I'll need to gather some medicinal herbs from the forest to help cure his
+      illness.
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
-    line: You'll need a map to get there. Here have mine!
+    line: There are usually wild slimes roaming around the area, which is why I'll
+      need your help.
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: We should stock up on some equipment before we go.
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Let's head to the store!
     choices: []
     redirectDialogueIndex: -1

@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Heh, that's our Chief. He knows how to rile up the crowd.
+    line: Haha, that's our Chief. He knows how to rile up the crowd.
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
     line: Anyways Eli, let's do as he says and enjoy the festival!
     choices: []
     redirectDialogueIndex: -1
-  repeatIndex: 0
+  - charName: Fiona
+    line: There's that slime race which I really wanna check out!
+    choices: []
+    redirectDialogueIndex: -1

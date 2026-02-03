@@ -5,10 +5,8 @@ public class FightFiona : EventBase
 {
     public Player PlayerChar { get; set; }
     public Companion Fiona { get; set; }
-    [SerializeField] private Dialogue _fightDialogue, _fionaDialogue, _fionaDialogue2;
+    [SerializeField] private Dialogue _damageDialogue, _fionaDialogue, _fionaDialogue2;
     private bool _fionaHurt, _fionaDialogueFinish, _fionaDialogue2Finish;
-    [SerializeField] private Destination _marker;
-    private Destination _destination;
 
     private void Start()
     {
@@ -16,7 +14,6 @@ public class FightFiona : EventBase
         Fiona.StateMachine.Initialize(Fiona.IdleState);
 
         Fiona.Sparring = true;
-        Fiona.transform.Find("Talk").gameObject.SetActive(false);
 
         Fiona.Opponent = PlayerChar;
         PlayerChar.Opponent = Fiona;
@@ -27,12 +24,13 @@ public class FightFiona : EventBase
         if (PlayerChar.Opponent && !_fionaHurt && Fiona.CurrentHealth <= Fiona.MaxHealth/2f)
         {
             // start dialogue
-            DialogueController.Instance.StartDialogue(_fightDialogue, new List<CharacterBase>{Fiona}, true);
+            DialogueController.Instance.StartDialogue(_damageDialogue, new List<CharacterBase>{Fiona}, true);
             _fionaHurt = true;
         }
 
         if (!PlayerChar.Opponent && Fiona.Sparring)
         {
+            DialogueController.Instance.IsDialogueFinished = false;
             Fiona.Sparring = false;
 
             PlayerChar.StateMachine.End(); // stop movement
@@ -50,22 +48,6 @@ public class FightFiona : EventBase
         {
             DialogueController.Instance.IsDialogueFinished = false;
             _fionaDialogueFinish = false;
-            PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
-            Fiona.StateMachine.Initialize(Fiona.IdleState); // enable movement
-            Fiona.Anim.SetBool("Talk", false);
-
-            // destination marker
-            _destination = Instantiate(_marker, new Vector2(21.36f,6.26f), Quaternion.identity, transform.parent);
-        }
-
-        // target reached
-        if (_destination && _destination.Reached)
-        {
-            _destination.Reached = false;
-            Destroy(_destination.gameObject);
-            PlayerChar.StateMachine.End(); // stop movement
-
-            Fiona.Anim.SetBool("Talk", true);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_fionaDialogue2, new List<CharacterBase>{Fiona}, false);
@@ -78,9 +60,11 @@ public class FightFiona : EventBase
             DialogueController.Instance.IsDialogueFinished = false;
             _fionaDialogue2Finish = false;
 
-            Fiona.Anim.SetTrigger("Talk");
+            Fiona.transform.Find("Talk").gameObject.SetActive(true);
+            Fiona.Anim.SetBool("Talk", false);
 
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
+            Fiona.StateMachine.Initialize(Fiona.IdleState); // enable movement
 
             EventIsDone = true; // event done
         }

@@ -1,7 +1,6 @@
-using System.Collections;
 using UnityEngine;
 
-public class Prologue : StoryBase
+public class Prologue : ChapterBase
 {
     // characters
     [SerializeField] private Player _player;
@@ -30,25 +29,9 @@ public class Prologue : StoryBase
         CurrentEvent.GetComponent<TalkToMom>().Mom = _mom;
     }
 
-    public override void Active()
-    {
-        base.Active();
-
-        if (CurrentEvent && CurrentEvent.EventIsDone)
-        {
-            StartCoroutine(NextEvent());
-        }
-    }
-
-    public override IEnumerator NextEvent()
+    public override void NextEvent()
     {
         base.NextEvent();
-
-        Destroy(CurrentEvent.gameObject); // end event
-
-        yield return new WaitForSeconds(0f);
-
-        CurrentEvent = Instantiate(Events[++EventIndex], transform); // next event
 
         if (CurrentEvent.GetComponent<TalkToFiona>())
         {

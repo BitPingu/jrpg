@@ -17,8 +17,8 @@ public class Festival : EventBase
 
     private void Start()
     {
-        StartCoroutine(Go(PlayerChar, new Vector2(13.17f, 4.27f)));
-        StartCoroutine(Go(Fiona, new Vector2(14.3f, 4.69f)));
+        StartCoroutine(Go(PlayerChar, new Vector2(14.3f, 4.69f)));
+        StartCoroutine(Go(Fiona, new Vector2(13.489f, 4.27f)));
     }
 
     private void Update()
@@ -41,6 +41,7 @@ public class Festival : EventBase
             _chiefDialogueFinish = false;
 
             // start fiona dialogue
+            Fiona.Face(PlayerChar);
             DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona}, false);
 
             _fionaDialogueFinish = true;
@@ -68,10 +69,11 @@ public class Festival : EventBase
             _destination.Reached = false;
             Destroy(_destination.gameObject);
             PlayerChar.StateMachine.End(); // stop movement
-            // Fiona.StateMachine.End(); // stop movement
-            // _reached = true;
+            if (Fiona.StateMachine.CurrentState != null)
+                Fiona.StateMachine.End(); // stop movement
 
             Fiona.Anim.SetBool("Talk", true);
+            Fiona.transform.Find("Talk").gameObject.SetActive(false);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_fionaDialogue3, new List<CharacterBase>{Fiona}, false);
@@ -90,11 +92,12 @@ public class Festival : EventBase
     private IEnumerator Go(CharacterBase character, Vector3 destination)
     {
         // go
-        float _distance = Vector2.Distance(destination, character.transform.position);
-        while (_distance > 0.7f)
+        float distance = Vector2.Distance(destination, character.transform.position);
+        Vector2 vec = destination - character.transform.position;
+        while (distance > 0.1f)
         {
-            _distance = Vector2.Distance(destination, character.transform.position);
-            PlayerChar.Move(destination - character.transform.position);
+            distance = Vector2.Distance(destination, character.transform.position);
+            character.Move(vec);
             yield return new WaitForFixedUpdate();
         }
 

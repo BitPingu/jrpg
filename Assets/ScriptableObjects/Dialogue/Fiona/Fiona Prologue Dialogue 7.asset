@@ -14,26 +14,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
+    line: That was so much fun! I love festivals!
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
     line: Hey, how about a sparring match?
     choices:
     - choiceText: Yes
-      nextDialogueIndex: 3
+      nextDialogueIndex: 4
     - choiceText: No
-      nextDialogueIndex: 2
+      nextDialogueIndex: 3
     redirectDialogueIndex: -1
   - charName: Fiona
     line: How about a sparring match?
     choices:
     - choiceText: Yes
-      nextDialogueIndex: 3
+      nextDialogueIndex: 4
     - choiceText: No
-      nextDialogueIndex: 2
+      nextDialogueIndex: 3
     redirectDialogueIndex: -1
   - charName: Fiona
     line: Oh, come on! Don't be like that!
     choices: []
-    redirectDialogueIndex: 1
+    redirectDialogueIndex: 2
   - charName: Fiona
-    line: Yay! Bring it on!
+    line: Oh yeah! Bring it on!
     choices: []
     redirectDialogueIndex: -1

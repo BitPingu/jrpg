@@ -5,6 +5,7 @@ public class Enter : MonoBehaviour
     private Player _detectPlayer;
     private GameObject _activeIcon;
     [SerializeField] private Transform _location;
+    [SerializeField] private bool _faceRight;
     [SerializeField] private GameObject _icon;
     [SerializeField] private AudioClip _sound;
     [SerializeField] private float _pitch = 1f;
@@ -65,6 +66,11 @@ public class Enter : MonoBehaviour
         await Transition.Instance.FadeOut();
 
         SFXManager.Play(_sound, _pitch);
+
+        if (_faceRight)
+            player.Sprite.flipX = false;
+        else
+            player.Sprite.flipX = true;
 
         // move characters
         player.transform.position = _location.position + new Vector3(_location.GetComponent<BoxCollider2D>().offset.x/2f, _location.GetComponent<BoxCollider2D>().offset.y/2f);

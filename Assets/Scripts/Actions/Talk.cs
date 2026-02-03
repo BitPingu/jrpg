@@ -8,6 +8,14 @@ public class Talk : MonoBehaviour
     private CharacterBase _character;
     [SerializeField] private GameObject _icon;
 
+    private void Start()
+    {
+        if (GetComponentInParent<CharacterBase>())
+        {
+            _character = GetComponentInParent<CharacterBase>();
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.GetComponent<Player>() && !_detectPlayer)
@@ -36,9 +44,6 @@ public class Talk : MonoBehaviour
     {
         if (_detectPlayer && _detectPlayer.Input.E && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
-            _character = GetComponentInParent<CharacterBase>();
-            // GetComponentInParent<CharacterBase>().StateMachine.End(); // disable movement
-
             if (_activeIcon)
             {
                 _activeIcon.SetActive(false);
@@ -46,10 +51,12 @@ public class Talk : MonoBehaviour
 
             if (_character && _character.Anim)
                 _character.Anim.SetBool("Talk", true);
+
+            _detectPlayer.Face(_character);
             _character.Face(_detectPlayer);
 
             _detectPlayer.StateMachine.End(); // disable movement
-            _detectPlayer.Face(_character);
+            _character.StateMachine.End(); // disable movement
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_character.CurrentDialogue, new List<CharacterBase>{_character}, false);
@@ -58,6 +65,7 @@ public class Talk : MonoBehaviour
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
+
             if (_activeIcon)
             {
                 _activeIcon.SetActive(true);
@@ -67,9 +75,12 @@ public class Talk : MonoBehaviour
                 Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
                 _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
             }
+
             if (_character && _character.Anim)
                 _character.Anim.SetBool("Talk", false);
+
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
+            _character.StateMachine.Initialize(_character.IdleState); // enable movement
         }
 
         if (_detectPlayer && _detectPlayer.IsEntering)

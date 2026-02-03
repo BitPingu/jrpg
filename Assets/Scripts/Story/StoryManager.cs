@@ -4,8 +4,8 @@ public class StoryManager : MonoBehaviour
 {
     public static StoryManager Instance { get; private set; } // Singleton instance
 
-    [SerializeField] private StoryBase[] _stories;
-    public StoryBase CurrentStory { get; set; }
+    [SerializeField] private ChapterBase[] _chapters;
+    public ChapterBase CurrentChapter { get; set; }
     private int _storyIndex;
 
     private void Awake()
@@ -16,13 +16,13 @@ public class StoryManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentStory = _stories[0];
-        CurrentStory.BeginStory();
+        CurrentChapter = _chapters[0];
+        CurrentChapter.BeginStory();
     }
 
     private void Update()
     {
-        CurrentStory.Active();
+        CurrentChapter.Active();
     }
 
 }

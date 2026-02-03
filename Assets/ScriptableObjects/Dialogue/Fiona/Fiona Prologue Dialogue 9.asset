@@ -17,3 +17,7 @@ MonoBehaviour:
     line: Whew! That was fun! You sure are strong Eli!
     choices: []
     redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Here, you should have this.
+    choices: []
+    redirectDialogueIndex: -1

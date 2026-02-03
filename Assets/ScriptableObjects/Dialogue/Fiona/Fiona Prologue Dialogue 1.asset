@@ -18,7 +18,7 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
-    line: C'mon, let's get going! We don't wanna be late!
+    line: C'mon, let's get going! We don't wanna be late to the festival!
     choices: []
     redirectDialogueIndex: -1
   - charName: Eli
@@ -34,4 +34,3 @@ MonoBehaviour:
     line: We can't miss it! Let's go!
     choices: []
     redirectDialogueIndex: -1
-  repeatIndex: 0
