@@ -48,4 +48,4 @@ MonoBehaviour:
   _damageDialogue: {fileID: 11400000, guid: aed81be899702441986aaf8233662165, type: 2}
   _fionaDialogue: {fileID: 11400000, guid: 0c06bfb91310e4d33b09926fec843e1d, type: 2}
   _fionaDialogue2: {fileID: 11400000, guid: 6bd39045d30b7454ea3fa36197f45037, type: 2}
-  _hurtPortrait: {fileID: 21300000, guid: ff4e073d24c6d48a2af41d16ad5df02b, type: 3}
+  _potion: {fileID: 11400000, guid: 51dd4b22754af4a00bb94c762eb34a75, type: 2}

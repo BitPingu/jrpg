@@ -9,9 +9,9 @@ public class FighterBase : CharacterBase
 
     // stats
     public int Level = 1;
-    public float MaxHealth = 20f;
-    public float CurrentHealth { get; set; }
-    public float Strength = 4f;
+    public int MaxHealth = 20;
+    public int CurrentHealth { get; set; }
+    public int Strength = 4;
 
     // public List<Ability> Abilities;
 
@@ -133,26 +133,24 @@ public class FighterBase : CharacterBase
         Opponent.Damage(Strength);
     }
 
-    public virtual void Damage(float damageAmount)
+    public virtual void Damage(int damageAmount)
     {
         // take damage
         CurrentHealth -= damageAmount;
-        Debug.Log(name + " took " + damageAmount + " damage.");
+
+        // damage sound
+        SFXManager.Play(_hitSound);
 
         if (CurrentHealth > 0)
         {
             // damage flash
             CallDamageFlash();
         }
-
-        // damage sound
-        SFXManager.Play(_hitSound);
-
-        // update health bar
-        HBar.UpdateBar(MaxHealth, CurrentHealth);
-
-        if (CurrentHealth <= 0)
+        else if (CurrentHealth <= 0)
         {
+            damageAmount -= -CurrentHealth;
+            CurrentHealth = 0;
+
             // exp
             Opponent.WinBattle = true;
 
@@ -166,6 +164,12 @@ public class FighterBase : CharacterBase
                 Opponent.GetComponent<Companion>().Leader.WinBattle = true;
             }
         }
+
+        // update health bar
+        HBar.UpdateBar(MaxHealth, CurrentHealth);
+
+        Debug.Log(name + " took " + damageAmount + " damage.");
+        Debug.Log("Current health: " + CurrentHealth + "/" + MaxHealth);
     }
 
     public void CallDamageFlash()
@@ -188,6 +192,24 @@ public class FighterBase : CharacterBase
             Sprite.material.SetFloat("_FlashAmount", currentFlashAmount);
             yield return null;
         }
+    }
+
+    public void Heal(int healAmount)
+    {
+        // restore health
+        CurrentHealth += healAmount;
+
+        if (CurrentHealth > MaxHealth)
+        {
+            healAmount -= CurrentHealth - MaxHealth;
+            CurrentHealth = MaxHealth;
+        }
+
+        // update health bar
+        HBar.UpdateBar(MaxHealth, CurrentHealth);
+
+        Debug.Log(name + " restored " + healAmount + " health.");
+        Debug.Log("Current health: " + CurrentHealth + "/" + MaxHealth);
     }
 
 }

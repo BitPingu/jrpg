@@ -86,7 +86,7 @@ public class Enemy : FighterBase
         }
     }
 
-    public override void Damage(float damageAmount)
+    public override void Damage(int damageAmount)
     {
         // call base class
         base.Damage(damageAmount);

@@ -62,7 +62,7 @@ public class Player : PartyBase
         }
 
         Opponent.Opponent = this;
-        Opponent.Damage(0f);
+        Opponent.Damage(0);
 
         // return to pos
         _distance = Vector2.Distance(attackPos, transform.position);

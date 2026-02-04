@@ -7,6 +7,7 @@ public class FightFiona : EventBase
     public Companion Fiona { get; set; }
     [SerializeField] private Dialogue _damageDialogue, _fionaDialogue, _fionaDialogue2;
     private bool _fionaHurt, _fionaDialogueFinish, _fionaDialogue2Finish;
+    [SerializeField] private ItemBase _potion;
 
     private void Start()
     {
@@ -49,6 +50,9 @@ public class FightFiona : EventBase
         {
             DialogueController.Instance.IsDialogueFinished = false;
             _fionaDialogueFinish = false;
+
+            // give item
+            InventoryController.Instance.AddItem(_potion);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_fionaDialogue2, new List<CharacterBase>{Fiona}, false);
