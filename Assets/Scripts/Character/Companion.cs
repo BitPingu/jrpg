@@ -7,7 +7,7 @@ public class Companion : PartyBase
 
     [SerializeField] private float _minDistance = 1.55f;
 
-    public bool Sparring { get; set; }
+    public bool IsSparring { get; set; }
 
     public override void Idle()
     {
@@ -69,7 +69,7 @@ public class Companion : PartyBase
         base.Battle();
 
         // attack
-        if (BattleTurn && Sparring)
+        if (BattleTurn && IsSparring)
         {
             // hide HUD
             BattleHUD.SetActive(false);

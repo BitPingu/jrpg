@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Status : MonoBehaviour
 {
@@ -25,6 +26,29 @@ public class Status : MonoBehaviour
         {
             _player.StateMachine.Initialize(_player.IdleState); // enable movement
             IsOn = false;
+        }
+
+        if (IsOn)
+        {
+            // show bars
+            _player.HBar.gameObject.GetComponent<Image>().enabled = true;
+            _player.EBar.gameObject.GetComponent<Image>().enabled = true;
+            if (_player.CurrentCompanion)
+            {
+                _player.CurrentCompanion.HBar.gameObject.GetComponent<Image>().enabled = true;
+                _player.CurrentCompanion.EBar.gameObject.GetComponent<Image>().enabled = true;
+            }
+        }
+        else if (!IsOn && _player.StateMachine.CurrentState == _player.IdleState)
+        {
+            // hide bars
+            _player.HBar.gameObject.GetComponent<Image>().enabled = false;
+            _player.EBar.gameObject.GetComponent<Image>().enabled = false;
+            if (_player.CurrentCompanion)
+            {
+                _player.CurrentCompanion.HBar.gameObject.GetComponent<Image>().enabled = false;
+                _player.CurrentCompanion.EBar.gameObject.GetComponent<Image>().enabled = false;
+            }
         }
     }
 }

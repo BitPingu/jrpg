@@ -6,7 +6,7 @@ public class TalkToMom : EventBase
 {
     private Player _detectPlayer;
     public Villager Mom { get; set; }
-    [SerializeField] private Dialogue _dialogue, _dialogue2;
+    [SerializeField] private Dialogue _dialogue;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
@@ -29,7 +29,6 @@ public class TalkToMom : EventBase
 
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
-            Mom.CurrentDialogue = _dialogue2;
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
             Mom.StateMachine.Initialize(Mom.IdleState);
             _detectPlayer = null;

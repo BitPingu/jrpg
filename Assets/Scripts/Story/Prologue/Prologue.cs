@@ -9,6 +9,8 @@ public class Prologue : ChapterBase
 
     // dialogue
     [SerializeField] protected Dialogue _fionaDialogue1, _fionaDialogue2;
+    [SerializeField] protected Dialogue _momDialogue1, _momDialogue2;
+    [SerializeField] protected Dialogue _chiefDialogue1;
     [SerializeField] protected Dialogue _vDialogue1, _vDialogue2, _vDialogue3, _vDialogue4;
 
     public override void BeginChapter()
@@ -40,10 +42,12 @@ public class Prologue : ChapterBase
         }
         else if (CurrentEvent.GetComponent<TalkToFiona>())
         {
+            _mom.CurrentDialogue = _momDialogue1;
             CurrentEvent.GetComponent<TalkToFiona>().Fiona = _fiona;
         }
         else if (CurrentEvent.GetComponent<HeadToFestival>())
         {
+            _player.CanEnter = false; // disable enter action
             CurrentEvent.GetComponent<HeadToFestival>().PlayerChar = _player;
             _fiona.CurrentDialogue = _fionaDialogue1;
             CurrentEvent.GetComponent<HeadToFestival>().Fiona = _fiona;
@@ -52,7 +56,9 @@ public class Prologue : ChapterBase
         {
             CurrentEvent.GetComponent<Festival>().PlayerChar = _player;
             CurrentEvent.GetComponent<Festival>().Fiona = _fiona;
+            _mom.CurrentDialogue = _momDialogue2;
             CurrentEvent.GetComponent<Festival>().Mom = _mom;
+            _chief.CurrentDialogue = _chiefDialogue1;
             CurrentEvent.GetComponent<Festival>().Chief = _chief;
         }
         else if (CurrentEvent.GetComponent<FightFiona>())

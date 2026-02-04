@@ -15,5 +15,6 @@ MonoBehaviour:
   Lines:
   - charName: Fiona
     line: Hurry let's go! We don't wanna be late!
+    reaction: surprised
     choices: []
     redirectDialogueIndex: -1

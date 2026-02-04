@@ -8,7 +8,7 @@ public class Festival : EventBase
     public Companion Fiona { get; set; }
     public Villager Mom { get; set; }
     public Villager Chief { get; set; }
-    [SerializeField] private Dialogue _chiefDialogue, _chiefDialogue2, _fionaDialogue, _fionaDialogue2, _momDialogue;
+    [SerializeField] private Dialogue _chiefDialogue, _fionaDialogue, _fionaDialogue2;
     private int _inPos;
     private bool _chiefDialogueFinish, _fionaDialogueFinish, _fionaDialogue2Finish;
 
@@ -54,9 +54,6 @@ public class Festival : EventBase
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
             PlayerChar.CanEnter = true; // enable enter action
             Fiona.Anim.SetBool("Talk", false);
-
-            Mom.CurrentDialogue = _momDialogue; // set next dialogue
-            Chief.CurrentDialogue = _chiefDialogue2; // set next dialogue
 
             // destination marker
             _destination = Instantiate(_marker, new Vector2(15f, 4f), Quaternion.identity, transform.parent);

@@ -15,10 +15,12 @@ MonoBehaviour:
   Lines:
   - charName: Fiona
     line: That was so much fun! I love festivals!
+    reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
     line: Hey, how about a sparring match?
+    reaction: 
     choices:
     - choiceText: Yes
       nextDialogueIndex: 4
@@ -27,6 +29,7 @@ MonoBehaviour:
     redirectDialogueIndex: -1
   - charName: Fiona
     line: How about a sparring match?
+    reaction: 
     choices:
     - choiceText: Yes
       nextDialogueIndex: 4
@@ -35,9 +38,11 @@ MonoBehaviour:
     redirectDialogueIndex: -1
   - charName: Fiona
     line: Oh, come on! Don't be like that!
+    reaction: surprised
     choices: []
     redirectDialogueIndex: 2
   - charName: Fiona
     line: Oh yeah! Bring it on!
+    reaction: 
     choices: []
     redirectDialogueIndex: -1

@@ -13,7 +13,7 @@ public class FightFiona : EventBase
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState);
         Fiona.StateMachine.Initialize(Fiona.IdleState);
 
-        Fiona.Sparring = true;
+        Fiona.IsSparring = true;
 
         Fiona.Opponent = PlayerChar;
         PlayerChar.Opponent = Fiona;
@@ -28,15 +28,16 @@ public class FightFiona : EventBase
             _fionaHurt = true;
         }
 
-        if (!PlayerChar.Opponent && Fiona.Sparring)
+        if (!PlayerChar.Opponent && Fiona.IsSparring)
         {
             DialogueController.Instance.IsDialogueFinished = false;
-            Fiona.Sparring = false;
+            Fiona.IsSparring = false;
 
             PlayerChar.StateMachine.End(); // stop movement
 
             // reset
             Fiona.CurrentHealth = Fiona.MaxHealth;
+            Fiona.HBar.UpdateBar(Fiona.MaxHealth, Fiona.CurrentHealth);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona}, false);

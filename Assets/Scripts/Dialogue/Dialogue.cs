@@ -4,7 +4,6 @@ using UnityEngine;
 public class Dialogue : ScriptableObject
 {
     public DialogueLine[] Lines;
-    // public int repeatIndex;
 }
 
 [System.Serializable]
@@ -12,7 +11,7 @@ public class DialogueLine
 {
     public string charName;
     public string line;
-    // public bool[] autoProgressLines;
+    public string reaction;
 
     public DialogueChoice[] choices;
     public int redirectDialogueIndex = -1;

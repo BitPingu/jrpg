@@ -35,7 +35,6 @@ public class TalkToFiona : EventBase
             DialogueController.Instance.IsDialogueFinished = false;
             Fiona.Anim.SetBool("Talk", false);
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
-            _detectPlayer.CanEnter = false; // disable enter action
             _detectPlayer = null;
             EventIsDone = true; // event done
         }

@@ -150,6 +150,22 @@ public class FighterBase : CharacterBase
 
         // update health bar
         HBar.UpdateBar(MaxHealth, CurrentHealth);
+
+        if (CurrentHealth <= 0)
+        {
+            // exp
+            Opponent.WinBattle = true;
+
+            // TODO: rework this for companions
+            if (Opponent.GetComponent<Player>().CurrentCompanion && !Opponent.GetComponent<Player>().CurrentCompanion.IsSparring)
+            {
+                Opponent.GetComponent<Player>().CurrentCompanion.WinBattle = true;
+            }
+            else if (Opponent.GetComponent<Companion>() )
+            {
+                Opponent.GetComponent<Companion>().Leader.WinBattle = true;
+            }
+        }
     }
 
     public void CallDamageFlash()

@@ -132,20 +132,20 @@ public class DialogueController : MonoBehaviour
         if (_charsInDialogue.ContainsKey(_currentDialogue.charName))
         {
             _currentChar = _charsInDialogue[_currentDialogue.charName];
-            SetCharInfo(_currentChar.charName, _currentChar.portrait);
+            SetCharInfo(_currentChar.charName, _currentChar.portraits);
         }
         else
         {
             // character name not in dict
             _currentChar = null;
-            SetCharInfo(_currentDialogue.charName, _defaultPortrait);
+            SetCharInfo(_currentDialogue.charName, new Dictionary<string, Sprite>{[""] = _defaultPortrait});
         }
     }
 
-    private void SetCharInfo(string charName, Sprite portrait)
+    private void SetCharInfo(string charName, Dictionary<string, Sprite> portraits)
     {
         _nameText.text = charName;
-        _portraitImage.sprite = portrait;
+        _portraitImage.sprite = portraits[_currentDialogue.reaction];
     }
 
     private void SetDialogueText(string text)

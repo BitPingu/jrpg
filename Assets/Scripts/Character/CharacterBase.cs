@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-// [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
 public class CharacterBase : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class CharacterBase : MonoBehaviour
     // dialogue
     public Dialogue CurrentDialogue { get; set; }
     public string charName;
-    public Sprite portrait;
+    [SerializeField] private List<Portrait> _portraits;
+    public Dictionary<string, Sprite> portraits = new Dictionary<string, Sprite>();
     public AudioClip voiceSound;
     public float voicePitch = 1f;
 
@@ -29,6 +31,12 @@ public class CharacterBase : MonoBehaviour
         RB = GetComponent<Rigidbody2D>();
         Anim = GetComponent<Animator>();
         Sprite = GetComponent<SpriteRenderer>();
+
+        // set portraits
+        foreach (Portrait portrait in _portraits)
+        {
+            portraits.Add(portrait.reaction, portrait.sprite);
+        }
     }
 
     protected virtual void Start()
@@ -79,5 +87,12 @@ public class CharacterBase : MonoBehaviour
         else if (character.transform.position.x < transform.position.x)
             Sprite.flipX = true;
     }
+}
+
+[System.Serializable]
+public class Portrait
+{
+    public Sprite sprite;
+    public string reaction;
 }
 

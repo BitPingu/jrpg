@@ -93,20 +93,8 @@ public class Enemy : FighterBase
 
         if (CurrentHealth <= 0)
         {
-            Debug.Log(name + " died!");
-            StartCoroutine(Die());
-
-            // exp
-            // TODO: move this so that exp also gained from fighting non enemy?
-            Opponent.WinBattle = true;
-            if (Opponent.GetComponent<Player>().CurrentCompanion)
-            {
-                Opponent.GetComponent<Player>().CurrentCompanion.WinBattle = true;
-            }
-            else if (Opponent.GetComponent<Companion>() )
-            {
-                Opponent.GetComponent<Companion>().Leader.WinBattle = true;
-            }
+            Debug.Log(name + " was defeated!");
+            StartCoroutine(Die());            
         }
     }
 

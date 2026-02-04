@@ -15,22 +15,27 @@ MonoBehaviour:
   Lines:
   - charName: Fiona
     line: Hey, sleepy head!
+    reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
     line: C'mon, let's get going! We don't wanna be late to the festival!
+    reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Eli
     line: ...
+    reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
     line: Did you forget? It's the anniversary of when the great hero Duncan defeated
       the evil demon king 1000 years ago!
+    reaction: surprised
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
     line: We can't miss it! Let's go!
+    reaction: 
     choices: []
     redirectDialogueIndex: -1

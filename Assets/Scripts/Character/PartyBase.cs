@@ -63,7 +63,7 @@ public class PartyBase : FighterBase
 
         if (CurrentHealth <= 0)
         {
-            Debug.Log(name + " died!");
+            Debug.Log(name + " was defeated!");
             // TODO: temp exit battle state
             Opponent.Opponent = null;
             Opponent = null;

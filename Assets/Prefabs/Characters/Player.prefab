@@ -628,7 +628,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charName: Eli
-  portrait: {fileID: 21300000, guid: 2969ca6e0a4f14cc5b7d8060a3654395, type: 3}
+  _portraits:
+  - sprite: {fileID: 21300000, guid: 2969ca6e0a4f14cc5b7d8060a3654395, type: 3}
+    reaction: 
   voiceSound: {fileID: 8300000, guid: fb638b115793a403a950f41ef22ee07e, type: 3}
   voicePitch: 0.4
   _moveSpeed: 3
