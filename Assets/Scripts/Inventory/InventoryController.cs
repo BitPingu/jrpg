@@ -19,8 +19,11 @@ public class InventoryController : MonoBehaviour
     public void AddItem(ItemBase item)
     {
         _items.Add(item.itemName, item);
-        _itemSlot.sprite = item.sprite;
+        _itemSlot.sprite = item.icon;
         _itemSlot.enabled = true;
+
+        if (ItemPickupUIController.Instance != null)
+            ItemPickupUIController.Instance.ShowItemPickup(item.itemName, item.icon);
     }
 
     public ItemBase GetItem(string name)

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Argh! I'll get you for that one!
+    line: Agh! I'll get you for that one!
     reaction: hurt
     choices: []
     redirectDialogueIndex: -1

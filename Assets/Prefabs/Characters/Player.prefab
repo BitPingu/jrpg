@@ -11,14 +11,13 @@ GameObject:
   - component: {fileID: 2618556916465876722}
   - component: {fileID: 7277077499189231271}
   - component: {fileID: 2139543103515026167}
-  - component: {fileID: 7218802781949771910}
   m_Layer: 6
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2618556916465876722
 RectTransform:
   m_ObjectHideFlags: 0
@@ -77,19 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7218802781949771910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299034464229309381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3b66bdfcc5e44bfea10dc7e20bff418, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemSlot: {fileID: 3788134972525458700}
 --- !u!1 &2604777350745389317
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +433,7 @@ GameObject:
   - component: {fileID: 552779802846150216}
   - component: {fileID: 3788134972525458700}
   m_Layer: 6
-  m_Name: Item
+  m_Name: ItemIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -646,6 +632,7 @@ GameObject:
   - component: {fileID: 927640501372081843}
   - component: {fileID: 1737939773625099332}
   - component: {fileID: 7627640396764273998}
+  - component: {fileID: 2060143471550759656}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -911,6 +898,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventoryBox: {fileID: 1299034464229309381}
+--- !u!114 &2060143471550759656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6840031793578140923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3b66bdfcc5e44bfea10dc7e20bff418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemSlot: {fileID: 3788134972525458700}
 --- !u!1 &6952061285738362926
 GameObject:
   m_ObjectHideFlags: 0
