@@ -9,7 +9,8 @@ public class PrologueTest : Prologue
         Debug.Log("Begin test");
 
         // player
-        _player.transform.position = new Vector3(0f,0f);
+        // _player.transform.position = new Vector3(0f,0f);
+        _player.transform.position = new Vector3(16.67f,31.19f);
         _fiona.Join(_player);
     }
 }

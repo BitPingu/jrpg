@@ -6,6 +6,7 @@ public class TalkToMom : EventBase
 {
     private Player _detectPlayer;
     public Villager Mom { get; set; }
+    [SerializeField] private GameObject _reactIcon;
     [SerializeField] private Dialogue _dialogue;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
@@ -38,6 +39,11 @@ public class TalkToMom : EventBase
 
     private IEnumerator MoveMom()
     {
+        Vector2 iconPos = new Vector2(Mom.transform.position.x, Mom.transform.position.y+1f);
+        GameObject _activeIcon = Instantiate(_reactIcon, iconPos, Quaternion.identity, _detectPlayer.transform);
+        yield return new WaitForSeconds(1f);
+        Destroy(_activeIcon);
+
         // go
         float _distance = Vector2.Distance(_detectPlayer.transform.position, Mom.transform.position);
         while (_distance > 0.7f)

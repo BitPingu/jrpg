@@ -23,7 +23,6 @@ public class FighterBase : CharacterBase
     // UI
     public Bar HBar;
 
-    [SerializeField] private GameObject _projectile;
     [SerializeField] private AudioClip _hitSound;
 
     protected override void Start()
@@ -51,14 +50,7 @@ public class FighterBase : CharacterBase
     protected virtual IEnumerator CallAttack()
     {
         Debug.Log(name + " is attacking " + Opponent.name + ".");
-        if (_projectile)
-        {
-            StartCoroutine(RangedAttack());
-        }
-        else
-        {
-            StartCoroutine(Attack());
-        }
+        StartCoroutine(Attack());
 
         yield return new WaitForSeconds(2f);
 
@@ -67,7 +59,7 @@ public class FighterBase : CharacterBase
             Opponent.BattleTurn = true;
     }
 
-    protected IEnumerator Attack()
+    protected virtual IEnumerator Attack()
     {
         Vector3 attackDir = (Opponent.transform.position - transform.position).normalized;
         Vector3 attackPos = Opponent.transform.position - (attackDir*1.5f);
@@ -101,36 +93,6 @@ public class FighterBase : CharacterBase
         Move(Vector2.zero);
 
         IsAttacking = false;
-    }
-
-    protected IEnumerator RangedAttack()
-    {
-        Anim.SetTrigger("Attack");
-
-        // summon projectile 
-        Vector3 projPos = transform.position+transform.up;
-        GameObject proj = Instantiate(_projectile, projPos, Quaternion.identity);
-
-        // launch projectile at opponent
-        Vector3 opPos = Opponent.transform.position+(Opponent.transform.up/2f);
-        float _distance = Vector2.Distance(opPos, proj.transform.position);
-        while (_distance > 0.1f)
-        {
-            _distance = Vector2.Distance(opPos, proj.transform.position);
-            Vector2 projVector = (opPos - proj.transform.position).normalized;
-            // move projectile
-            proj.GetComponent<Rigidbody2D>().linearVelocity = projVector * 6f;
-            yield return new WaitForFixedUpdate();
-        }
-
-        yield return new WaitForSeconds(.01f);
-
-        Destroy(proj);
-
-        yield return new WaitForSeconds(.1f);
-
-        // damage
-        Opponent.Damage(Strength);
     }
 
     public virtual void Damage(int damageAmount)
@@ -211,6 +173,5 @@ public class FighterBase : CharacterBase
         Debug.Log(name + " restored " + healAmount + " health.");
         Debug.Log("Current health: " + CurrentHealth + "/" + MaxHealth);
     }
-
 }
 

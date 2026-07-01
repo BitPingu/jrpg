@@ -62,7 +62,7 @@ public class Enter : MonoBehaviour
             _activeIcon.SetActive(false);
         }
 
-        if (_detectPlayer && Status.Instance.IsOn)
+        if (_detectPlayer && _detectPlayer.StatusOn)
         {
             _activeIcon.SetActive(false);
         }

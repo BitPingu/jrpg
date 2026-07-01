@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : PartyBase
 {
@@ -10,10 +11,27 @@ public class Player : PartyBase
     public bool IsEntering { get; set; }
     public bool Entered { get; set; }
 
+    public bool StatusOn { get; set; }
+    [SerializeField] private GameObject _inventoryBox;
+
     protected override void Update()
     {
         // call base class
         base.Update();
+
+        if (Input.Q && StateMachine.CurrentState == IdleState && !DialogueController.Instance.IsDialogueActive)
+        {
+            Debug.Log("RUN!");
+            StateMachine.End(); // disable movement
+            StatusOn = true;
+            CheckStatus();
+        }
+        else if (Input.Q && StatusOn)
+        {
+            StateMachine.Initialize(IdleState); // enable movement
+            StatusOn = false;
+            CheckStatus();
+        }
     }
 
     public override void Idle()
@@ -95,7 +113,7 @@ public class Player : PartyBase
         }
     }
 
-    protected override void Run()
+    protected override IEnumerator Run()
     {
         // call base class
         base.Run();
@@ -103,6 +121,55 @@ public class Player : PartyBase
         if (CurrentCompanion)
         {
             CurrentCompanion.Opponent = null;
+        }
+
+        yield return null;
+    }
+
+    public void CheckStatus()
+    {
+        if (StatusOn)
+        {
+            // show bars
+            HBar.gameObject.GetComponent<Image>().enabled = true;
+            EBar.gameObject.GetComponent<Image>().enabled = true;
+            if (CurrentCompanion)
+            {
+                CurrentCompanion.HBar.gameObject.GetComponent<Image>().enabled = true;
+                CurrentCompanion.EBar.gameObject.GetComponent<Image>().enabled = true;
+            }
+
+            // inventory
+            _inventoryBox.SetActive(true);
+
+            if (Input.E)
+            {
+                // TODO: need to make this more dynamic
+                ItemBase item = InventoryController.Instance.GetItem("Potion");
+                if (item is Consumable)
+                {
+                    Debug.Log(name + " used a " + item.name + ".");
+                    Heal(((Consumable)item).amount);
+                }
+                else
+                {
+                    Debug.Log("There are no consumable items.");
+                }
+            }
+        }
+        else if (!StatusOn && StateMachine.CurrentState == IdleState)
+        {
+            // hide bars
+            HBar.gameObject.GetComponent<Image>().enabled = false;
+            EBar.gameObject.GetComponent<Image>().enabled = false;
+            if (CurrentCompanion)
+            {
+                CurrentCompanion.HBar.gameObject.GetComponent<Image>().enabled = false;
+                CurrentCompanion.EBar.gameObject.GetComponent<Image>().enabled = false;
+            }
+
+            // inventory
+            _inventoryBox.SetActive(false);
         }
     }
 }

@@ -78,12 +78,14 @@ public class Companion : PartyBase
         }
     }
 
-    protected override void Run()
+    protected override IEnumerator Run()
     {
         // call base class
         base.Run();
 
         Leader.Opponent = null;
+
+        yield return null;
     }
 }
 

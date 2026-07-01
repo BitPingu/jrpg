@@ -92,7 +92,7 @@ public class Talk : MonoBehaviour
             OnTriggerExit2D(_detectPlayer.GetComponent<Collider2D>()); // cancel when on enter
         }
 
-        if (_detectPlayer && Status.Instance.IsOn)
+        if (_detectPlayer && _detectPlayer.StatusOn)
         {
             _activeIcon.SetActive(false);
         }

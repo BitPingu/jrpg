@@ -6,12 +6,16 @@ public class ChapterBase : MonoBehaviour
 {
     public List<EventBase> Events;
     public EventBase CurrentEvent;
-    public int EventIndex;
+    public int EventIndex = 0;
 
     public virtual void BeginChapter()
     {
         // start at first event
-        EventIndex = 0;
+        if (Events.Count > 0 && Events[EventIndex] != null)
+        {
+            CurrentEvent = Instantiate(Events[EventIndex], transform);
+            SetupEvent();
+        }
     }
 
     public virtual void Active()

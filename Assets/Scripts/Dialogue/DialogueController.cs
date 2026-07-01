@@ -15,6 +15,7 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private Image _portraitImage, _continueImage;
     [SerializeField] private Sprite _defaultPortrait;
     [SerializeField] private AudioClip _defaultVoice;
+    [SerializeField] private float _defaultVoicePitch = .6f;
 
     [SerializeField] private Transform _choiceContainer;
     [SerializeField] private GameObject _choiceButton;
@@ -159,14 +160,37 @@ public class DialogueController : MonoBehaviour
         _continueImage.enabled = false;
 
         SetDialogueText("");
+        int letterIndex = 0;
         foreach(char letter in _currentDialogue.line)
         {
             SetDialogueText(_dialogueText.text += letter);
-            if (_currentChar)
-                SFXManager.PlayVoice(_currentChar.voiceSound, _currentChar.voicePitch);
+
+            if (letterIndex % 2 == 1 || letter == '.' || letter == '!' || letter == '?')
+            {
+                if (_currentChar)
+                    SFXManager.PlayVoice(_currentChar.voiceSound, _currentChar.voicePitch);
+                else
+                    SFXManager.PlayVoice(_defaultVoice, _defaultVoicePitch); // def voice
+            }
+
+            if (letterIndex == _currentDialogue.line.Length-1)
+                break;
+
+            // delay
+            if (letter == '.' && letterIndex < _currentDialogue.line.Length-1 && _currentDialogue.line[letterIndex+1] == '.')
+            {
+                yield return new WaitForSeconds(_typingSpeed);
+                continue;
+            }
+
+            if (letter == '.' || letter == '!' || letter == '?')
+                yield return new WaitForSeconds(_typingSpeed*10f);
+            else if (letter == ',')
+                yield return new WaitForSeconds(_typingSpeed*6f);
             else
-                SFXManager.PlayVoice(_defaultVoice, .6f); // def voice
-            yield return new WaitForSeconds(_typingSpeed);
+                yield return new WaitForSeconds(_typingSpeed);
+
+            letterIndex++;      
         }
 
         LineFinish();

@@ -47,7 +47,7 @@ public class PartyBase : FighterBase
             if (Opponent.GetComponent<Enemy>())
             {
                 if (Input.Q)
-                    Run();
+                    StartCoroutine(Run());
             }
             else
             {
@@ -127,9 +127,12 @@ public class PartyBase : FighterBase
         EBar.UpdateBar(_maxExp, _currentExp);
     }
 
-    protected virtual void Run()
+    protected virtual IEnumerator Run()
     {
         // end battle
+        // delay
+        yield return new WaitForSeconds(1f);
+
         // TODO: add random chance of working
         if (Opponent)
             Opponent.Opponent = null;

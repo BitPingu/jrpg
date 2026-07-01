@@ -54,7 +54,7 @@ public class Interact : MonoBehaviour
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
         }
 
-        if (_detectPlayer && Status.Instance.IsOn)
+        if (_detectPlayer && _detectPlayer.StatusOn)
         {
             _activeIcon.SetActive(false);
         }

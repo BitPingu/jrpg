@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a0ebe69b3164f6e91f94a88da27730, type: 3}
+  m_Name: Fiona Prologue Dialogue 10
+  m_EditorClassIdentifier: 
+  Lines:
+  - charName: Fiona
+    line: That reminds me, I quickly need to run an errand for my grandpa. Do you
+      mind coming along?
+    reaction: 
+    choices:
+    - choiceText: Yes
+      nextDialogueIndex: 2
+    - choiceText: No
+      nextDialogueIndex: 1
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Pretty please? I need your help!
+    reaction: surprised
+    choices:
+    - choiceText: Yes
+      nextDialogueIndex: 2
+    - choiceText: No
+      nextDialogueIndex: 1
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Thanks!
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: I'll need to gather some medicinal herbs from the forest to help cure his
+      illness.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: There are usually wild slimes roaming around the area, which is why I'll
+      need your help.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: We should stock up on some equipment before we go.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Let's head to the store!
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1

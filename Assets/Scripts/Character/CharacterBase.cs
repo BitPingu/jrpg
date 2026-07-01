@@ -57,6 +57,11 @@ public class CharacterBase : MonoBehaviour
         StateMachine.CurrentState?.FrameUpdate();
     }
 
+    public void ChangeState(StateBase newState)
+    {
+        StateMachine.ChangeState(newState);
+    }
+
     public virtual void Idle() { }
 
     public virtual void Move(Vector2 inputVector)

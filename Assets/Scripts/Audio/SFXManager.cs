@@ -8,7 +8,7 @@ public class SFXManager : MonoBehaviour
     private static AudioSource _audioSource;
     private static AudioSource _voiceAudioSource;
 
-    private static float _voiceVol;
+    private static float _audioVol, _voiceVol;
 
     private void Awake()
     {
@@ -17,6 +17,7 @@ public class SFXManager : MonoBehaviour
             Instance = this;
             AudioSource[] audioSources = GetComponents<AudioSource>();
             _audioSource = audioSources[0];
+            _audioVol = audioSources[0].volume;
             _voiceAudioSource = audioSources[1];
             _voiceVol = audioSources[1].volume;
             DontDestroyOnLoad(gameObject);
@@ -29,6 +30,7 @@ public class SFXManager : MonoBehaviour
 
     public static void Play(AudioClip audioClip, float pitch = 1f)
     {
+        _audioSource.volume = _audioVol;
         _audioSource.pitch = pitch;
         _audioSource.PlayOneShot(audioClip);
     }
