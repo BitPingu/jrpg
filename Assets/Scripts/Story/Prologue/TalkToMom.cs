@@ -7,7 +7,7 @@ public class TalkToMom : EventBase
     private Player _detectPlayer;
     public Villager Mom { get; set; }
     [SerializeField] private GameObject _reactIcon;
-    [SerializeField] private Dialogue _dialogue;
+    [SerializeField] private Dialogue _dialogue, _curDialogue;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
@@ -33,6 +33,10 @@ public class TalkToMom : EventBase
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
             Mom.StateMachine.Initialize(Mom.IdleState);
             _detectPlayer = null;
+
+            // set current mom dialogue
+            Mom.CurrentDialogue = _curDialogue;
+
             EventIsDone = true; // event done
         }
     }

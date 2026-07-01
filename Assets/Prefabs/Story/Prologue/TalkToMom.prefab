@@ -84,3 +84,4 @@ MonoBehaviour:
   EventIsDone: 0
   _reactIcon: {fileID: 1370079434887590053, guid: 5d27e80fd1cab443baabf7900c995fc8, type: 3}
   _dialogue: {fileID: 11400000, guid: 294e3e61d107a4fc58109350eb7d6ec7, type: 2}
+  _curDialogue: {fileID: 11400000, guid: 611f9ae6462ce4a41b43fd374704a2ad, type: 2}

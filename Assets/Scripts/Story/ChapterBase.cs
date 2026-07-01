@@ -6,16 +6,17 @@ public class ChapterBase : MonoBehaviour
 {
     public List<EventBase> Events;
     public EventBase CurrentEvent;
-    public int EventIndex = 0;
+    public int EventIndex = -1;
 
     public virtual void BeginChapter()
     {
         // start at first event
-        if (Events.Count > 0 && Events[EventIndex] != null)
-        {
-            CurrentEvent = Instantiate(Events[EventIndex], transform);
-            SetupEvent();
-        }
+        NextEvent();
+    }
+
+    public virtual void EndChapter()
+    {
+        Debug.Log("end chapter " + CurrentEvent);
     }
 
     public virtual void Active()
@@ -30,9 +31,22 @@ public class ChapterBase : MonoBehaviour
 
     public virtual void NextEvent()
     {
-        Destroy(CurrentEvent.gameObject); // end current event
-        CurrentEvent = Instantiate(Events[++EventIndex], transform); // next event
-        SetupEvent(); // setup
+        if (CurrentEvent != null)
+            Destroy(CurrentEvent.gameObject); // end current event
+
+        ++EventIndex;
+
+        if (Events.Count > 0 && EventIndex < Events.Count && Events[EventIndex] != null)
+        {
+            CurrentEvent = Instantiate(Events[EventIndex], transform); // next event
+            SetupEvent(); // setup
+        }
+        else
+        {
+            // end chapter after last event
+            CurrentEvent = null;
+            EndChapter();
+        }
     }
 
     public virtual bool Advance() { return false; }

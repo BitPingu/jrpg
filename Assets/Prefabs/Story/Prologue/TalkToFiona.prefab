@@ -81,6 +81,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f01232e788344a4f9fbb06927b7f6ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fiona: {fileID: 0}
+  EventIsDone: 0
   _dialogue: {fileID: 11400000, guid: 45969abfc01cd41a5b0c43ff1bfc7cf8, type: 2}
-  _nextDialogue: {fileID: 11400000, guid: 65a8d4cf9bbe04f8ba05e996aba7544a, type: 2}
+  _curDialogue: {fileID: 11400000, guid: 65a8d4cf9bbe04f8ba05e996aba7544a, type: 2}

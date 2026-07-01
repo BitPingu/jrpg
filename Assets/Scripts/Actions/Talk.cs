@@ -52,7 +52,7 @@ public class Talk : MonoBehaviour
                 }
 
                 if (_character && _character.Anim)
-                    _character.Anim.SetBool("Talk", true);
+                    _character.Anim.enabled = false;
 
                 _detectPlayer.Face(_character);
                 _character.Face(_detectPlayer);
@@ -78,10 +78,11 @@ public class Talk : MonoBehaviour
 
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
+            // end dialogue
             DialogueController.Instance.IsDialogueFinished = false;
 
             if (_character && _character.Anim)
-                _character.Anim.SetBool("Talk", false);
+                _character.Anim.enabled = true;
 
             _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
             _character.StateMachine.Initialize(_character.IdleState); // enable movement
