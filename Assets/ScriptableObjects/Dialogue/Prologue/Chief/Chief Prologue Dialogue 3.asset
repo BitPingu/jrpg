@@ -14,12 +14,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Chief Vandham
-    line: Now, I have a favor to ask from both of you.
+    line: Now that you two are here, I have a special request from both of you.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Oh! A special request from the chief?
     reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Chief Vandham
-    line: Could you head into the forest to gather some materials?
+    line: The nearby forest has been quite overridden with wild slimes lately.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: With how many roaming around the area, it'll threaten the safety of our
+      village.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: I want you two to work together to take them all out.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: Really chief, are you sure? Why ask us?
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: You two have shown me your strength and the way you fight. I see potential
+      in both of you.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: Think of it as a training exercise.
     reaction: 
     choices: []
     redirectDialogueIndex: -1

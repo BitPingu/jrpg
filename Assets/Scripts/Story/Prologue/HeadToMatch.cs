@@ -7,16 +7,13 @@ public class HeadToMatch : EventBase
     private Player _detectPlayer;
     public Player PlayerChar { get; set; }
     public Companion Fiona { get; set; }
+    public Villager Chief { get; set; }
     [SerializeField] private Dialogue _targetDialogue, _outBoundsDialogue;
     private bool _entered, _reached;
 
-    [SerializeField] private Destination _marker;
-    private Destination _destination;
-
     private void Start()
     {
-        // destination marker
-        _destination = Instantiate(_marker, new Vector2(12.48f,8.09f), Quaternion.identity, transform.parent);
+        transform.position = new Vector3(-2.44f,-4.76f,0);
     }
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
@@ -37,16 +34,16 @@ public class HeadToMatch : EventBase
 
     private void Update()
     {
+        float chiefDistance = Vector2.Distance(Chief.transform.position, PlayerChar.transform.position);
+
         // target reached
-        if (_destination.Reached)
+        if (!_reached && chiefDistance < 1.5f)
         {
-            _destination.Reached = false;
-            Destroy(_destination.gameObject);
             PlayerChar.StateMachine.End(); // stop movement
             Fiona.StateMachine.End(); // stop movement
             _reached = true;
 
-            Fiona.Anim.SetBool("Talk", true);
+            StartCoroutine(DelayAnimStop());
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona}, false);
@@ -56,7 +53,7 @@ public class HeadToMatch : EventBase
         {
             DialogueController.Instance.IsDialogueFinished = false;
             _reached = false;
-            Fiona.Anim.SetBool("Talk", false);
+            Fiona.Anim.enabled = true;
             EventIsDone = true; // event done
         }
 
@@ -65,7 +62,7 @@ public class HeadToMatch : EventBase
         {
             _detectPlayer.StateMachine.End(); // stop movement
 
-            Fiona.Anim.SetBool("Talk", true);
+            StartCoroutine(DelayAnimStop());
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
@@ -74,7 +71,7 @@ public class HeadToMatch : EventBase
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
-            Fiona.Anim.SetBool("Talk", false);
+            Fiona.Anim.enabled = true;
             StartCoroutine(GoBack(_detectPlayer));
         }
 
@@ -84,7 +81,7 @@ public class HeadToMatch : EventBase
             PlayerChar.StateMachine.End(); // stop movement
             _entered = true;
 
-            Fiona.Anim.SetBool("Talk", true);
+            StartCoroutine(DelayAnimStop());
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
@@ -95,14 +92,13 @@ public class HeadToMatch : EventBase
             DialogueController.Instance.IsDialogueFinished = false;
             PlayerChar.Entered = false;
             _entered = false;
-            Fiona.Anim.SetBool("Talk", false);
+            Fiona.Anim.enabled = true;
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
         }
     }
 
     private IEnumerator GoBack(Player player)
     {
-        Vector3 returnDir = (Fiona.transform.position - transform.position).normalized;
         Vector3 returnPos = Fiona.transform.position;
 
         player.Face(Fiona);
@@ -118,5 +114,11 @@ public class HeadToMatch : EventBase
 
         player.StateMachine.Initialize(player.IdleState); // enable movement
         _detectPlayer = null;
+    }
+
+    private IEnumerator DelayAnimStop()
+    {
+        yield return new WaitForSeconds(.4f);
+        Fiona.Anim.enabled = false;
     }
 }

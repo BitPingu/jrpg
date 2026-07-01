@@ -14,12 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Chief Vandham
-    line: Okay, that's enough! Ely's the victor!
+    line: Okay, that's enough! Ely's the victor! Well done Ely.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
     line: ...Whew, that was fun! You sure are strong Ely!
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: You did well too Fiona. Keep it up.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Fiona
+    line: '*Huff* ...Thanks Chief.'
     reaction: 
     choices: []
     redirectDialogueIndex: -1

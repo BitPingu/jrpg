@@ -47,6 +47,5 @@ MonoBehaviour:
   EventIsDone: 0
   _chiefDialogue: {fileID: 11400000, guid: a57eade50fde54347a8208253a190bce, type: 2}
   _damageDialogue: {fileID: 11400000, guid: aed81be899702441986aaf8233662165, type: 2}
-  _fionaDialogue: {fileID: 11400000, guid: 0c06bfb91310e4d33b09926fec843e1d, type: 2}
-  _fionaDialogue2: {fileID: 11400000, guid: 6bd39045d30b7454ea3fa36197f45037, type: 2}
-  _potion: {fileID: 11400000, guid: 51dd4b22754af4a00bb94c762eb34a75, type: 2}
+  _chiefDialogue2: {fileID: 11400000, guid: 728ae53c705f6488c892fdb97162a0b3, type: 2}
+  _chiefDialogue3: {fileID: 11400000, guid: 77f316969d97b4af4a5c75c76f8b22b4, type: 2}

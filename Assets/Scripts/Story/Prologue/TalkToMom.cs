@@ -9,6 +9,11 @@ public class TalkToMom : EventBase
     [SerializeField] private GameObject _reactIcon;
     [SerializeField] private Dialogue _dialogue, _curDialogue;
 
+    private void Start()
+    {
+        transform.position = new Vector3(3,-43.4f,0);
+    }
+
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.GetComponent<Player>())

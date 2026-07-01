@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8662578923052489899}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.98, y: 4.36, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -84,4 +84,3 @@ MonoBehaviour:
   EventIsDone: 0
   _targetDialogue: {fileID: 11400000, guid: c998a2fade45c40399454dd063761d6a, type: 2}
   _outBoundsDialogue: {fileID: 11400000, guid: 1cba9b3744285411e94cd8c5edd890c5, type: 2}
-  _marker: {fileID: 2731604681085015529, guid: 008b80281a55b467db7f43714d05a494, type: 3}

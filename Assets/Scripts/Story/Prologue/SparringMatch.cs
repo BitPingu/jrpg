@@ -7,10 +7,9 @@ public class SparringMatch : EventBase
     public Player PlayerChar { get; set; }
     public Companion Fiona { get; set; }
     public Villager Chief { get; set; }
-    [SerializeField] private Dialogue _chiefDialogue, _damageDialogue, _fionaDialogue, _fionaDialogue2;
+    [SerializeField] private Dialogue _chiefDialogue, _damageDialogue, _chiefDialogue2, _chiefDialogue3;
     private int _inPos;
-    private bool _chiefDialogueFinish, _matchStart, _fionaHurt, _fionaDialogueFinish, _fionaDialogue2Finish;
-    [SerializeField] private ItemBase _potion;
+    private bool _chiefDialogueFinish, _matchStart, _fionaHurt, _chiefDialogue2Finish, _chiefDialogue3Finish;
 
     private void Start()
     {
@@ -25,16 +24,16 @@ public class SparringMatch : EventBase
             _inPos++;
 
             // start chief dialogue
-            DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief}, false);
+            DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief, Fiona}, false);
 
-            Fiona.Anim.SetBool("Talk", true);
+            StartCoroutine(DelayAnimStop());
 
             _chiefDialogueFinish = true;
         }
 
         if (!_matchStart && _chiefDialogueFinish && DialogueController.Instance.IsDialogueFinished)
         {
-            Fiona.Anim.SetBool("Talk", false);
+            Fiona.Anim.enabled = true;
             // start the match
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState);
             Fiona.StateMachine.Initialize(Fiona.IdleState);
@@ -61,37 +60,31 @@ public class SparringMatch : EventBase
 
             PlayerChar.StateMachine.End(); // stop movement
 
-            // reset
-            Fiona.CurrentHealth = Fiona.MaxHealth;
-            Fiona.HBar.UpdateBar(Fiona.MaxHealth, Fiona.CurrentHealth);
+            StartCoroutine(DelayAnimStop());
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona}, false);
+            DialogueController.Instance.StartDialogue(_chiefDialogue2, new List<CharacterBase>{Chief, Fiona}, false);
 
-            _fionaDialogueFinish = true;
+            _chiefDialogue2Finish = true;
         }
 
-        if (_fionaDialogueFinish && DialogueController.Instance.IsDialogueFinished)
+        if (_chiefDialogue2Finish && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
-            _fionaDialogueFinish = false;
-
-            // give item
-            InventoryController.Instance.AddItem(_potion);
+            _chiefDialogue2Finish = false;
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_fionaDialogue2, new List<CharacterBase>{Fiona}, false);
+            DialogueController.Instance.StartDialogue(_chiefDialogue3, new List<CharacterBase>{Chief, Fiona}, false);
 
-            _fionaDialogue2Finish = true;
+            _chiefDialogue3Finish = true;
         }
 
-        if (_fionaDialogue2Finish && DialogueController.Instance.IsDialogueFinished)
+        if (_chiefDialogue3Finish && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
-            _fionaDialogue2Finish = false;
+            _chiefDialogue3Finish = false;
 
-            Fiona.transform.Find("Talk").gameObject.SetActive(true);
-            Fiona.Anim.SetBool("Talk", false);
+            Fiona.Anim.enabled = true;
 
             PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
             Fiona.StateMachine.Initialize(Fiona.IdleState); // enable movement
@@ -116,5 +109,11 @@ public class SparringMatch : EventBase
         character.Face(Chief);
 
         _inPos++;
+    }
+
+    private IEnumerator DelayAnimStop()
+    {
+        yield return new WaitForSeconds(.4f);
+        Fiona.Anim.enabled = false;
     }
 }

@@ -46,22 +46,23 @@ public class Prologue : ChapterBase
         {
             CurrentEvent.GetComponent<TalkToFiona>().Fiona = _fiona;
         }
-        // else if (CurrentEvent.GetComponent<HeadToMatch>())
-        // {
-        //     _player.CanEnter = false; // disable enter action
-        //     CurrentEvent.GetComponent<HeadToMatch>().PlayerChar = _player;
-        //     _fiona.CurrentDialogue = _fionaDialogue1;
-        //     CurrentEvent.GetComponent<HeadToMatch>().Fiona = _fiona;
-        // }
-        // else if (CurrentEvent.GetComponent<SparringMatch>())
-        // {
-        //     CurrentEvent.GetComponent<SparringMatch>().PlayerChar = _player;
-        //     CurrentEvent.GetComponent<SparringMatch>().Fiona = _fiona;
-        //     CurrentEvent.GetComponent<SparringMatch>().Chief = _chief;
-        // }
-        // else if (CurrentEvent.GetComponent<FetchQuest>())
-        // {
-        //     _fiona.CurrentDialogue = _fionaDialogue2;
-        // }
+        else if (CurrentEvent.GetComponent<HeadToMatch>())
+        {
+            _player.CanEnter = false; // disable enter action
+            CurrentEvent.GetComponent<HeadToMatch>().PlayerChar = _player;
+            CurrentEvent.GetComponent<HeadToMatch>().Fiona = _fiona;
+            CurrentEvent.GetComponent<HeadToMatch>().Chief = _chief;
+        }
+        else if (CurrentEvent.GetComponent<SparringMatch>())
+        {
+            CurrentEvent.GetComponent<SparringMatch>().PlayerChar = _player;
+            CurrentEvent.GetComponent<SparringMatch>().Fiona = _fiona;
+            CurrentEvent.GetComponent<SparringMatch>().Chief = _chief;
+        }
+        else if (CurrentEvent.GetComponent<FirstQuest>())
+        {
+            CurrentEvent.GetComponent<FirstQuest>().PlayerChar = _player;
+            CurrentEvent.GetComponent<FirstQuest>().Fiona = _fiona;
+        }
     }
 }

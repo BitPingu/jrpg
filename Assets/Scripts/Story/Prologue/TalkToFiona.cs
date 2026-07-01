@@ -8,6 +8,11 @@ public class TalkToFiona : EventBase
     public CharacterBase Fiona { get; set; }
     [SerializeField] private Dialogue _dialogue, _curDialogue;
 
+    private void Start()
+    {
+        transform.position = new Vector3(0,0.5f,0);
+    }
+
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.GetComponent<Player>())
@@ -23,13 +28,13 @@ public class TalkToFiona : EventBase
             _detectPlayer.StateMachine.End(); // disable movement
             _detectPlayer.Face(Fiona);
 
-            StartCoroutine(DelayStop());
+            StartCoroutine(DelayAnimStop());
 
             // join party
             Fiona.GetComponent<Companion>().Join(_detectPlayer);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona, _detectPlayer}, false);
+            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona}, false);
         }
 
         if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
@@ -46,9 +51,9 @@ public class TalkToFiona : EventBase
         }
     }
 
-    private IEnumerator DelayStop()
+    private IEnumerator DelayAnimStop()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.4f);
         Fiona.Anim.enabled = false;
     }
 }
