@@ -9,7 +9,9 @@ public class Player : PartyBase
     // conditions
     public bool CanEnter { get; set; }
     public bool IsEntering { get; set; }
-    public bool Entered { get; set; }
+
+    public delegate void Enter();
+    public Enter OnEnter;
 
     public bool StatusOn { get; set; }
     [SerializeField] private GameObject _inventoryBox;

@@ -13,6 +13,13 @@ public class HeadToMatch : EventBase
 
     private void Start()
     {
+        // set dialogue delegates
+        DialogueController.Instance.OnDialogueFinish += OutOfBounds;
+        PlayerChar.OnEnter += EnterBuilding;
+        DialogueController.Instance.OnDialogueFinish += ExitBuilding;
+        DialogueController.Instance.OnDialogueFinish += FinishEvent;
+
+        // boundary spawn
         transform.position = new Vector3(-2.44f,-4.76f,0);
     }
 
@@ -41,20 +48,14 @@ public class HeadToMatch : EventBase
         {
             PlayerChar.StateMachine.End(); // stop movement
             Fiona.StateMachine.End(); // stop movement
-            _reached = true;
-
-            StartCoroutine(DelayAnimStop());
+            
+            Fiona.Anim.Rebind();
+            Fiona.Anim.enabled = false;
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona}, false);
-        }
 
-        if (_reached && DialogueController.Instance.IsDialogueFinished)
-        {
-            DialogueController.Instance.IsDialogueFinished = false;
-            _reached = false;
-            Fiona.Anim.enabled = true;
-            EventIsDone = true; // event done
+            _reached = true;
         }
 
         // out of bounds check
@@ -62,46 +63,29 @@ public class HeadToMatch : EventBase
         {
             _detectPlayer.StateMachine.End(); // stop movement
 
-            StartCoroutine(DelayAnimStop());
+            Fiona.Face(PlayerChar);
+            Fiona.Anim.Rebind();
+            Fiona.Anim.enabled = false;
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
         }
+    }
 
-        if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
-        {
-            DialogueController.Instance.IsDialogueFinished = false;
-            Fiona.Anim.enabled = true;
-            StartCoroutine(GoBack(_detectPlayer));
-        }
+    private void OutOfBounds()
+    {
+        if (!_detectPlayer)
+            return;
 
-        // enter building check
-        if (!_entered && PlayerChar.Entered)
-        {
-            PlayerChar.StateMachine.End(); // stop movement
-            _entered = true;
-
-            StartCoroutine(DelayAnimStop());
-
-            // start dialogue
-            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
-        }
-
-        if (_entered && DialogueController.Instance.IsDialogueFinished)
-        {
-            DialogueController.Instance.IsDialogueFinished = false;
-            PlayerChar.Entered = false;
-            _entered = false;
-            Fiona.Anim.enabled = true;
-            PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
-        }
+        Fiona.Anim.enabled = true;
+        StartCoroutine(GoBack(_detectPlayer));
     }
 
     private IEnumerator GoBack(Player player)
     {
-        Vector3 returnPos = Fiona.transform.position;
-
         player.Face(Fiona);
+
+        Vector3 returnPos = Fiona.transform.position;
 
         // go back
         float _distance = Vector2.Distance(returnPos, player.transform.position);
@@ -116,9 +100,43 @@ public class HeadToMatch : EventBase
         _detectPlayer = null;
     }
 
-    private IEnumerator DelayAnimStop()
+    private void EnterBuilding()
     {
-        yield return new WaitForSeconds(.4f);
+        // enter building check
+        PlayerChar.StateMachine.End(); // stop movement
+
+        Fiona.Face(PlayerChar);
+        Fiona.Anim.Rebind();
         Fiona.Anim.enabled = false;
+
+        // start dialogue
+        DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
+
+        _entered = true;
+    }
+
+    private void ExitBuilding()
+    {
+        if (!_entered)
+            return;
+
+        _entered = false;
+        Fiona.Anim.enabled = true;
+        PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
+    }
+
+    private void FinishEvent()
+    {
+        if (!_reached)
+            return;
+
+        Fiona.Anim.enabled = true;
+
+        EventIsDone = true; // event done
+
+        DialogueController.Instance.OnDialogueFinish -= OutOfBounds;
+        PlayerChar.OnEnter -= EnterBuilding;
+        DialogueController.Instance.OnDialogueFinish -= ExitBuilding;
+        DialogueController.Instance.OnDialogueFinish -= FinishEvent;
     }
 }

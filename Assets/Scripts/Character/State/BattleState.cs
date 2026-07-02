@@ -36,9 +36,6 @@ public class BattleState : StateBase
 
         _fighter.WinBattle = false;
 
-        if (_fighter.GetComponentInChildren<Talk>())
-            _fighter.GetComponentInChildren<Talk>().enabled = false;
-
         Debug.Log(_fighter.name + " engages " + _fighter.Opponent.name + ".");
     }
 
@@ -64,9 +61,6 @@ public class BattleState : StateBase
             if (_fighter.WinBattle)
                 _fighter.GetComponent<PartyBase>().GainExperience(40);
         }
-
-        if (_fighter.GetComponentInChildren<Talk>())
-            _fighter.GetComponentInChildren<Talk>().enabled = true;
     }
 
     public override void FrameUpdate()
@@ -79,7 +73,10 @@ public class BattleState : StateBase
 
         // exit battle
         if (_fighter.Opponent == null)
+        {
+            Debug.Log("exit?");
             character.StateMachine.ChangeState(character.IdleState);
+        }
 
         // death
         if (_fighter.CurrentHealth <= 0)

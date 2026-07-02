@@ -8,6 +8,12 @@ public class Interact : MonoBehaviour
     [SerializeField] private Dialogue _dialogue;
     [SerializeField] private GameObject _icon;
 
+    private void Start()
+    {
+        // set dialogue delegates
+        DialogueController.Instance.OnDialogueFinish += End;
+    }
+
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.GetComponent<Player>() && !_detectPlayer)
@@ -47,16 +53,17 @@ public class Interact : MonoBehaviour
             }
         }
 
-        if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
-        {
-            DialogueController.Instance.IsDialogueFinished = false;
-            _activeIcon.SetActive(true);
-            _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
-        }
-
         if (_detectPlayer && _detectPlayer.StatusOn)
         {
             _activeIcon.SetActive(false);
         }
+    }
+
+    private void End()
+    {
+        if (!_detectPlayer)
+            return;
+
+        _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
     }
 }

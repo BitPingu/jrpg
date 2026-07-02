@@ -9,6 +9,12 @@ public class TalkToFiona : EventBase
     [SerializeField] private Dialogue _dialogue, _curDialogue;
     private bool _reached;
 
+    private void Start()
+    {
+        // set dialogue delegates
+        DialogueController.Instance.OnDialogueFinish += FinishEvent;
+    }
+
     private void Update()
     {
         float fionaDistance = Vector2.Distance(Fiona.transform.position, PlayerChar.transform.position);
@@ -28,25 +34,27 @@ public class TalkToFiona : EventBase
 
             _reached = true;
         }
-
-        if (_reached && DialogueController.Instance.IsDialogueFinished)
-        {
-            DialogueController.Instance.IsDialogueFinished = false;
-
-            Fiona.Anim.enabled = true;
-
-            PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
-
-            // set current fiona dialogue
-            Fiona.CurrentDialogue = _curDialogue;
-
-            EventIsDone = true; // event done
-        }
     }
 
     private IEnumerator DelayAnimStop()
     {
         yield return new WaitForSeconds(.4f);
         Fiona.Anim.enabled = false;
+    }
+
+    private void FinishEvent()
+    {
+        if (!_reached)
+            return;
+
+        Fiona.Anim.enabled = true;
+        PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
+
+        // set current fiona dialogue
+        Fiona.CurrentDialogue = _curDialogue;
+
+        EventIsDone = true; // event done
+
+        DialogueController.Instance.OnDialogueFinish -= FinishEvent;
     }
 }

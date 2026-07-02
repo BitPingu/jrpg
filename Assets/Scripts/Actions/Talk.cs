@@ -10,6 +10,9 @@ public class Talk : MonoBehaviour
 
     private void Start()
     {
+        // set dialogue delegates
+        DialogueController.Instance.OnDialogueFinish += End;
+
         if (GetComponentInParent<CharacterBase>())
         {
             _character = GetComponentInParent<CharacterBase>();
@@ -35,7 +38,6 @@ public class Talk : MonoBehaviour
         if (hitInfo.GetComponent<Player>())
         {
             Destroy(_activeIcon);
-
             _detectPlayer = null;
         }
     }
@@ -46,11 +48,6 @@ public class Talk : MonoBehaviour
         {
             if (_detectPlayer.Input.E)
             {
-                if (_activeIcon)
-                {
-                    _activeIcon.SetActive(false);
-                }
-
                 if (_character.GetComponent<Companion>())
                 {
                     _character.Anim.Rebind(); // TODO: workaround when using back sprites
@@ -71,26 +68,22 @@ public class Talk : MonoBehaviour
 
             if (!_activeIcon)
             {
+                // reinstantiate icon when already within bounds
                 Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
                 _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
             }
-
-            if (_activeIcon && !_activeIcon.activeSelf && !DialogueController.Instance.IsDialogueActive)
-            {
-                _activeIcon.SetActive(true);
-            }
         }
 
-        if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
+        if (_activeIcon && DialogueController.Instance.IsDialogueActive)
         {
-            // end dialogue
-            DialogueController.Instance.IsDialogueFinished = false;
+            // hide icon during dialogue
+            _activeIcon.SetActive(false);
+        }
 
-            if (_character && _character.Anim)
-                _character.Anim.enabled = true;
-
-            _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
-            _character.StateMachine.Initialize(_character.IdleState); // enable movement
+        if (_activeIcon && !_activeIcon.activeSelf && !DialogueController.Instance.IsDialogueActive)
+        {
+            // reshow icon after dialogue
+            _activeIcon.SetActive(true);
         }
 
         if (_detectPlayer && _detectPlayer.IsEntering)
@@ -102,5 +95,17 @@ public class Talk : MonoBehaviour
         {
             _activeIcon.SetActive(false);
         }
+    }
+
+    private void End()
+    {
+        if (!_detectPlayer)
+            return;
+
+        if (_character && _character.Anim)
+            _character.Anim.enabled = true;
+
+        _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
+        _character.StateMachine.Initialize(_character.IdleState); // enable movement
     }
 }

@@ -10,6 +10,8 @@ public class Enter : MonoBehaviour
     [SerializeField] private AudioClip _sound;
     [SerializeField] private float _pitch = 1f;
 
+    private bool _transition;
+
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.GetComponent<Player>() && !_detectPlayer)
@@ -18,7 +20,10 @@ public class Enter : MonoBehaviour
             _detectPlayer.IsEntering = true;
 
             Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
-            _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
+            if (_detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
+            {
+                _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
+            }
         }
     }
 
@@ -36,7 +41,7 @@ public class Enter : MonoBehaviour
 
     private void Update()
     {
-        if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState && !DialogueController.Instance.IsDialogueActive)
+        if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
             if (_detectPlayer.Input.E && _detectPlayer.CanEnter)
             {
@@ -44,22 +49,28 @@ public class Enter : MonoBehaviour
             }
             else if (_detectPlayer.Input.E && !_detectPlayer.CanEnter)
             {
-                _detectPlayer.Entered = true;
+                _detectPlayer.OnEnter(); // call delegates
                 _activeIcon.SetActive(false);
             }
-            else if (!_detectPlayer.Entered)
-            {
-                _activeIcon.SetActive(true);
-            }
 
-            if (_activeIcon && !_activeIcon.activeSelf && !DialogueController.Instance.IsDialogueActive)
+            if (!_activeIcon)
             {
-                _activeIcon.SetActive(true);
+                // reinstantiate icon when already within bounds
+                Vector2 iconPos = new Vector2(_detectPlayer.transform.position.x, _detectPlayer.transform.position.y+1f);
+                _activeIcon = Instantiate(_icon, iconPos, Quaternion.identity, _detectPlayer.transform);
             }
         }
-        else if (_detectPlayer && DialogueController.Instance.IsDialogueActive)
+        
+        if (_activeIcon && DialogueController.Instance.IsDialogueActive)
         {
+            // hide icon during dialogue
             _activeIcon.SetActive(false);
+        }
+
+        if (_activeIcon && !_activeIcon.activeSelf && !DialogueController.Instance.IsDialogueActive && !_transition)
+        {
+            // reshow icon after dialogue
+            _activeIcon.SetActive(true);
         }
 
         if (_detectPlayer && _detectPlayer.StatusOn)
@@ -73,6 +84,8 @@ public class Enter : MonoBehaviour
         Player player = _detectPlayer;
         player.StateMachine.End(); // disable movement
         _activeIcon.SetActive(false);
+
+        _transition = true;
         await Transition.Instance.FadeOut();
 
         SFXManager.Play(_sound, _pitch);
@@ -90,6 +103,8 @@ public class Enter : MonoBehaviour
         }
 
         await Transition.Instance.FadeIn();
+        _transition = false;
+
         player.StateMachine.Initialize(player.IdleState); // enable movement
     }
 }

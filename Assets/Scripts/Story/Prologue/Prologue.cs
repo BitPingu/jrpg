@@ -4,7 +4,7 @@ using UnityEngine;
 public class VillagerDialogue
 {
     public Villager villager;
-    public Dialogue dialogue;
+    public Dialogue[] dialogue;
 }
 
 public class Prologue : ChapterBase
@@ -16,18 +16,9 @@ public class Prologue : ChapterBase
     [SerializeField] protected VillagerDialogue[] _vDialogue;
     [SerializeField] protected GameObject _chiefHouse;
 
-    // dialogue
-    // [SerializeField] protected Dialogue _chiefDialogue1;
-    // [SerializeField] protected Dialogue _shopDialogue;
-
     public override void BeginChapter()
     {
-        // villagers
-        foreach (VillagerDialogue vd in _vDialogue)
-        {
-            vd.villager.CurrentDialogue = vd.dialogue;
-        }
-
+        UpdateDialogue(0); // init dialogue
         base.BeginChapter();
     }
 
@@ -62,8 +53,21 @@ public class Prologue : ChapterBase
         }
         else if (CurrentEvent.GetComponent<FirstQuest>())
         {
+            UpdateDialogue(1); // update dialogue
+            _player.CanEnter = true; // enable enter action
             CurrentEvent.GetComponent<FirstQuest>().PlayerChar = _player;
             CurrentEvent.GetComponent<FirstQuest>().Fiona = _fiona;
+            CurrentEvent.GetComponent<FirstQuest>().Mom = _mom;
+        }
+    }
+
+    private void UpdateDialogue(int index)
+    {
+        // villagers
+        foreach (VillagerDialogue vd in _vDialogue)
+        {
+            if (index < vd.dialogue.Length)
+                vd.villager.CurrentDialogue = vd.dialogue[index];
         }
     }
 }

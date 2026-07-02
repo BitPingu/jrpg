@@ -12,12 +12,16 @@ public class TalkToMom : EventBase
 
     private void Start()
     {
+        // set dialogue delegates
+        DialogueController.Instance.OnDialogueFinish += FinishEvent;
+
         // spawn in bedroom
         PlayerChar.transform.position = new Vector3(-13.79f,-41.41f);
     }
 
     private void Update()
     {
+        // Debug.Log("up");
         float momDistance = Vector2.Distance(Mom.transform.position, PlayerChar.transform.position);
     
         if (!_reached && momDistance < 2.5f)
@@ -27,17 +31,6 @@ public class TalkToMom : EventBase
             Mom.StateMachine.End();
             StartCoroutine(MoveMom());
             _reached = true;
-        }
-
-        if (_reached && DialogueController.Instance.IsDialogueFinished)
-        {
-            PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
-            Mom.StateMachine.Initialize(Mom.IdleState);
-
-            // set current mom dialogue
-            Mom.CurrentDialogue = _curDialogue;
-
-            EventIsDone = true; // event done
         }
     }
 
@@ -62,5 +55,21 @@ public class TalkToMom : EventBase
 
         // dialogue
         DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Mom}, false);
+    }
+
+    private void FinishEvent()
+    {
+        if (!_reached)
+            return;
+
+        PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
+        Mom.StateMachine.Initialize(Mom.IdleState);
+
+        // set current mom dialogue
+        Mom.CurrentDialogue = _curDialogue;
+
+        EventIsDone = true; // event done
+
+        DialogueController.Instance.OnDialogueFinish -= FinishEvent;
     }
 }

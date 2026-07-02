@@ -6,26 +6,25 @@ public class FirstQuest : EventBase
 {
     public Player PlayerChar { get; set; }
     public Companion Fiona { get; set; }
-    [SerializeField] private Dialogue _fionaDialogue;
+    public Villager Mom { get; set; }
+    [SerializeField] private Dialogue _fionaDialogue, _momDialogue;
+    private bool _fionaDialogueActive;
 
     private void Start()
     {
+        // set dialogue delegates
+        DialogueController.Instance.OnDialogueFinish += FinishEvent;
+
+        // reset mom position
+        Mom.transform.position = new Vector3(.73f,-43.48f,0);
+
         Fiona.Anim.enabled = true;
         StartCoroutine(MoveFiona());
     }
 
     private void Update()
     {
-        if (DialogueController.Instance.IsDialogueFinished)
-        {
-            DialogueController.Instance.IsDialogueFinished = false;
-            PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
-
-            // set current fiona dialogue
-            // Fiona.CurrentDialogue = _curDialogue;
-
-            EventIsDone = true; // event done
-        }
+        
     }
 
     private IEnumerator MoveFiona()
@@ -41,7 +40,27 @@ public class FirstQuest : EventBase
 
         Fiona.Move(Vector2.zero);
 
-        // dialogue
+        // start dialogue
         DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona}, false);
+        _fionaDialogueActive = true;
+    }
+
+    private void FinishEvent()
+    {
+        if (!_fionaDialogueActive)
+            return;
+
+        _fionaDialogueActive = false;
+
+        PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
+
+        // set current fiona dialogue
+        // Fiona.CurrentDialogue = _curDialogue;
+
+        Mom.CurrentDialogue = _momDialogue;
+
+        EventIsDone = true; // event done
+
+        DialogueController.Instance.OnDialogueFinish -= FinishEvent;
     }
 }

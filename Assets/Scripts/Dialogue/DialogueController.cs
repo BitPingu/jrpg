@@ -34,7 +34,9 @@ public class DialogueController : MonoBehaviour
     private bool _canSkip;
     private bool _prompt;
     private bool _autoProgress;
-    public bool IsDialogueFinished { get; set; }
+
+    public delegate void DialogueFinish();
+    public DialogueFinish OnDialogueFinish;
 
     private Dictionary<string, CharacterBase> _charsInDialogue = new Dictionary<string, CharacterBase>();
     private CharacterBase _currentChar;
@@ -270,6 +272,6 @@ public class DialogueController : MonoBehaviour
         // reset conditions
         IsDialogueActive = false;
         _autoProgress = false;
-        IsDialogueFinished = true;
+        OnDialogueFinish(); // call delegates
     }
 }

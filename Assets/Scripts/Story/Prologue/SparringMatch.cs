@@ -10,83 +10,52 @@ public class SparringMatch : EventBase
     public GameObject House { get; set; }
     [SerializeField] private Dialogue _chiefDialogue, _damageDialogue, _chiefDialogue2, _chiefDialogue3;
     private int _inPos;
-    private bool _chiefDialogueFinish, _matchStart, _fionaHurt, _chiefDialogue2Finish, _chiefDialogue3Finish;
+    private bool _chiefDialogueActive, _fionaHurt, _chiefDialogue2Active, _chiefDialogue3Active;
 
     private void Start()
     {
+        // set dialogue delegates
+        DialogueController.Instance.OnDialogueFinish += StartMatch;
+        DialogueController.Instance.OnDialogueFinish += GiveQuest;
+        DialogueController.Instance.OnDialogueFinish += FinishEvent;
+
         StartCoroutine(GoToBattle(PlayerChar, new Vector2(Chief.transform.position.x+.8f, Chief.transform.position.y-1f)));
         StartCoroutine(GoToBattle(Fiona, new Vector2(Chief.transform.position.x-.8f, Chief.transform.position.y-1f)));
     }
 
     private void Update()
     {
+        // before battle
         if (_inPos == 2)
         {
-            _inPos++;
+            _inPos = -1;
+
+            Fiona.Anim.Rebind();
+            Fiona.Anim.enabled = false;
 
             // start chief dialogue
             DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief, Fiona}, false);
-
-            StartCoroutine(DelayAnimStop());
-
-            _chiefDialogueFinish = true;
-        }
-
-        if (!_matchStart && _chiefDialogueFinish && DialogueController.Instance.IsDialogueFinished)
-        {
-            // start the match
-            PlayerChar.StateMachine.Initialize(PlayerChar.IdleState);
-            Fiona.StateMachine.Initialize(Fiona.IdleState);
-
-            Fiona.Anim.enabled = true;
-            Fiona.IsSparring = true;
-
-            PlayerChar.Opponent = Fiona;
-            Fiona.Opponent = PlayerChar;
-
-            _matchStart = true;
+            _chiefDialogueActive = true;
         }
 
         if (PlayerChar.Opponent && !_fionaHurt && Fiona.CurrentHealth <= Fiona.MaxHealth/2f)
         {
-            // start dialogue
+            // dialogue during battle
             DialogueController.Instance.StartDialogue(_damageDialogue, new List<CharacterBase>{Fiona}, true);
             _fionaHurt = true;
         }
 
+        // after battle
         if (!PlayerChar.Opponent && Fiona.IsSparring)
         {
-            DialogueController.Instance.IsDialogueFinished = false;
-
             PlayerChar.StateMachine.End(); // stop movement
-
-            StartCoroutine(DelayAnimStop());
+            Fiona.Anim.Rebind();
+            Fiona.Anim.enabled = false;
             Fiona.IsSparring = false;
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_chiefDialogue2, new List<CharacterBase>{Chief, Fiona}, false);
-
-            _chiefDialogue2Finish = true;
-        }
-
-        if (_chiefDialogue2Finish && DialogueController.Instance.IsDialogueFinished)
-        {
-            DialogueController.Instance.IsDialogueFinished = false;
-            _chiefDialogue2Finish = false;
-
-            // start dialogue
-            DialogueController.Instance.StartDialogue(_chiefDialogue3, new List<CharacterBase>{Chief, Fiona}, false);
-
-            _chiefDialogue3Finish = true;
-        }
-
-        if (_chiefDialogue3Finish && DialogueController.Instance.IsDialogueFinished)
-        {
-            DialogueController.Instance.IsDialogueFinished = false;
-            _chiefDialogue3Finish = false;
-
-            Chief.StateMachine.End();
-            StartCoroutine(MoveChief());
+            _chiefDialogue2Active = true;
         }
     }
 
@@ -108,6 +77,53 @@ public class SparringMatch : EventBase
         _inPos++;
     }
 
+    private void StartMatch()
+    {
+        if (!_chiefDialogueActive)
+            return;
+
+        _chiefDialogueActive = false;
+
+        // start the match
+        PlayerChar.StateMachine.Initialize(PlayerChar.IdleState);
+        Fiona.StateMachine.Initialize(Fiona.IdleState);
+
+        Fiona.Anim.enabled = true;
+        Fiona.IsSparring = true;
+
+        PlayerChar.Opponent = Fiona;
+        Fiona.Opponent = PlayerChar;
+    }
+
+    private void GiveQuest()
+    {
+        if (!_chiefDialogue2Active)
+            return;
+
+        _chiefDialogue2Active = false;
+
+        // start dialogue
+        DialogueController.Instance.StartDialogue(_chiefDialogue3, new List<CharacterBase>{Chief, Fiona}, false);
+        StartCoroutine(DelayNextDialogue());
+    }
+
+    private IEnumerator DelayNextDialogue()
+    {
+        yield return new WaitForSeconds(.4f);
+        _chiefDialogue3Active = true;
+    }
+
+    private void FinishEvent()
+    {
+        if (!_chiefDialogue3Active)
+            return;
+
+        _chiefDialogue3Active = false;
+
+        Chief.StateMachine.End();
+        StartCoroutine(MoveChief());
+    }
+
     private IEnumerator MoveChief()
     {
         // move to house
@@ -124,12 +140,9 @@ public class SparringMatch : EventBase
         Chief.gameObject.SetActive(false); // TODO: temp before moving to house
 
         EventIsDone = true; // event done
-    }
 
-    private IEnumerator DelayAnimStop()
-    {
-        yield return new WaitForSeconds(.4f);
-        Fiona.Anim.Rebind();
-        Fiona.Anim.enabled = false;
+        DialogueController.Instance.OnDialogueFinish -= StartMatch;
+        DialogueController.Instance.OnDialogueFinish -= GiveQuest;
+        DialogueController.Instance.OnDialogueFinish -= FinishEvent;
     }
 }
