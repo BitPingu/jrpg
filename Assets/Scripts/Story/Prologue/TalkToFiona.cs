@@ -4,45 +4,38 @@ using UnityEngine;
 
 public class TalkToFiona : EventBase
 {
-    private Player _detectPlayer;
+    public Player PlayerChar { get; set; }
     public CharacterBase Fiona { get; set; }
     [SerializeField] private Dialogue _dialogue, _curDialogue;
-
-    private void Start()
-    {
-        transform.position = new Vector3(0,0.5f,0);
-    }
-
-    private void OnTriggerEnter2D(Collider2D hitInfo)
-    {
-        if (hitInfo.GetComponent<Player>())
-        {
-            _detectPlayer = hitInfo.GetComponent<Player>();
-        }
-    }
+    private bool _reached;
 
     private void Update()
     {
-        if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
+        float fionaDistance = Vector2.Distance(Fiona.transform.position, PlayerChar.transform.position);
+
+        if (!_reached && fionaDistance < 2.5f && PlayerChar.StateMachine.CurrentState == PlayerChar.IdleState)
         {
-            _detectPlayer.StateMachine.End(); // disable movement
-            _detectPlayer.Face(Fiona);
+            PlayerChar.StateMachine.End(); // stop movement
+            PlayerChar.Face(Fiona);
 
             StartCoroutine(DelayAnimStop());
 
             // join party
-            Fiona.GetComponent<Companion>().Join(_detectPlayer);
+            Fiona.GetComponent<Companion>().Join(PlayerChar);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona}, false);
+
+            _reached = true;
         }
 
-        if (_detectPlayer && DialogueController.Instance.IsDialogueFinished)
+        if (_reached && DialogueController.Instance.IsDialogueFinished)
         {
             DialogueController.Instance.IsDialogueFinished = false;
+
             Fiona.Anim.enabled = true;
-            _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
-            _detectPlayer = null;
+
+            PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
 
             // set current fiona dialogue
             Fiona.CurrentDialogue = _curDialogue;

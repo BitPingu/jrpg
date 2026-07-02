@@ -19,12 +19,12 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
-    line: Oh, we should also upgrade our equipment and rest before we leave.
+    line: We should make sure to upgrade our equipment and rest before we head out.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
-    line: ...Have you forgetten where the store and inn is? Come I'll show you!
+    line: ...Have you forgetten where the shop and inn is? Come, I'll show you!
     reaction: 
     choices: []
     redirectDialogueIndex: -1

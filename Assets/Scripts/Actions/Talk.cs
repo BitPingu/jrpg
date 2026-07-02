@@ -51,6 +51,11 @@ public class Talk : MonoBehaviour
                     _activeIcon.SetActive(false);
                 }
 
+                if (_character.GetComponent<Companion>())
+                {
+                    _character.Anim.Rebind(); // TODO: workaround when using back sprites
+                }
+
                 if (_character && _character.Anim)
                     _character.Anim.enabled = false;
 

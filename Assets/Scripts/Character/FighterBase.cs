@@ -116,12 +116,12 @@ public class FighterBase : CharacterBase
             // exp
             Opponent.WinBattle = true;
 
-            // TODO: rework this for companions
+            // TODO: rework this for companions (just reference an entire party instead?)
             if (Opponent.GetComponent<Player>().CurrentCompanion && !Opponent.GetComponent<Player>().CurrentCompanion.IsSparring)
             {
                 Opponent.GetComponent<Player>().CurrentCompanion.WinBattle = true;
             }
-            else if (Opponent.GetComponent<Companion>() )
+            else if (Opponent.GetComponent<Companion>())
             {
                 Opponent.GetComponent<Companion>().Leader.WinBattle = true;
             }

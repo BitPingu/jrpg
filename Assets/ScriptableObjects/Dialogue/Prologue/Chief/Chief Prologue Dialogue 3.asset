@@ -29,18 +29,18 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Chief Vandham
-    line: With how many roaming around the area, it'll threaten the safety of our
-      village.
+    line: With how many roaming around the area, it'll threaten the very safety of
+      our village.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Chief Vandham
-    line: I want you two to work together to take them all out.
+    line: I want you two to work together to take them out.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Fiona
-    line: Really chief, are you sure? Why ask us?
+    line: Really chief? Are you sure? But why choose us?
     reaction: 
     choices: []
     redirectDialogueIndex: -1
@@ -51,7 +51,12 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Chief Vandham
-    line: Think of it as a training exercise.
+    line: I believe that you two will succeed. Think of it as a training exercise.
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1
+  - charName: Chief Vandham
+    line: Report back to me when you have finished. May the gods keep you well.
     reaction: 
     choices: []
     redirectDialogueIndex: -1

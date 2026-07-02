@@ -65,16 +65,20 @@ public class Companion : PartyBase
 
     public override void Battle()
     {
-        // call base class
-        base.Battle();
-
         // attack
-        if (BattleTurn && IsSparring)
+        if (BattleTurn)
         {
-            // hide HUD
-            BattleHUD.SetActive(false);
-            StartCoroutine(CallAttack());
-            BattleTurn = false;
+            if (!IsSparring)
+            {
+                // call base class
+                base.Battle();
+            }
+            else
+            {
+                // act as enemy
+                StartCoroutine(CallAttack());
+                BattleTurn = false;
+            }
         }
     }
 

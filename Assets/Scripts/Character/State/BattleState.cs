@@ -27,15 +27,17 @@ public class BattleState : StateBase
         // show health bar
         _fighter.HBar.gameObject.GetComponent<Image>().enabled = true;
 
-        _fighter.BattleTurn = false;
-
         // Player goes first
+        _fighter.BattleTurn = false;
         // TODO: compare speed with enemy
         // if faster, can attack again (first)? else enemy attacks first
         if (_fighter.GetComponent<Player>())
             _fighter.BattleTurn = true;
 
         _fighter.WinBattle = false;
+
+        if (_fighter.GetComponentInChildren<Talk>())
+            _fighter.GetComponentInChildren<Talk>().enabled = false;
 
         Debug.Log(_fighter.name + " engages " + _fighter.Opponent.name + ".");
     }
@@ -62,6 +64,9 @@ public class BattleState : StateBase
             if (_fighter.WinBattle)
                 _fighter.GetComponent<PartyBase>().GainExperience(40);
         }
+
+        if (_fighter.GetComponentInChildren<Talk>())
+            _fighter.GetComponentInChildren<Talk>().enabled = true;
     }
 
     public override void FrameUpdate()

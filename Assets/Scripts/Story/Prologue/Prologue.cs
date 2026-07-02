@@ -14,6 +14,7 @@ public class Prologue : ChapterBase
     [SerializeField] protected Companion _fiona;
     [SerializeField] protected Villager _mom, _chief, _shopkeeper;
     [SerializeField] protected VillagerDialogue[] _vDialogue;
+    [SerializeField] protected GameObject _chiefHouse;
 
     // dialogue
     // [SerializeField] protected Dialogue _chiefDialogue1;
@@ -21,10 +22,6 @@ public class Prologue : ChapterBase
 
     public override void BeginChapter()
     {
-        // player
-        _player.transform.position = new Vector3(-13.79f,-41.41f);
-        _player.CanEnter = true;
-
         // villagers
         foreach (VillagerDialogue vd in _vDialogue)
         {
@@ -40,10 +37,13 @@ public class Prologue : ChapterBase
 
         if (CurrentEvent.GetComponent<TalkToMom>())
         {
+            _player.CanEnter = true; // enable enter action
+            CurrentEvent.GetComponent<TalkToMom>().PlayerChar = _player;
             CurrentEvent.GetComponent<TalkToMom>().Mom = _mom;
         }
         else if (CurrentEvent.GetComponent<TalkToFiona>())
         {
+            CurrentEvent.GetComponent<TalkToFiona>().PlayerChar = _player;
             CurrentEvent.GetComponent<TalkToFiona>().Fiona = _fiona;
         }
         else if (CurrentEvent.GetComponent<HeadToMatch>())
@@ -58,6 +58,7 @@ public class Prologue : ChapterBase
             CurrentEvent.GetComponent<SparringMatch>().PlayerChar = _player;
             CurrentEvent.GetComponent<SparringMatch>().Fiona = _fiona;
             CurrentEvent.GetComponent<SparringMatch>().Chief = _chief;
+            CurrentEvent.GetComponent<SparringMatch>().House = _chiefHouse;
         }
         else if (CurrentEvent.GetComponent<FirstQuest>())
         {

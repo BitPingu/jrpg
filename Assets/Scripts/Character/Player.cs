@@ -73,7 +73,7 @@ public class Player : PartyBase
         yield return new WaitForSeconds(.1f);
 
         // companion engage
-        if (CurrentCompanion)
+        if (CurrentCompanion && !CurrentCompanion.IsSparring)
         {
             CurrentCompanion.Opponent = Opponent;
             // GetComponent<Player>().Elf.CallBattlePos(attackPos);
@@ -109,7 +109,8 @@ public class Player : PartyBase
         else
         {
             // enemy turn
-            Opponent.BattleTurn = true;
+            if (Opponent != null)
+                Opponent.BattleTurn = true;
         }
     }
 
