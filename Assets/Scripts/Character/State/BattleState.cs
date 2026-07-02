@@ -73,10 +73,7 @@ public class BattleState : StateBase
 
         // exit battle
         if (_fighter.Opponent == null)
-        {
-            Debug.Log("exit?");
             character.StateMachine.ChangeState(character.IdleState);
-        }
 
         // death
         if (_fighter.CurrentHealth <= 0)

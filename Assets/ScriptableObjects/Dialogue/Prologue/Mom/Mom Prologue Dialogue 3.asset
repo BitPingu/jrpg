@@ -24,7 +24,7 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Mom
-    line: Stay safe out there!
+    line: Good luck out there!
     reaction: 
     choices: []
     redirectDialogueIndex: -1

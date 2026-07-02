@@ -103,12 +103,10 @@ public class FighterBase : CharacterBase
         // damage sound
         SFXManager.Play(_hitSound);
 
-        if (CurrentHealth > 0)
-        {
-            // damage flash
-            CallDamageFlash();
-        }
-        else if (CurrentHealth <= 0)
+        // damage flash
+        CallDamageFlash();
+
+        if (CurrentHealth <= 0)
         {
             damageAmount -= -CurrentHealth;
             CurrentHealth = 0;

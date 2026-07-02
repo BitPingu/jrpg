@@ -8,8 +8,9 @@ public class HeadToMatch : EventBase
     public Player PlayerChar { get; set; }
     public Companion Fiona { get; set; }
     public Villager Chief { get; set; }
-    [SerializeField] private Dialogue _targetDialogue, _outBoundsDialogue;
+    [SerializeField] private Dialogue _curFionaDialogue, _targetDialogue, _outBoundsDialogue;
     private bool _entered, _reached;
+    private int _inPos;
 
     private void Start()
     {
@@ -18,6 +19,9 @@ public class HeadToMatch : EventBase
         PlayerChar.OnEnter += EnterBuilding;
         DialogueController.Instance.OnDialogueFinish += ExitBuilding;
         DialogueController.Instance.OnDialogueFinish += FinishEvent;
+
+        // set current dialogue
+        Fiona.CurrentDialogue = _curFionaDialogue;
 
         // boundary spawn
         transform.position = new Vector3(-2.44f,-4.76f,0);
@@ -42,6 +46,22 @@ public class HeadToMatch : EventBase
     private void Update()
     {
         float chiefDistance = Vector2.Distance(Chief.transform.position, PlayerChar.transform.position);
+
+        // setup before next event
+        if (_inPos == 2)
+        {
+            _inPos = -1;
+
+            Fiona.Anim.Rebind();
+            Fiona.Anim.enabled = false;
+
+            EventIsDone = true; // event done
+
+            DialogueController.Instance.OnDialogueFinish -= OutOfBounds;
+            PlayerChar.OnEnter -= EnterBuilding;
+            DialogueController.Instance.OnDialogueFinish -= ExitBuilding;
+            DialogueController.Instance.OnDialogueFinish -= FinishEvent;
+        }
 
         // target reached
         if (!_reached && chiefDistance < 1.5f)
@@ -132,11 +152,26 @@ public class HeadToMatch : EventBase
 
         Fiona.Anim.enabled = true;
 
-        EventIsDone = true; // event done
+        // before battle
+        StartCoroutine(GoToBattle(PlayerChar, new Vector2(Chief.transform.position.x+.8f, Chief.transform.position.y-1f)));
+        StartCoroutine(GoToBattle(Fiona, new Vector2(Chief.transform.position.x-.8f, Chief.transform.position.y-1f)));
+    }
 
-        DialogueController.Instance.OnDialogueFinish -= OutOfBounds;
-        PlayerChar.OnEnter -= EnterBuilding;
-        DialogueController.Instance.OnDialogueFinish -= ExitBuilding;
-        DialogueController.Instance.OnDialogueFinish -= FinishEvent;
+    private IEnumerator GoToBattle(CharacterBase character, Vector3 destination)
+    {
+        // move to battle position
+        float distance = Vector2.Distance(destination, character.transform.position);
+        Vector2 vec = destination - character.transform.position;
+        while (distance > 0.1f)
+        {
+            distance = Vector2.Distance(destination, character.transform.position);
+            character.Move(vec);
+            yield return new WaitForFixedUpdate();
+        }
+
+        character.Move(Vector2.zero);
+        character.Face(Chief);
+
+        _inPos++;
     }
 }

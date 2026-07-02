@@ -5,14 +5,21 @@ using UnityEngine;
 public class TalkToFiona : EventBase
 {
     public Player PlayerChar { get; set; }
-    public CharacterBase Fiona { get; set; }
-    [SerializeField] private Dialogue _dialogue, _curDialogue;
+    public Villager Mom { get; set; }
+    public Companion Fiona { get; set; }
+    [SerializeField] private Dialogue _dialogue, _curMomDialogue;
     private bool _reached;
 
     private void Start()
     {
         // set dialogue delegates
         DialogueController.Instance.OnDialogueFinish += FinishEvent;
+
+        // set current dialogue
+        Mom.CurrentDialogue = _curMomDialogue;
+
+        // spawn fiona
+        Fiona.transform.position = new Vector3(1.672f,-0.557f,0);
     }
 
     private void Update()
@@ -27,7 +34,7 @@ public class TalkToFiona : EventBase
             StartCoroutine(DelayAnimStop());
 
             // join party
-            Fiona.GetComponent<Companion>().Join(PlayerChar);
+            Fiona.Join(PlayerChar);
 
             // start dialogue
             DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona}, false);
@@ -49,9 +56,6 @@ public class TalkToFiona : EventBase
 
         Fiona.Anim.enabled = true;
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
-
-        // set current fiona dialogue
-        Fiona.CurrentDialogue = _curDialogue;
 
         EventIsDone = true; // event done
 

@@ -82,5 +82,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EventIsDone: 0
+  _curFionaDialogue: {fileID: 11400000, guid: 65a8d4cf9bbe04f8ba05e996aba7544a, type: 2}
   _targetDialogue: {fileID: 11400000, guid: c998a2fade45c40399454dd063761d6a, type: 2}
   _outBoundsDialogue: {fileID: 11400000, guid: 1cba9b3744285411e94cd8c5edd890c5, type: 2}

@@ -7,7 +7,7 @@ public class TalkToMom : EventBase
     public Player PlayerChar { get; set; }
     public Villager Mom { get; set; }
     [SerializeField] private GameObject _reactIcon;
-    [SerializeField] private Dialogue _dialogue, _curDialogue;
+    [SerializeField] private Dialogue _dialogue;
     private bool _reached;
 
     private void Start()
@@ -17,11 +17,13 @@ public class TalkToMom : EventBase
 
         // spawn in bedroom
         PlayerChar.transform.position = new Vector3(-13.79f,-41.41f);
+
+        // spawn mom
+        Mom.transform.position = new Vector3(.73f,-43.48f,0);
     }
 
     private void Update()
     {
-        // Debug.Log("up");
         float momDistance = Vector2.Distance(Mom.transform.position, PlayerChar.transform.position);
     
         if (!_reached && momDistance < 2.5f)
@@ -64,9 +66,6 @@ public class TalkToMom : EventBase
 
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
         Mom.StateMachine.Initialize(Mom.IdleState);
-
-        // set current mom dialogue
-        Mom.CurrentDialogue = _curDialogue;
 
         EventIsDone = true; // event done
 

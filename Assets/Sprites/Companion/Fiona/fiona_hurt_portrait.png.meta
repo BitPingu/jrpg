@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ff4e073d24c6d48a2af41d16ad5df02b
+guid: 071ccc7b22f6d44eb8510a1c51285293
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -732252180766033035
-    second: fiona_hurt_portrait_0
+      213: 5074557688286610285
+    second: fiona_hurt_portrait 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fiona_hurt_portrait_0
+      name: fiona_hurt_portrait 1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 57b7f6f658486d5f0800000000000000
-      internalID: -732252180766033035
+      spriteID: d630d82d4537c6640800000000000000
+      internalID: 5074557688286610285
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      fiona_hurt_portrait_0: -732252180766033035
+      fiona_hurt_portrait 1_0: 5074557688286610285
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

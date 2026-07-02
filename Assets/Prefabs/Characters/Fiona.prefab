@@ -696,11 +696,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Fiona
   _portraits:
-  - sprite: {fileID: 21300000, guid: 0f6cb95353de243809cee5ebb7920bd4, type: 3}
+  - sprite: {fileID: 21300000, guid: 5dc42a9bc0d1a47089ebcb7d6a8fbf51, type: 3}
     reaction: 
-  - sprite: {fileID: 21300000, guid: 0d845dbe9fc174283abfa5c7b63e63a1, type: 3}
+  - sprite: {fileID: 21300000, guid: bbf701e74e7ab414fab0b8bc98dfd0a2, type: 3}
     reaction: surprised
-  - sprite: {fileID: 21300000, guid: ff4e073d24c6d48a2af41d16ad5df02b, type: 3}
+  - sprite: {fileID: 21300000, guid: 071ccc7b22f6d44eb8510a1c51285293, type: 3}
     reaction: hurt
   voiceSound: {fileID: 8300000, guid: fb638b115793a403a950f41ef22ee07e, type: 3}
   voicePitch: 0.67
@@ -709,7 +709,6 @@ MonoBehaviour:
   MaxHealth: 20
   Strength: 4
   HBar: {fileID: 2643750145137607703}
-  _projectile: {fileID: 0}
   _hitSound: {fileID: 8300000, guid: c9c39983af9d441278cf44370e151cf1, type: 3}
   _maxExp: 100
   EBar: {fileID: 8792345666785891725}

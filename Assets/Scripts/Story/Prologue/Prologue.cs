@@ -18,6 +18,11 @@ public class Prologue : ChapterBase
 
     public override void BeginChapter()
     {
+        // TODO: temp
+        // _player.transform.position = new Vector3(1.9f,-12.1f,0);
+        // _fiona.transform.position = new Vector3(1f,-12.1f,0);
+        // _fiona.Join(_player);
+
         UpdateDialogue(0); // init dialogue
         base.BeginChapter();
     }
@@ -35,6 +40,7 @@ public class Prologue : ChapterBase
         else if (CurrentEvent.GetComponent<TalkToFiona>())
         {
             CurrentEvent.GetComponent<TalkToFiona>().PlayerChar = _player;
+            CurrentEvent.GetComponent<TalkToFiona>().Mom = _mom;
             CurrentEvent.GetComponent<TalkToFiona>().Fiona = _fiona;
         }
         else if (CurrentEvent.GetComponent<HeadToMatch>())
