@@ -73,7 +73,7 @@ public class HeadToMatch : EventBase
             Fiona.Anim.enabled = false;
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona}, false);
+            DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona});
 
             _reached = true;
         }
@@ -88,7 +88,7 @@ public class HeadToMatch : EventBase
             Fiona.Anim.enabled = false;
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
+            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
         }
     }
 
@@ -130,7 +130,7 @@ public class HeadToMatch : EventBase
         Fiona.Anim.enabled = false;
 
         // start dialogue
-        DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona}, false);
+        DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
 
         _entered = true;
     }

@@ -98,7 +98,10 @@ public class Player : PartyBase
 
     protected override IEnumerator CallAttack()
     {
-        Debug.Log(name + " is attacking " + Opponent.name + ".");
+        // battle dialogue
+        string text = charName + " attacks!";
+        DialogueController.Instance.BattleDialogue(this, text, false);
+
         StartCoroutine(Attack());
 
         yield return new WaitForSeconds(2f);

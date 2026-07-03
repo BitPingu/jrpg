@@ -713,7 +713,7 @@ MonoBehaviour:
   _maxExp: 100
   EBar: {fileID: 8792345666785891725}
   BattleHUD: {fileID: 5598363155657312378}
-  _minDistance: 1.55
+  _followDistance: 1.1
 --- !u!114 &4716680468274926434
 MonoBehaviour:
   m_ObjectHideFlags: 0

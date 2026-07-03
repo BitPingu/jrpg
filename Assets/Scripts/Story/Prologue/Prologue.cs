@@ -19,9 +19,7 @@ public class Prologue : ChapterBase
     public override void BeginChapter()
     {
         // TODO: temp
-        // _player.transform.position = new Vector3(1.9f,-12.1f,0);
-        // _fiona.transform.position = new Vector3(1f,-12.1f,0);
-        // _fiona.Join(_player);
+        _fiona.Join(_player);
 
         UpdateDialogue(0); // init dialogue
         base.BeginChapter();
@@ -63,6 +61,7 @@ public class Prologue : ChapterBase
             _player.CanEnter = true; // enable enter action
             CurrentEvent.GetComponent<FirstQuest>().PlayerChar = _player;
             CurrentEvent.GetComponent<FirstQuest>().Fiona = _fiona;
+            CurrentEvent.GetComponent<FirstQuest>().Chief = _chief;
             CurrentEvent.GetComponent<FirstQuest>().Mom = _mom;
         }
     }

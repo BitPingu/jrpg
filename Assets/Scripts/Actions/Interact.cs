@@ -44,7 +44,7 @@ public class Interact : MonoBehaviour
                 _detectPlayer.StateMachine.End(); // disable movement
                 _activeIcon.SetActive(false);
                 // start dialogue
-                DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{_detectPlayer}, false);
+                DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{_detectPlayer});
             }
 
             if (_activeIcon && !_activeIcon.activeSelf && !DialogueController.Instance.IsDialogueActive)

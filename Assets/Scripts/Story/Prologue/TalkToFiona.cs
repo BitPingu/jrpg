@@ -37,7 +37,7 @@ public class TalkToFiona : EventBase
             Fiona.Join(PlayerChar);
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona}, false);
+            DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{Fiona});
 
             _reached = true;
         }

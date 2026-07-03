@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e3d9ee2b164fd4c9dabbef843aa89c92
+guid: e5251aecc8db44b9ba2f843bdf637613
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1243525315863568754
-    second: chief_portrait_0
+      213: -6436718882465913213
+    second: chief_portrait 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chief_portrait_0
+      name: chief_portrait 1_0
       rect:
         serializedVersion: 2
         x: 1
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e8e1fbe405c1ebee0800000000000000
-      internalID: -1243525315863568754
+      spriteID: 386e193974e2ca6a0800000000000000
+      internalID: -6436718882465913213
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      chief_portrait_0: -1243525315863568754
+      chief_portrait 1_0: -6436718882465913213
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

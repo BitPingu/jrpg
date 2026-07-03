@@ -57,9 +57,6 @@ public class BattleState : StateBase
         if (_fighter.GetComponent<PartyBase>())
         {
             _fighter.GetComponent<PartyBase>().BattleHUD.SetActive(false);
-            // exp
-            if (_fighter.WinBattle)
-                _fighter.GetComponent<PartyBase>().GainExperience(40);
         }
     }
 

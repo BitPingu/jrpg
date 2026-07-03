@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EventIsDone: 0
-  _fionaDialogue: {fileID: 11400000, guid: 1a2a86cf5d70a44b994cdf80282ffb55, type: 2}
+  _fionaDialogue: {fileID: 11400000, guid: dda77396c85a7418fa164b6bfbc887f9, type: 2}
   _momDialogue: {fileID: 11400000, guid: 5e4044f5ba1624f2d88c2210ec0d2731, type: 2}

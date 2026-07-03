@@ -49,7 +49,10 @@ public class FighterBase : CharacterBase
 
     protected virtual IEnumerator CallAttack()
     {
-        Debug.Log(name + " is attacking " + Opponent.name + ".");
+        // battle dialogue
+        string text = charName + " attacks!";
+        DialogueController.Instance.BattleDialogue(this, text, false);
+
         StartCoroutine(Attack());
 
         yield return new WaitForSeconds(2f);
@@ -110,25 +113,14 @@ public class FighterBase : CharacterBase
         {
             damageAmount -= -CurrentHealth;
             CurrentHealth = 0;
-
-            // exp
-            Opponent.WinBattle = true;
-
-            // TODO: rework this for companions (just reference an entire party instead?)
-            if (Opponent.GetComponent<Player>().CurrentCompanion && !Opponent.GetComponent<Player>().CurrentCompanion.IsSparring)
-            {
-                Opponent.GetComponent<Player>().CurrentCompanion.WinBattle = true;
-            }
-            else if (Opponent.GetComponent<Companion>())
-            {
-                Opponent.GetComponent<Companion>().Leader.WinBattle = true;
-            }
         }
 
         // update health bar
         HBar.UpdateBar(MaxHealth, CurrentHealth);
 
-        Debug.Log(name + " took " + damageAmount + " damage.");
+        // battle dialogue
+        string text = charName + " took " + damageAmount + " damage.";
+        DialogueController.Instance.BattleDialogue(this, text, false);
         Debug.Log("Current health: " + CurrentHealth + "/" + MaxHealth);
     }
 
@@ -152,6 +144,11 @@ public class FighterBase : CharacterBase
             Sprite.material.SetFloat("_FlashAmount", currentFlashAmount);
             yield return null;
         }
+    }
+
+    public virtual IEnumerator Die()
+    {
+        yield return null;
     }
 
     public void Heal(int healAmount)

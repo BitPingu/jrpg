@@ -36,7 +36,7 @@ public class DialogueController : MonoBehaviour
     private bool _autoProgress;
 
     public delegate void DialogueFinish();
-    public DialogueFinish OnDialogueFinish;
+    public DialogueFinish OnDialogueFinish, OnBattleDialogueFinish;
 
     private Dictionary<string, CharacterBase> _charsInDialogue = new Dictionary<string, CharacterBase>();
     private CharacterBase _currentChar;
@@ -56,7 +56,7 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    public void StartDialogue(Dialogue dialogue, List<CharacterBase> characters, bool autoProgress)
+    public void StartDialogue(Dialogue dialogue, List<CharacterBase> characters)
     {
         // set params
         _dialogue = dialogue;
@@ -64,7 +64,6 @@ public class DialogueController : MonoBehaviour
         {
             _charsInDialogue.Add(character.charName, character);
         }
-        _autoProgress = autoProgress;
 
         IsDialogueActive = true;
         _dialogueIndex = 0;
@@ -73,6 +72,31 @@ public class DialogueController : MonoBehaviour
         ShowDialogueUI(true);
         
         DisplayCurrentLine();
+    }
+
+    public void BattleDialogue(FighterBase fighter, string text, bool prompt)
+    {
+        // show dialogue
+        ShowDialogueUI(true);
+
+        // set info
+        if (prompt)
+            SetCharInfo("", fighter.portraits);
+        else
+            SetCharInfo("", new Dictionary<string, Sprite>{[""] = _defaultPortrait});
+
+        // set dialogue
+        SetDialogueText(text);
+
+        _continueImage.enabled = false;
+    }
+
+    public void EndBattleDialogue()
+    {
+        // hide dialogue
+        ShowDialogueUI(false);
+
+        OnBattleDialogueFinish(); // call delegates
     }
 
     private void ShowDialogueUI(bool show)

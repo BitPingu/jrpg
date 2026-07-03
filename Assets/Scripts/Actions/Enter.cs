@@ -99,7 +99,7 @@ public class Enter : MonoBehaviour
         player.transform.position = _location.position + new Vector3(_location.GetComponent<BoxCollider2D>().offset.x/2f, _location.GetComponent<BoxCollider2D>().offset.y/2f);
         if (player.CurrentCompanion)
         {
-            player.CurrentCompanion.transform.position = player.transform.position;
+            player.CurrentCompanion.transform.position = new Vector2(player.transform.position.x+.3f, player.transform.position.y+.1f);
         }
 
         await Transition.Instance.FadeIn();

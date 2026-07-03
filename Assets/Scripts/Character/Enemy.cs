@@ -98,7 +98,7 @@ public class Enemy : FighterBase
         }
     }
 
-    private IEnumerator Die()
+    public override IEnumerator Die()
     {
         // set color
         Sprite.material.SetFloat("_FlashAmount", 1f);

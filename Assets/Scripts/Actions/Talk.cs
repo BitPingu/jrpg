@@ -63,7 +63,7 @@ public class Talk : MonoBehaviour
                 _character.StateMachine.End(); // disable movement
 
                 // start dialogue
-                DialogueController.Instance.StartDialogue(_character.CurrentDialogue, new List<CharacterBase>{_character}, false);
+                DialogueController.Instance.StartDialogue(_character.CurrentDialogue, new List<CharacterBase>{_character});
             }
 
             if (!_activeIcon)

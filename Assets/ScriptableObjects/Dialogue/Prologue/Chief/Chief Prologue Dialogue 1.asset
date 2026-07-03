@@ -28,3 +28,8 @@ MonoBehaviour:
     reaction: 
     choices: []
     redirectDialogueIndex: -1
+  - charName: Fiona
+    line: En garde!
+    reaction: 
+    choices: []
+    redirectDialogueIndex: -1

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ public class PartyBase : FighterBase
     // UI
     public Bar EBar;
     public GameObject BattleHUD;
+
+    private bool _battlePrompt;
 
     protected override void Start()
     {
@@ -35,11 +38,20 @@ public class PartyBase : FighterBase
             // show HUD
             BattleHUD.SetActive(true);
 
+            // battle dialogue
+            if (!_battlePrompt)
+            {
+                string text = "What will " + charName + " do?";
+                DialogueController.Instance.BattleDialogue(this, text, true);
+                _battlePrompt = true;
+            }
+
             // attack
             if (Input.E)
             {
                 StartCoroutine(CallAttack());
                 BattleTurn = false;
+                _battlePrompt = false;
                 BattleHUD.SetActive(false);
             }
 
@@ -63,17 +75,27 @@ public class PartyBase : FighterBase
 
         if (CurrentHealth <= 0)
         {
-            Debug.Log(name + " was defeated!");
             // TODO: temp exit battle state
-            Opponent.Opponent = null;
-            Opponent = null;
+            // Opponent.Opponent = null;
+            // Opponent = null;
+            // StartCoroutine(Die());
         }
+    }
+
+    public override IEnumerator Die()
+    {
+        yield return new WaitForSeconds(2f);
+
+        string text = charName + " was defeated!";
+        DialogueController.Instance.BattleDialogue(this, text, false);
     }
 
     public void GainExperience(int amount)
     {
         _currentExp += amount;
-        Debug.Log(name + " gained " + amount + " exp.");
+
+        string text = charName + " gained " + amount + " exp.";
+        DialogueController.Instance.BattleDialogue(this, text, false);
 
         StartCoroutine(ShowEBar());
 
