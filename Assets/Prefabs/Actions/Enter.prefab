@@ -92,6 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _location: {fileID: 0}
+  _faceRight: 0
+  _dialogue: {fileID: 11400000, guid: ace64d20c01be4637923bae55b5d23aa, type: 2}
   _icon: {fileID: 1614864539706815653, guid: c6353eec060f448e585423aabc8649f9, type: 3}
   _sound: {fileID: 8300000, guid: 89f64b305e8ce41d0843b9c2b290fcae, type: 3}
   _pitch: 0.7

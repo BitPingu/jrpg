@@ -7,8 +7,6 @@ public class Companion : PartyBase
 
     [SerializeField] private float _followDistance = 1f;
 
-    public bool IsSparring { get; set; }
-
     public override void Idle()
     {
         // call base class
@@ -61,66 +59,6 @@ public class Companion : PartyBase
         }
 
         Move(Vector2.zero);
-    }
-
-    public override void Battle()
-    {
-        // attack
-        if (BattleTurn)
-        {
-            if (!IsSparring)
-            {
-                // call base class
-                base.Battle();
-            }
-            else
-            {
-                // act as enemy
-                StartCoroutine(CallAttack());
-                BattleTurn = false;
-            }
-        }
-    }
-
-    public override void Damage(int damageAmount)
-    {
-        // call base class
-        base.Damage(damageAmount);
-
-        if (CurrentHealth <= 0 && IsSparring)
-        {
-            StartCoroutine(Die());
-        }
-    }
-
-    public override IEnumerator Die()
-    {
-        yield return new WaitForSeconds(2f);
-        Anim.Rebind();
-        Anim.enabled = false;
-
-        string text = charName + " was defeated!";
-        DialogueController.Instance.BattleDialogue(this, text, false);
-
-        yield return new WaitForSeconds(2f);
-
-        // exp
-        Opponent.GetComponent<Player>().GainExperience(40);
-
-        yield return new WaitForSeconds(2f);
-
-        // end battle dialogue
-        DialogueController.Instance.EndBattleDialogue();
-    }
-
-    protected override IEnumerator Run()
-    {
-        // call base class
-        base.Run();
-
-        Leader.Opponent = null;
-
-        yield return null;
     }
 }
 

@@ -11,7 +11,7 @@ public class Interact : MonoBehaviour
     private void Start()
     {
         // set dialogue delegates
-        DialogueController.Instance.OnDialogueFinish += End;
+        DialogueController.Instance.OnDialogueFinish += FinishInteract;
     }
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
@@ -59,7 +59,7 @@ public class Interact : MonoBehaviour
         }
     }
 
-    private void End()
+    private void FinishInteract()
     {
         if (!_detectPlayer)
             return;

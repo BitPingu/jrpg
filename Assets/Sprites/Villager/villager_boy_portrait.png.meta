@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 91ed35c9d909d4666bf89bde82032fcb
+guid: 8d854518d1fed4aee96bd0e2e452d036
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6484507846193382836
-    second: villager_boy_portrait_0
+      213: 2228167337426352930
+    second: villager_boy_portrait 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: villager_boy_portrait_0
+      name: villager_boy_portrait 1_0
       rect:
         serializedVersion: 2
         x: 4
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4af86468766206a0800000000000000
-      internalID: -6484507846193382836
+      spriteID: 22bfc67536a0cee10800000000000000
+      internalID: 2228167337426352930
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      villager_boy_portrait_0: -6484507846193382836
+      villager_boy_portrait 1_0: 2228167337426352930
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

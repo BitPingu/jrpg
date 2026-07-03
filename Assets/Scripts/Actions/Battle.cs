@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Battle : MonoBehaviour
 {
-    private Player _player;
+    private Player _detectPlayer;
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if (hitInfo.GetComponent<Player>() && !hitInfo.GetComponent<Player>().Opponent)
+        if (hitInfo.GetComponent<Player>() && !hitInfo.GetComponent<Player>().Opponent && !_detectPlayer)
         {
             GetComponent<SpriteRenderer>().enabled = true;
-            _player = hitInfo.GetComponent<Player>();
+            _detectPlayer = hitInfo.GetComponent<Player>();
+            _detectPlayer.IsNearEnemy = true;
         }
     }
 
@@ -18,17 +19,19 @@ public class Battle : MonoBehaviour
         if (hitInfo.GetComponent<Player>())
         {
             GetComponent<SpriteRenderer>().enabled = false;
-            _player = null;
+            _detectPlayer = hitInfo.GetComponent<Player>();
+            _detectPlayer.IsNearEnemy = false;
+            _detectPlayer = null;
         }
     }
 
     private void Update()
     {
-        if (_player && _player.Input.E)
+        if (_detectPlayer && _detectPlayer.Input.E)
         {
             GetComponentInParent<Enemy>().InterruptIdle();
-            StartCoroutine(_player.Engage(GetComponentInParent<Enemy>()));
-            OnTriggerExit2D(_player.GetComponent<Collider2D>());
+            StartCoroutine(_detectPlayer.Engage(GetComponentInParent<Enemy>()));
+            OnTriggerExit2D(_detectPlayer.GetComponent<Collider2D>());
             // Destroy(this);
         }
     }

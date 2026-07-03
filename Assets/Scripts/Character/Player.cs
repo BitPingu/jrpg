@@ -9,6 +9,7 @@ public class Player : PartyBase
     // conditions
     public bool CanEnter { get; set; }
     public bool IsEntering { get; set; }
+    public bool IsNearEnemy { get; set; }
 
     public delegate void Enter();
     public Enter OnEnter;
@@ -23,7 +24,6 @@ public class Player : PartyBase
 
         if (Input.Q && StateMachine.CurrentState == IdleState && !DialogueController.Instance.IsDialogueActive)
         {
-            Debug.Log("RUN!");
             StateMachine.End(); // disable movement
             StatusOn = true;
             CheckStatus();
@@ -51,10 +51,27 @@ public class Player : PartyBase
         base.Battle();
 
         // player only battle options go here
+
+        if (BattleTurn)
+        {
+            // run (if wild)
+            if (Opponent.GetComponent<Enemy>())
+            {
+                BattleHUD.transform.Find("RunImage").gameObject.SetActive(true);
+                if (Input.Q)
+                {
+                    StartCoroutine(Run());
+                    EndTurn();
+                }
+            }
+        }
     }
 
     public IEnumerator Engage(Enemy enemy)
     {
+        string text = charName + " engages enemy " + enemy.charName + ".";
+        DialogueController.Instance.BattleDialogue(this, text, false);
+
         Opponent = enemy;
 
         Vector3 attackDir = (Opponent.transform.position - transform.position).normalized;
@@ -78,11 +95,11 @@ public class Player : PartyBase
         if (CurrentCompanion && !CurrentCompanion.IsSparring)
         {
             CurrentCompanion.Opponent = Opponent;
-            // GetComponent<Player>().Elf.CallBattlePos(attackPos);
         }
 
+        // trigger battle with enemy
         Opponent.Opponent = this;
-        Opponent.Damage(0);
+        Opponent.CallDamageFlash();
 
         // return to pos
         _distance = Vector2.Distance(attackPos, transform.position);
@@ -94,6 +111,9 @@ public class Player : PartyBase
         }
 
         IsAttacking = false;
+
+        // Player goes first
+        BattleTurn = true;
     }
 
     protected override IEnumerator CallAttack()
@@ -104,7 +124,7 @@ public class Player : PartyBase
 
         StartCoroutine(Attack());
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         if (CurrentCompanion && !WinBattle)
         {
@@ -119,17 +139,26 @@ public class Player : PartyBase
         }
     }
 
-    protected override IEnumerator Run()
+    public IEnumerator Run()
     {
-        // call base class
-        base.Run();
+        string text = "Got away safely!";
+        DialogueController.Instance.BattleDialogue(this, text, false);
+
+        // end battle
+        yield return new WaitForSeconds(1.5f);
+
+        // TODO: add random chance of working
+        if (Opponent)
+            Opponent.Opponent = null;
+        Opponent = null;
 
         if (CurrentCompanion)
         {
             CurrentCompanion.Opponent = null;
         }
 
-        yield return null;
+        // end battle dialogue
+        DialogueController.Instance.EndBattleDialogue();
     }
 
     public void CheckStatus()

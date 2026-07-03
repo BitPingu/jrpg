@@ -93,13 +93,17 @@ public class Enemy : FighterBase
 
         if (CurrentHealth <= 0)
         {
-            Debug.Log(name + " was defeated!");
-            StartCoroutine(Die());            
+            StartCoroutine(Die());      
         }
     }
 
     public override IEnumerator Die()
     {
+        yield return new WaitForSeconds(1.5f);
+
+        string text = "Enemy " + charName + " was defeated!";
+        DialogueController.Instance.BattleDialogue(this, text, false);
+
         // set color
         Sprite.material.SetFloat("_FlashAmount", 1f);
         float flashTime = 2f;
@@ -115,6 +119,14 @@ public class Enemy : FighterBase
             Sprite.material.SetFloat("_Alpha", currentFlashAmount);
             yield return null;
         }
+
+        // exp
+        Opponent.GetComponent<PartyBase>().GainExperience(40);
+
+        yield return new WaitForSeconds(1.5f);
+
+        // end battle dialogue
+        DialogueController.Instance.EndBattleDialogue();
 
         // Die
         Destroy(gameObject);

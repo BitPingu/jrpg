@@ -17,6 +17,7 @@ public class PartyBase : FighterBase
     public GameObject BattleHUD;
 
     private bool _battlePrompt;
+    public bool IsSparring { get; set; }
 
     protected override void Start()
     {
@@ -35,37 +36,40 @@ public class PartyBase : FighterBase
         // attack
         if (BattleTurn)
         {
-            // show HUD
-            BattleHUD.SetActive(true);
-
-            // battle dialogue
-            if (!_battlePrompt)
+            if (!IsSparring)
             {
-                string text = "What will " + charName + " do?";
-                DialogueController.Instance.BattleDialogue(this, text, true);
-                _battlePrompt = true;
-            }
+                // show HUD
+                BattleHUD.SetActive(true);
 
-            // attack
-            if (Input.E)
-            {
-                StartCoroutine(CallAttack());
-                BattleTurn = false;
-                _battlePrompt = false;
-                BattleHUD.SetActive(false);
-            }
+                // battle dialogue
+                if (!_battlePrompt)
+                {
+                    string text = "What will " + charName + " do?";
+                    DialogueController.Instance.BattleDialogue(this, text, true);
+                    _battlePrompt = true;
+                }
 
-            // run (if wild)
-            if (Opponent.GetComponent<Enemy>())
-            {
-                if (Input.Q)
-                    StartCoroutine(Run());
+                // attack
+                if (Input.E)
+                {
+                    StartCoroutine(CallAttack());
+                    EndTurn();
+                }
             }
             else
             {
-                BattleHUD.transform.Find("RunImage").gameObject.SetActive(false);
+                // act as enemy
+                StartCoroutine(CallAttack());
+                BattleTurn = false;
             }
         }
+    }
+
+    protected void EndTurn()
+    {
+        BattleTurn = false;
+        _battlePrompt = false;
+        BattleHUD.SetActive(false);
     }
 
     public override void Damage(int damageAmount)
@@ -73,18 +77,35 @@ public class PartyBase : FighterBase
         // call base class
         base.Damage(damageAmount);
 
-        if (CurrentHealth <= 0)
+        if (CurrentHealth <= 0 && IsSparring)
         {
-            // TODO: temp exit battle state
-            // Opponent.Opponent = null;
-            // Opponent = null;
-            // StartCoroutine(Die());
+            StartCoroutine(Defeat());
         }
+    }
+
+    public IEnumerator Defeat()
+    {
+        yield return new WaitForSeconds(1.5f);
+        Anim.Rebind();
+        Anim.enabled = false;
+
+        string text = charName + " was defeated!";
+        DialogueController.Instance.BattleDialogue(this, text, false);
+
+        yield return new WaitForSeconds(1.5f);
+
+        // exp
+        Opponent.GetComponent<Player>().GainExperience(40);
+
+        yield return new WaitForSeconds(1.5f);
+
+        // end battle dialogue
+        DialogueController.Instance.EndBattleDialogue();
     }
 
     public override IEnumerator Die()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         string text = charName + " was defeated!";
         DialogueController.Instance.BattleDialogue(this, text, false);
@@ -115,7 +136,7 @@ public class PartyBase : FighterBase
 
         // update health bar
         EBar.UpdateBar(_maxExp, _currentExp);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         EBar.gameObject.GetComponent<Image>().enabled = false;
     }
@@ -147,18 +168,6 @@ public class PartyBase : FighterBase
         Sprite.material.SetColor("_FlashColor", Color.white);
 
         EBar.UpdateBar(_maxExp, _currentExp);
-    }
-
-    protected virtual IEnumerator Run()
-    {
-        // end battle
-        // delay
-        yield return new WaitForSeconds(1f);
-
-        // TODO: add random chance of working
-        if (Opponent)
-            Opponent.Opponent = null;
-        Opponent = null;
     }
 }
 

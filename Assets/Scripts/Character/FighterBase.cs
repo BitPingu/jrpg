@@ -55,7 +55,7 @@ public class FighterBase : CharacterBase
 
         StartCoroutine(Attack());
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         // opponent turn
         if (Opponent)
@@ -103,9 +103,6 @@ public class FighterBase : CharacterBase
         // take damage
         CurrentHealth -= damageAmount;
 
-        // damage sound
-        SFXManager.Play(_hitSound);
-
         // damage flash
         CallDamageFlash();
 
@@ -126,6 +123,8 @@ public class FighterBase : CharacterBase
 
     public void CallDamageFlash()
     {
+        // damage sound
+        SFXManager.Play(_hitSound);
         StartCoroutine(DamageFlash());
     }
 

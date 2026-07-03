@@ -17,8 +17,11 @@ public class BattleState : StateBase
     {
         base.EnterState();
 
-        // camera
-        CameraController.Instance.follow = false;
+        if (_fighter.GetComponent<Player>())
+        {
+            // camera
+            CameraController.Instance.follow = false;
+        }
 
         // battle anim
         if (_fighter.GetComponent<PartyBase>())
@@ -27,16 +30,9 @@ public class BattleState : StateBase
         // show health bar
         _fighter.HBar.gameObject.GetComponent<Image>().enabled = true;
 
-        // Player goes first
-        _fighter.BattleTurn = false;
-        // TODO: compare speed with enemy
-        // if faster, can attack again (first)? else enemy attacks first
-        if (_fighter.GetComponent<Player>())
-            _fighter.BattleTurn = true;
-
+        if (_fighter.GetComponent<Player>() == null)
+            _fighter.BattleTurn = false;
         _fighter.WinBattle = false;
-
-        Debug.Log(_fighter.name + " engages " + _fighter.Opponent.name + ".");
     }
 
     // code that runs when we exit the state
@@ -44,8 +40,11 @@ public class BattleState : StateBase
     {
         base.ExitState();
 
-        // camera
-        CameraController.Instance.follow = true;
+        if (_fighter.GetComponent<Player>())
+        {
+            // camera
+            CameraController.Instance.follow = true;
+        }
 
         // battle anim
         if (_fighter.GetComponent<PartyBase>())

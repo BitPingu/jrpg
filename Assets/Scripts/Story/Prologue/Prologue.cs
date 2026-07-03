@@ -19,7 +19,7 @@ public class Prologue : ChapterBase
     public override void BeginChapter()
     {
         // TODO: temp
-        _fiona.Join(_player);
+        // _fiona.Join(_player);
 
         UpdateDialogue(0); // init dialogue
         base.BeginChapter();

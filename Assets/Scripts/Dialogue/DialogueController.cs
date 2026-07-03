@@ -96,7 +96,7 @@ public class DialogueController : MonoBehaviour
         // hide dialogue
         ShowDialogueUI(false);
 
-        OnBattleDialogueFinish(); // call delegates
+        OnBattleDialogueFinish?.Invoke(); // call delegates
     }
 
     private void ShowDialogueUI(bool show)
@@ -172,7 +172,10 @@ public class DialogueController : MonoBehaviour
     private void SetCharInfo(string charName, Dictionary<string, Sprite> portraits)
     {
         _nameText.text = charName;
-        _portraitImage.sprite = portraits[_currentDialogue.reaction];
+        if (_currentDialogue != null)
+            _portraitImage.sprite = portraits[_currentDialogue.reaction];
+        else
+            _portraitImage.sprite = portraits[""];
     }
 
     private void SetDialogueText(string text)

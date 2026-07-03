@@ -66,6 +66,9 @@ public class SparringMatch : EventBase
 
         PlayerChar.Opponent = Fiona;
         Fiona.Opponent = PlayerChar;
+
+        // Player goes first
+        PlayerChar.BattleTurn = true;
     }
 
     private void FinishMatch()
@@ -81,7 +84,10 @@ public class SparringMatch : EventBase
         Fiona.IsSparring = false;
 
         PlayerChar.StateMachine.End(); // stop movement (and combat)
-        Debug.Log("opponent?" + PlayerChar.Opponent + " and " + Fiona.Opponent);
+
+        // rest TODO: move this part to the inn tutorial?
+        PlayerChar.Heal(PlayerChar.MaxHealth);
+        Fiona.Heal(Fiona.MaxHealth);
 
         // start dialogue
         DialogueController.Instance.StartDialogue(_chiefDialogue2, new List<CharacterBase>{Chief, Fiona});

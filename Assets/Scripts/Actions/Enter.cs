@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enter : MonoBehaviour
@@ -6,11 +7,18 @@ public class Enter : MonoBehaviour
     private GameObject _activeIcon;
     [SerializeField] private Transform _location;
     [SerializeField] private bool _faceRight;
+    [SerializeField] private Dialogue _dialogue;
     [SerializeField] private GameObject _icon;
     [SerializeField] private AudioClip _sound;
     [SerializeField] private float _pitch = 1f;
 
     private bool _transition;
+
+    private void Start()
+    {
+        // set dialogue delegates
+        DialogueController.Instance.OnDialogueFinish += FinishEnter;
+    }
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
@@ -45,7 +53,17 @@ public class Enter : MonoBehaviour
         {
             if (_detectPlayer.Input.E && _detectPlayer.CanEnter)
             {
-                ScreenTransition();
+                if (_location == null)
+                {
+                    _detectPlayer.StateMachine.End(); // disable movement
+                    _activeIcon.SetActive(false);
+                    // start dialogue
+                    DialogueController.Instance.StartDialogue(_dialogue, new List<CharacterBase>{_detectPlayer});
+                }
+                else
+                {
+                    ScreenTransition();
+                }
             }
             else if (_detectPlayer.Input.E && !_detectPlayer.CanEnter)
             {
@@ -106,5 +124,13 @@ public class Enter : MonoBehaviour
         _transition = false;
 
         player.StateMachine.Initialize(player.IdleState); // enable movement
+    }
+
+    private void FinishEnter()
+    {
+        if (!_detectPlayer)
+            return;
+
+        _detectPlayer.StateMachine.Initialize(_detectPlayer.IdleState); // enable movement
     }
 }

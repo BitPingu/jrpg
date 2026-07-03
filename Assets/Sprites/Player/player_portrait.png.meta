@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 71c92ea8ce1b04ee1a1be475c7a9f91e
+guid: c93ad599bf58b4d3dad1db800b0d3dd4
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -116,9 +116,9 @@ TextureImporter:
       name: player_portrait 1_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 30
+        width: 31
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
