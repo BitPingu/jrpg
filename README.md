@@ -1,8 +1,8 @@
-# jrpg
+# Mundo
 
-This is a WIP game that incorporates elements from other games of the JRPG genre I've played which I am a huge fan of, such as Pokémon, Xenoblade Chronicles, and Chrono Trigger.
+This is a work-in-progress RPG inspired by some of my favourite games, including Pokémon, Xenoblade Chronicles, and Chrono Trigger. It combines gameplay mechanics and design ideas that I enjoy while exploring an original world ("Mundo"), story, and combat system.
 
-A continuation of my [other project,](https://github.com/BitPingu/isekai) but with much more emphasis on story and gameplay mechanics.
+Building on my previous project, [Isekai,](https://github.com/BitPingu/isekai) this iteration emphasizes narrative, world-building, and gameplay mechanics rather than procedural generation and experimentation.
 
 ## Acknowledgements
 - [Brackeys](https://www.youtube.com/channel/UCYbK_tjZ2OrIZFBvU6CCMiA) for general game development tutorials
