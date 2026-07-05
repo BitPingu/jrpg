@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Companion : PartyBase
@@ -6,19 +7,33 @@ public class Companion : PartyBase
     public Player Leader { get; set; }
 
     [SerializeField] private float _followDistance = 1f;
+    [SerializeField] private Dialogue _afterBattleDialogue;
+    public bool SpeakAfterBattle { get; set; }
+
+    protected override void Start()
+    {
+        // call base class
+        base.Start();
+
+        // set dialogue delegates
+        DialogueController.Instance.OnBattleDialogueFinish += AfterBattle;
+    }
 
     public override void Idle()
     {
         // call base class
         base.Idle();
 
-        if (Leader)
+        if (!Leader.IsAttacking)
         {
-            Follow();
-        }
-        else
-        {
-            Move(Vector2.zero);
+            if (Leader)
+            {
+                Follow();
+            }
+            else
+            {
+                Move(Vector2.zero);
+            }
         }
     }
 
@@ -39,26 +54,43 @@ public class Companion : PartyBase
             Move(Vector2.zero);
     }
 
-    public void CallBattlePos(Vector3 playerAttackPos)
+    public IEnumerator Engage(Vector3 playerAttackPos, float distanceFromEnemy, Vector3 enemyPos)
     {
-        StartCoroutine(BattlePos(playerAttackPos));
-    }
+        // get angle of player attack position in radians
+        Vector2 offsetFromCenter = playerAttackPos - enemyPos;
+        float currentAngle = Mathf.Atan2(offsetFromCenter.y, offsetFromCenter.x);
 
-    private IEnumerator BattlePos(Vector3 playerAttackPos)
-    {
-        Vector3 attackDir = (Opponent.transform.position - playerAttackPos).normalized;
-        Vector3 attackPos = (Opponent.transform.position - (attackDir*2.5f)) + Leader.transform.up;
+        // add offset in radians
+        float angleOffsetDegrees = 45f;
+        float newAngle = currentAngle + (angleOffsetDegrees * Mathf.Deg2Rad);
 
-        // go to pos
-        float _distance = Vector2.Distance(attackPos, transform.position);
-        while (_distance > 0.1f)
+        // new position on circumference
+        float targetX = enemyPos.x + (distanceFromEnemy * Mathf.Cos(newAngle));
+        float targetY = enemyPos.y + (distanceFromEnemy * Mathf.Sin(newAngle));
+        Vector3 attackPos = new Vector3(targetX, targetY);
+        
+        // move to point
+        float distance = Vector2.Distance(attackPos, transform.position);
+        while (distance > 0.1f && Leader.Opponent != null)
         {
-            _distance = Vector2.Distance(attackPos, transform.position);
+            distance = Vector2.Distance(attackPos, transform.position);
             Move(attackPos - transform.position);
             yield return new WaitForFixedUpdate();
         }
 
-        Move(Vector2.zero);
+        Opponent = Leader.Opponent;
+    }
+
+    private void AfterBattle()
+    {
+        if (SpeakAfterBattle)
+            StartCoroutine(AfterBattleDialogue());
+    }
+
+    private IEnumerator AfterBattleDialogue()
+    {
+        yield return new WaitForSeconds(1f);
+        SecondaryDialogueController.Instance.StartDialogue(_afterBattleDialogue, new List<CharacterBase>{this});
     }
 }
 

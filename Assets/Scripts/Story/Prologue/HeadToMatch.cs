@@ -45,8 +45,6 @@ public class HeadToMatch : EventBase
 
     private void Update()
     {
-        float chiefDistance = Vector2.Distance(Chief.transform.position, PlayerChar.transform.position);
-
         // setup before next event
         if (_inPos == 2)
         {
@@ -64,6 +62,7 @@ public class HeadToMatch : EventBase
         }
 
         // target reached
+        float chiefDistance = Vector2.Distance(Chief.transform.position, PlayerChar.transform.position);
         if (!_reached && chiefDistance < 1.5f)
         {
             PlayerChar.StateMachine.End(); // stop movement

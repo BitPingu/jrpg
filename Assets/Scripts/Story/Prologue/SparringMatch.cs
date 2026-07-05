@@ -74,9 +74,7 @@ public class SparringMatch : EventBase
     private void FinishMatch()
     {
         if (!Fiona.IsSparring)
-        {
             return;
-        }
 
         PlayerChar.Opponent = null;
         Fiona.Opponent = null;

@@ -5,17 +5,35 @@ public class Enemy : FighterBase
 {
     public float SightRadius;
     public LayerMask playerLayer;
-    private Vector2 _curDir;
+    [SerializeField] private Vector2 _spawnPoint;
+    [SerializeField] private float _spawnRange = 3f;
+    private Vector2 _curDir, _curPoint;
     private float _moveCounter, _waitCounter, _waitTime;
+    [SerializeField] private float _minWaitTime = 3f, _maxWaitTime = 5f;
+
+    protected override void Start()
+    {
+        // call base class
+        base.Start();
+
+        // set spawn
+        transform.position = _spawnPoint;
+
+        // set wait time
+        _waitCounter = _minWaitTime;
+    }
 
     public void SetRandomDir()
     {
-        // choose random direction
-        _curDir.x = Random.Range(-1f, 1f);
-        _curDir.y = Random.Range(-1f, 1f);
+        // choose random point from spawn
+        _curPoint = _spawnPoint + Random.insideUnitCircle * _spawnRange;
+
+        // direction to point
+        _curDir.x = _curPoint.x - transform.position.x;
+        _curDir.y = _curPoint.y - transform.position.y;
 
         // choose random wait time
-        _waitTime = Random.Range(3f, 5f);
+        _waitTime = Random.Range(_minWaitTime, _maxWaitTime);
     }
 
     public void InterruptIdle()
@@ -29,13 +47,19 @@ public class Enemy : FighterBase
         // call base class
         base.Idle();
 
+        Patrol();
+    }
+
+    private void Patrol()
+    {
         if (_moveCounter > 0)
         {
             // update move counter
             _moveCounter -= Time.deltaTime;
 
             // stop
-            if (_moveCounter < 0.1f)
+            float distance = Vector2.Distance(_curPoint, transform.position);
+            if (_moveCounter < 0.1f || distance < .1f)
                 _waitCounter = _waitTime;
         }
         else

@@ -75,15 +75,16 @@ public class Player : PartyBase
         Opponent = enemy;
 
         Vector3 attackDir = (Opponent.transform.position - transform.position).normalized;
-        Vector3 attackPos = Opponent.transform.position - (attackDir*1.5f);
+        float distanceFromEnemy = 1.5f;
+        Vector3 attackPos = Opponent.transform.position - (attackDir*distanceFromEnemy);
 
         IsAttacking = true;
 
         // go to enemy
-        float _distance = Vector2.Distance(Opponent.transform.position, transform.position);
-        while (_distance > 0.7f)
+        float distance = Vector2.Distance(Opponent.transform.position, transform.position);
+        while (distance > 0.7f)
         {
-            _distance = Vector2.Distance(Opponent.transform.position, transform.position);
+            distance = Vector2.Distance(Opponent.transform.position, transform.position);
             Move(Opponent.transform.position - transform.position);
             yield return new WaitForFixedUpdate();
         }
@@ -94,7 +95,7 @@ public class Player : PartyBase
         // companion engage
         if (CurrentCompanion && !CurrentCompanion.IsSparring)
         {
-            CurrentCompanion.Opponent = Opponent;
+            StartCoroutine(CurrentCompanion.Engage(attackPos, distanceFromEnemy, enemy.transform.position));
         }
 
         // trigger battle with enemy
@@ -102,10 +103,10 @@ public class Player : PartyBase
         Opponent.CallDamageFlash();
 
         // return to pos
-        _distance = Vector2.Distance(attackPos, transform.position);
-        while (_distance > 0.1f)
+        distance = Vector2.Distance(attackPos, transform.position);
+        while (distance > 0.1f)
         {
-            _distance = Vector2.Distance(attackPos, transform.position);
+            distance = Vector2.Distance(attackPos, transform.position);
             Move(attackPos - transform.position);
             yield return new WaitForFixedUpdate();
         }
