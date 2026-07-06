@@ -14,17 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Oh look! There's an enemy Slime!
-    reaction: 
-    choices: []
-    redirectDialogueIndex: -1
-  - charName: Fiona
-    line: Let's take it out!
-    reaction: 
-    choices: []
-    redirectDialogueIndex: -1
-  - charName: 
-    line: To engage in enemy combat, approach the enemy and press E.
+    line: We did it! Let's see if we can hunt down more around the area.
     reaction: 
     choices: []
     redirectDialogueIndex: -1

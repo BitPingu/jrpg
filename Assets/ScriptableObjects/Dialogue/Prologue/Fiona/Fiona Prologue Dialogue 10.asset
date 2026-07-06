@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: Let's head to the forest!
-    reaction: 
+    line: What are you doing? We can't leave the slime here!
+    reaction: surprised
     choices: []
     redirectDialogueIndex: -1

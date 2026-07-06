@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Chief Vandham
-    line: Now that you two are here, I have a special request from both of you.
+    line: Now that you two are here, I have a favor to ask from both of you.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
@@ -24,7 +24,7 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Chief Vandham
-    line: The nearby forest has been quite overridden with wild slimes lately.
+    line: Wild slimes have been growing quite restless in the nearby forest.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
@@ -45,13 +45,13 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Chief Vandham
-    line: You two have shown me your strength and the way you fight. I see potential
+    line: You two have shown me your strength in the way you fight. I see potential
       in both of you.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
   - charName: Chief Vandham
-    line: I believe that you two will succeed. Think of it as a training exercise.
+    line: Thus, I shall assign this task to you both. I trust that you two will succeed.
     reaction: 
     choices: []
     redirectDialogueIndex: -1

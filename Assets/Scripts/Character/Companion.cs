@@ -7,7 +7,7 @@ public class Companion : PartyBase
     public Player Leader { get; set; }
 
     [SerializeField] private float _followDistance = 1f;
-    [SerializeField] private Dialogue _afterBattleDialogue;
+    [SerializeField] private Dialogue _afterBattleDialogue, _levelDialogue;
     public bool SpeakAfterBattle { get; set; }
 
     protected override void Start()
@@ -24,16 +24,9 @@ public class Companion : PartyBase
         // call base class
         base.Idle();
 
-        if (!Leader.IsAttacking)
+        if (Leader && !Leader.IsAttacking)
         {
-            if (Leader)
-            {
-                Follow();
-            }
-            else
-            {
-                Move(Vector2.zero);
-            }
+            Follow();
         }
     }
 
@@ -79,6 +72,7 @@ public class Companion : PartyBase
         }
 
         Opponent = Leader.Opponent;
+        Opponents.Add(Leader.Opponent);
     }
 
     private void AfterBattle()
@@ -89,8 +83,18 @@ public class Companion : PartyBase
 
     private IEnumerator AfterBattleDialogue()
     {
+        Dialogue dialogue;
+        if (LeveledUp)
+        {
+            dialogue = _levelDialogue;
+            LeveledUp = false;
+        }
+        else
+        {
+            dialogue = _afterBattleDialogue;
+        }
         yield return new WaitForSeconds(1f);
-        SecondaryDialogueController.Instance.StartDialogue(_afterBattleDialogue, new List<CharacterBase>{this});
+        SecondaryDialogueController.Instance.StartDialogue(dialogue, new List<CharacterBase>{this});
     }
 }
 

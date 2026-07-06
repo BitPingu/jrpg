@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FighterBase : CharacterBase
@@ -6,6 +7,7 @@ public class FighterBase : CharacterBase
     // battle state
     public StateBase BattleState { get; set; }
     public FighterBase Opponent { get; set; }
+    public List<FighterBase> Opponents = new List<FighterBase>();
 
     // stats
     public int Level = 1;
@@ -58,8 +60,8 @@ public class FighterBase : CharacterBase
         yield return new WaitForSeconds(1.5f);
 
         // opponent turn
-        if (Opponent)
-            Opponent.BattleTurn = true;
+        if (Opponents[0])
+            Opponents[0].BattleTurn = true;
     }
 
     protected virtual IEnumerator Attack()

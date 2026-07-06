@@ -105,6 +105,28 @@ public class Enemy : FighterBase
         // attack
         if (BattleTurn)
         {
+            // choose target
+            // current strat: prioritize opponents <= 50% health
+            Opponent = Opponents[0];
+
+            if (Opponents.Count > 1)
+            {
+                bool priority = false;
+                foreach (FighterBase opponent in Opponents)
+                {
+                    if (opponent.CurrentHealth <= opponent.MaxHealth / 2)
+                    {
+                        Opponent = opponent;
+                        priority = true;
+                        break;
+                    }
+                }
+                if (!priority && Random.value < .5f)
+                {
+                    Opponent = Opponents[1];
+                }                
+            }
+
             StartCoroutine(CallAttack());
             BattleTurn = false;
         }
@@ -130,7 +152,7 @@ public class Enemy : FighterBase
 
         // set color
         Sprite.material.SetFloat("_FlashAmount", 1f);
-        float flashTime = 2f;
+        float flashTime = 1.5f;
 
         float currentFlashAmount;
         float elapsedTime = 0f;
@@ -145,9 +167,14 @@ public class Enemy : FighterBase
         }
 
         // exp
-        Opponent.GetComponent<PartyBase>().GainExperience(40);
-
-        yield return new WaitForSeconds(1.5f);
+        foreach (PartyBase opponent in Opponents)
+        {
+            opponent.GainExperience(40);
+            opponent.Opponents.Clear();
+            yield return new WaitForSeconds(1.5f);
+            if (opponent.LeveledUp)
+                yield return new WaitForSeconds(1.5f);
+        }
 
         // end battle dialogue
         DialogueController.Instance.EndBattleDialogue();

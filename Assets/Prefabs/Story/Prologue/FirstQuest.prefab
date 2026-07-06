@@ -48,4 +48,7 @@ MonoBehaviour:
   _fionaDialogue: {fileID: 11400000, guid: dda77396c85a7418fa164b6bfbc887f9, type: 2}
   _momDialogue: {fileID: 11400000, guid: 5e4044f5ba1624f2d88c2210ec0d2731, type: 2}
   _slimeDialogue: {fileID: 11400000, guid: 76d4367af9a9a484d91bd1583a842004, type: 2}
+  _fionaDialogue2: {fileID: 11400000, guid: f863bc52012bb4af497d7b5441180c12, type: 2}
+  _outBoundsDialogue: {fileID: 11400000, guid: c31b4e231ab9a4ccdad50cc533309b79, type: 2}
   _slimeDialogue2: {fileID: 11400000, guid: 0feb00a6f53514461b077f991e230b3d, type: 2}
+  _fionaDialogue3: {fileID: 11400000, guid: 2fb32ec0264ee4c8d8df4ffdad8dd193, type: 2}

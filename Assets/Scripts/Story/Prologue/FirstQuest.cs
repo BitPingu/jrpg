@@ -9,13 +9,14 @@ public class FirstQuest : EventBase
     public Villager Chief { get; set; }
     public Villager Mom { get; set; }
     public Enemy SlimeChar { get; set; }
-    [SerializeField] private Dialogue _fionaDialogue, _momDialogue, _slimeDialogue, _slimeDialogue2;
-    private bool _encounter, _slimeDialogue2Active;
+    [SerializeField] private Dialogue _fionaDialogue, _momDialogue, _slimeDialogue, _fionaDialogue2, _outBoundsDialogue, _slimeDialogue2, _fionaDialogue3;
+    private bool _encounter, _outBounds, _firstSlimeDefeat, _slimeDialogue2Active;
 
     private void Start()
     {
         // set dialogue delegates
         DialogueController.Instance.OnDialogueFinish += SlimeEncounter;
+        DialogueController.Instance.OnDialogueFinish += OutOfBounds;
         DialogueController.Instance.OnBattleDialogueFinish += SlimeDefeat;
         DialogueController.Instance.OnDialogueFinish += SlimeDefeat2;
         // DialogueController.Instance.OnDialogueFinish += FinishEvent;
@@ -53,35 +54,70 @@ public class FirstQuest : EventBase
 
                 _encounter = true;
             }
+            if (_encounter && slimeDistance > 5f && PlayerChar.StateMachine.CurrentState == PlayerChar.IdleState)
+            {
+                PlayerChar.StateMachine.End(); // stop movement
+
+                Fiona.Face(PlayerChar);
+                Fiona.Anim.Rebind();
+                Fiona.Anim.enabled = false;
+
+                // start dialogue
+                DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
+                _outBounds = true;
+            }
         }
     }
 
     private void SlimeEncounter()
     {
-        if (SlimeChar == null || !_encounter || DialogueController.Instance.IsDialogueActive)
+        if (!_encounter || _outBounds || SlimeChar == null)
             return;
-        
+
         CameraController.Instance.target = PlayerChar.transform;
 
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState);
         Fiona.StateMachine.Initialize(Fiona.IdleState);
 
         Fiona.Anim.enabled = true;
+        Fiona.CurrentDialogue = _fionaDialogue2;
+    }
+
+    private void OutOfBounds()
+    {
+        if (!_outBounds)
+            return;
+
+        _outBounds = false;
+
+        Fiona.Anim.enabled = true;
+        StartCoroutine(GoBack(PlayerChar));
+    }
+
+    private IEnumerator GoBack(Player player)
+    {
+        player.Face(SlimeChar);
+
+        Vector3 returnPos = SlimeChar.transform.position;
+
+        // go back
+        float _distance = Vector2.Distance(returnPos, player.transform.position);
+        while (_distance > 2f)
+        {
+            _distance = Vector2.Distance(returnPos, player.transform.position);
+            player.Move(returnPos - player.transform.position);
+            yield return new WaitForFixedUpdate();
+        }
+
+        player.StateMachine.Initialize(player.IdleState); // enable movement
     }
 
     private void SlimeDefeat()
     {
-        StartCoroutine(DelaySlimeDefeat());
-    }
+        if ((SlimeChar && SlimeChar.Opponent == null) || _firstSlimeDefeat)
+            return;
 
-    private IEnumerator DelaySlimeDefeat()
-    {
-        yield return new WaitForSeconds(.1f);
-
-        if (SlimeChar || !_encounter)
-            yield break;
-
-        _encounter = false;
+        _firstSlimeDefeat = true;
 
         PlayerChar.StateMachine.End(); // stop movement
         PlayerChar.Face(Fiona);
@@ -127,6 +163,7 @@ public class FirstQuest : EventBase
         _slimeDialogue2Active = false;
 
         Fiona.SpeakAfterBattle = true;
+        Fiona.CurrentDialogue = _fionaDialogue3;
     }
 
     private void FinishEvent()

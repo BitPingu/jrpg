@@ -299,6 +299,8 @@ public class DialogueController : MonoBehaviour
         // reset conditions
         IsDialogueActive = false;
         _autoProgress = false;
+        _currentDialogue = null;
+
         OnDialogueFinish(); // call delegates
     }
 }

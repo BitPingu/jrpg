@@ -17,6 +17,15 @@ public class Player : PartyBase
     public bool StatusOn { get; set; }
     [SerializeField] private GameObject _inventoryBox;
 
+    protected override void Start()
+    {
+        // call base class
+        base.Start();
+
+        // set dialogue delegates
+        DialogueController.Instance.OnBattleDialogueFinish += AfterBattle;
+    }
+
     protected override void Update()
     {
         // call base class
@@ -55,15 +64,15 @@ public class Player : PartyBase
         if (BattleTurn)
         {
             // run (if wild)
-            if (Opponent.GetComponent<Enemy>())
-            {
-                BattleHUD.transform.Find("RunImage").gameObject.SetActive(true);
-                if (Input.Q)
-                {
-                    StartCoroutine(Run());
-                    EndTurn();
-                }
-            }
+            // if (Opponent.GetComponent<Enemy>())
+            // {
+            //     BattleHUD.transform.Find("RunImage").gameObject.SetActive(true);
+            //     if (Input.Q)
+            //     {
+            //         StartCoroutine(Run());
+            //         EndTurn();
+            //     }
+            // }
         }
     }
 
@@ -100,6 +109,9 @@ public class Player : PartyBase
 
         // trigger battle with enemy
         Opponent.Opponent = this;
+        Opponent.Opponents.Add(this);
+        if (CurrentCompanion)
+            Opponent.Opponents.Add(CurrentCompanion);
         Opponent.CallDamageFlash();
 
         // return to pos
@@ -150,16 +162,31 @@ public class Player : PartyBase
 
         // TODO: add random chance of working
         if (Opponent)
+        {
             Opponent.Opponent = null;
+            Opponent.Opponents.Clear();
+        }
         Opponent = null;
+        Opponents.Clear();
 
         if (CurrentCompanion)
         {
             CurrentCompanion.Opponent = null;
+            CurrentCompanion.Opponents.Clear();
         }
 
         // end battle dialogue
+        CurrentCompanion.SpeakAfterBattle = false;
         DialogueController.Instance.EndBattleDialogue();
+        CurrentCompanion.SpeakAfterBattle = true;
+    }
+
+    private void AfterBattle()
+    {
+        if (LeveledUp)
+        {
+            LeveledUp = false;
+        }
     }
 
     public void CheckStatus()

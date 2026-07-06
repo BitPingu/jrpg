@@ -18,6 +18,7 @@ public class PartyBase : FighterBase
 
     private bool _battlePrompt;
     public bool IsSparring { get; set; }
+    public bool LeveledUp { get; set; }
 
     protected override void Start()
     {
@@ -143,6 +144,8 @@ public class PartyBase : FighterBase
 
     private IEnumerator LevelUp()
     {
+        LeveledUp = true;
+
         // increase level
         Level++;
 
@@ -159,15 +162,19 @@ public class PartyBase : FighterBase
         yield return new WaitForSeconds(.3f);
 
         // glow up effect
-        Debug.Log(name + " grew to level " + Level + "!");
         Sprite.material.SetColor("_FlashColor", new Color(0, 243, 255));
         CallDamageFlash();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
 
         Sprite.material.SetColor("_FlashColor", Color.white);
 
         EBar.UpdateBar(_maxExp, _currentExp);
+
+        string text = charName + " grew to level " + Level + "!";
+        DialogueController.Instance.BattleDialogue(this, text, false);
+
+        yield return new WaitForSeconds(1.5f);
     }
 }
 

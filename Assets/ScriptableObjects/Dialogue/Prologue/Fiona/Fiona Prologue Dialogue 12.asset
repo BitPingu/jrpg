@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Fiona
-    line: We did it! Let's see if there's more around the area.
+    line: There should still be some more slimes wandering around.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
