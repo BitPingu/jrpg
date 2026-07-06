@@ -115,9 +115,9 @@ public class Enter : MonoBehaviour
 
         // move characters
         player.transform.position = _location.position + new Vector3(_location.GetComponent<BoxCollider2D>().offset.x/2f, _location.GetComponent<BoxCollider2D>().offset.y/2f);
-        if (player.CurrentCompanion)
+        if (player.Allies.Count > 0 && player.Allies[0])
         {
-            player.CurrentCompanion.transform.position = new Vector2(player.transform.position.x+.3f, player.transform.position.y+.1f);
+            player.Allies[0].transform.position = new Vector2(player.transform.position.x+.3f, player.transform.position.y+.1f);
         }
 
         await Transition.Instance.FadeIn();

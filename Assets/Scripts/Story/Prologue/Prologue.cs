@@ -13,14 +13,14 @@ public class Prologue : ChapterBase
     [SerializeField] protected Player _player;
     [SerializeField] protected Companion _fiona;
     [SerializeField] protected Villager _mom, _chief, _shopkeeper;
-    [SerializeField] protected Enemy _slime;
+    [SerializeField] protected Enemy _slime, _slime1, _slime2;
     [SerializeField] protected VillagerDialogue[] _vDialogue;
     [SerializeField] protected GameObject _chiefHouse;
 
     public override void BeginChapter()
     {
         // TODO: temp
-        _fiona.Join(_player);
+        // _fiona.Join(_player);
 
         UpdateDialogue(0); // init dialogue
         base.BeginChapter();
@@ -65,6 +65,8 @@ public class Prologue : ChapterBase
             CurrentEvent.GetComponent<FirstQuest>().Chief = _chief;
             CurrentEvent.GetComponent<FirstQuest>().Mom = _mom;
             CurrentEvent.GetComponent<FirstQuest>().SlimeChar = _slime;
+            CurrentEvent.GetComponent<FirstQuest>().SlimeChar1 = _slime1;
+            CurrentEvent.GetComponent<FirstQuest>().SlimeChar2 = _slime2;
         }
     }
 

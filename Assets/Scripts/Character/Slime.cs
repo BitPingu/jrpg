@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Slime : Enemy
 {
-    // public AbilityStateMachine Lunge;
+    public Slime Leader { get; set; }
 
     protected override void Awake()
     {

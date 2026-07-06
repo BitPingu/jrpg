@@ -20,7 +20,7 @@ public class Elf : Companion
         GameObject proj = Instantiate(_projectile, projPos, Quaternion.identity);
 
         // launch projectile at opponent
-        Vector3 opPos = Opponent.transform.position+(Opponent.transform.up/2f);
+        Vector3 opPos = CurrentOpponent.transform.position+(CurrentOpponent.transform.up/2f);
         float _distance = Vector2.Distance(opPos, proj.transform.position);
         while (_distance > 0.1f)
         {
@@ -38,7 +38,7 @@ public class Elf : Companion
         yield return new WaitForSeconds(.1f);
 
         // damage
-        Opponent.Damage(Strength);
+        CurrentOpponent.Damage(Strength);
     }
 }
 

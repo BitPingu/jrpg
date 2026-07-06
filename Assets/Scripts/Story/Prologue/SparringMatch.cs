@@ -42,7 +42,7 @@ public class SparringMatch : EventBase
 
     private void Update()
     {
-        if (PlayerChar.Opponent && !_fionaHurt && Fiona.CurrentHealth <= Fiona.MaxHealth/2f)
+        if (PlayerChar.StateMachine.CurrentState == PlayerChar.BattleState && !_fionaHurt && Fiona.CurrentHealth <= Fiona.MaxHealth/2f)
         {
             // dialogue during battle
             SecondaryDialogueController.Instance.StartDialogue(_damageDialogue, new List<CharacterBase>{Fiona});
@@ -60,12 +60,13 @@ public class SparringMatch : EventBase
         // start the match
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState);
         Fiona.StateMachine.Initialize(Fiona.IdleState);
-
         Fiona.Anim.enabled = true;
+
+        Fiona.Leave(PlayerChar);
         Fiona.IsSparring = true;
 
-        PlayerChar.Opponent = Fiona;
-        Fiona.Opponent = PlayerChar;
+        PlayerChar.Opponents.Add(Fiona);
+        Fiona.Opponents.Add(PlayerChar);
 
         // Player goes first
         PlayerChar.BattleTurn = true;
@@ -76,8 +77,8 @@ public class SparringMatch : EventBase
         if (!Fiona.IsSparring)
             return;
 
-        PlayerChar.Opponent = null;
-        Fiona.Opponent = null;
+        PlayerChar.Opponents.Clear();
+        Fiona.Opponents.Clear();
 
         Fiona.IsSparring = false;
 
@@ -86,6 +87,13 @@ public class SparringMatch : EventBase
         // rest TODO: move this part to the inn tutorial?
         PlayerChar.Heal(PlayerChar.MaxHealth);
         Fiona.Heal(Fiona.MaxHealth);
+
+        StartCoroutine(DelayNextDialogue());
+    }
+
+    private IEnumerator DelayNextDialogue()
+    {
+        yield return new WaitForSeconds(.4f);
 
         // start dialogue
         DialogueController.Instance.StartDialogue(_chiefDialogue2, new List<CharacterBase>{Chief, Fiona});
@@ -101,10 +109,10 @@ public class SparringMatch : EventBase
 
         // start dialogue
         DialogueController.Instance.StartDialogue(_chiefDialogue3, new List<CharacterBase>{Chief, Fiona});
-        StartCoroutine(DelayNextDialogue());
+        StartCoroutine(DelayNextDialogue2());
     }
 
-    private IEnumerator DelayNextDialogue()
+    private IEnumerator DelayNextDialogue2()
     {
         yield return new WaitForSeconds(.4f);
         _chiefDialogue3Active = true;
@@ -164,6 +172,8 @@ public class SparringMatch : EventBase
             return;
 
         _fionaDialogueActive = false;
+
+        Fiona.Join(PlayerChar); // rejoin party
 
         EventIsDone = true; // event done
 

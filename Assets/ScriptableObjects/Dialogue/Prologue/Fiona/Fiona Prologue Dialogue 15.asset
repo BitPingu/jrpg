@@ -15,6 +15,6 @@ MonoBehaviour:
   Lines:
   - charName: Fiona
     line: Oh no! It's an ambush!
-    reaction: 
+    reaction: surprised
     choices: []
     redirectDialogueIndex: -1

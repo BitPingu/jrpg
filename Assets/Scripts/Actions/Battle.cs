@@ -6,7 +6,7 @@ public class Battle : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if (hitInfo.GetComponent<Player>() && !hitInfo.GetComponent<Player>().Opponent && !_detectPlayer)
+        if (hitInfo.GetComponent<Player>() && hitInfo.GetComponent<Player>().StateMachine.CurrentState == hitInfo.GetComponent<Player>().IdleState)
         {
             GetComponent<SpriteRenderer>().enabled = true;
             _detectPlayer = hitInfo.GetComponent<Player>();

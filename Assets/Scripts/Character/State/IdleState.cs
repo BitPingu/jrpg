@@ -33,7 +33,7 @@ public class IdleState : StateBase
         character.Idle();
 
         // battle opponent
-        if (character.GetComponent<FighterBase>() && character.GetComponent<FighterBase>().Opponent != null)
+        if (character.GetComponent<FighterBase>() && character.GetComponent<FighterBase>().Opponents.Count > 0)
             character.StateMachine.ChangeState(character.GetComponent<FighterBase>().BattleState);
     }
 }

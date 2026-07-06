@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleState : StateBase
@@ -29,9 +30,11 @@ public class BattleState : StateBase
         // show health bar
         _fighter.HBar.gameObject.GetComponent<Image>().enabled = true;
 
-        if (_fighter.GetComponent<Player>() == null)
-            _fighter.BattleTurn = false;
+        // set conditions
         _fighter.WinBattle = false;
+
+        // target first opponent
+        _fighter.SetCurrentOpponent(_fighter.Opponents[0]);
     }
 
     // code that runs when we exit the state
@@ -56,6 +59,10 @@ public class BattleState : StateBase
         {
             _fighter.GetComponent<PartyBase>().BattleHUD.SetActive(false);
         }
+
+        // reset conditions
+        _fighter.CurrentTurn = 0;
+        _fighter.BattleTurn = false;
     }
 
     public override void FrameUpdate()
@@ -63,11 +70,11 @@ public class BattleState : StateBase
         base.FrameUpdate();
 
         // battle
-        if (_fighter.Opponent != null)
+        if (_fighter.Opponents.Count > 0)
             _fighter.Battle();
 
         // exit battle
-        if (_fighter.Opponent == null)
+        if (_fighter.Opponents.Count == 0)
             character.StateMachine.ChangeState(character.IdleState);
 
         // death

@@ -19,7 +19,12 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: 0
   - charName: Fiona
-    line: Oh, we are not done yet.
+    line: Oh, we are not done yet...
+    reaction: surprised
+    choices: []
+    redirectDialogueIndex: 0
+  - charName: Fiona
+    line: Ely! Let's head back out!
     reaction: surprised
     choices: []
     redirectDialogueIndex: 0

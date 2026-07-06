@@ -40,7 +40,7 @@ public class TalkToMom : EventBase
     {
         // react
         Vector2 iconPos = new Vector2(Mom.transform.position.x, Mom.transform.position.y+1f);
-        GameObject _activeIcon = Instantiate(_reactIcon, iconPos, Quaternion.identity, PlayerChar.transform);
+        GameObject _activeIcon = Instantiate(_reactIcon, iconPos, Quaternion.identity, Mom.transform);
         yield return new WaitForSeconds(1f);
         Destroy(_activeIcon);
 

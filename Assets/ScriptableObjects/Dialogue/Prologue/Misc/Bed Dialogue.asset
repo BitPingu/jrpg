@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Ely
-    line: Can't sleep...
+    line: (Can't sleep...)
     reaction: 
     choices: []
     redirectDialogueIndex: -1

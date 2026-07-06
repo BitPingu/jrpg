@@ -45,10 +45,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EventIsDone: 0
+  _reactIcon: {fileID: 1370079434887590053, guid: 5d27e80fd1cab443baabf7900c995fc8, type: 3}
   _fionaDialogue: {fileID: 11400000, guid: dda77396c85a7418fa164b6bfbc887f9, type: 2}
   _momDialogue: {fileID: 11400000, guid: 5e4044f5ba1624f2d88c2210ec0d2731, type: 2}
   _slimeDialogue: {fileID: 11400000, guid: 76d4367af9a9a484d91bd1583a842004, type: 2}
   _fionaDialogue2: {fileID: 11400000, guid: f863bc52012bb4af497d7b5441180c12, type: 2}
   _outBoundsDialogue: {fileID: 11400000, guid: c31b4e231ab9a4ccdad50cc533309b79, type: 2}
   _slimeDialogue2: {fileID: 11400000, guid: 0feb00a6f53514461b077f991e230b3d, type: 2}
+  _afterBattleDialogue: {fileID: 11400000, guid: 0fe9e2073025d4a99b0f54349554c726, type: 2}
   _fionaDialogue3: {fileID: 11400000, guid: 2fb32ec0264ee4c8d8df4ffdad8dd193, type: 2}
+  _ambushDialogue: {fileID: 11400000, guid: f2a3a277ce8404446bd5ba283e55a17c, type: 2}
+  _afterAmbushDialogue: {fileID: 11400000, guid: 2b7bb45d47dbd470c9172fd80bd103f3, type: 2}

@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class Player : PartyBase
 {
-    public Companion CurrentCompanion { get; set; }
-
     // conditions
     public bool CanEnter { get; set; }
     public bool IsEntering { get; set; }
@@ -81,38 +79,44 @@ public class Player : PartyBase
         string text = charName + " engages enemy " + enemy.charName + ".";
         DialogueController.Instance.BattleDialogue(this, text, false);
 
-        Opponent = enemy;
+        Opponents.Add(enemy);
+        foreach (Enemy opponent in enemy.Allies)
+        {
+            Opponents.Add(opponent);
+        }
 
-        Vector3 attackDir = (Opponent.transform.position - transform.position).normalized;
+        Vector3 attackDir = (enemy.transform.position - transform.position).normalized;
         float distanceFromEnemy = 1.5f;
-        Vector3 attackPos = Opponent.transform.position - (attackDir*distanceFromEnemy);
+        Vector3 attackPos = enemy.transform.position - (attackDir*distanceFromEnemy);
 
         IsAttacking = true;
 
+        // companion engage
+        foreach (Companion ally in Allies)
+        {
+            if (!ally.IsSparring)
+                StartCoroutine(ally.Engage(enemy, attackPos, enemy.transform.position, distanceFromEnemy));
+        }
+
         // go to enemy
-        float distance = Vector2.Distance(Opponent.transform.position, transform.position);
+        float distance = Vector2.Distance(enemy.transform.position, transform.position);
         while (distance > 0.7f)
         {
-            distance = Vector2.Distance(Opponent.transform.position, transform.position);
-            Move(Opponent.transform.position - transform.position);
+            distance = Vector2.Distance(enemy.transform.position, transform.position);
+            Move(enemy.transform.position - transform.position);
             yield return new WaitForFixedUpdate();
         }
 
         Anim.SetTrigger("Attack");
         yield return new WaitForSeconds(.1f);
-
-        // companion engage
-        if (CurrentCompanion && !CurrentCompanion.IsSparring)
-        {
-            StartCoroutine(CurrentCompanion.Engage(attackPos, distanceFromEnemy, enemy.transform.position));
-        }
+        enemy.CallDamageFlash();
 
         // trigger battle with enemy
-        Opponent.Opponent = this;
-        Opponent.Opponents.Add(this);
-        if (CurrentCompanion)
-            Opponent.Opponents.Add(CurrentCompanion);
-        Opponent.CallDamageFlash();
+        enemy.Opponents.Add(this);
+        foreach (PartyBase ally in Allies)
+        {
+            enemy.Opponents.Add(ally);
+        }
 
         // return to pos
         distance = Vector2.Distance(attackPos, transform.position);
@@ -129,29 +133,6 @@ public class Player : PartyBase
         BattleTurn = true;
     }
 
-    protected override IEnumerator CallAttack()
-    {
-        // battle dialogue
-        string text = charName + " attacks!";
-        DialogueController.Instance.BattleDialogue(this, text, false);
-
-        StartCoroutine(Attack());
-
-        yield return new WaitForSeconds(1.5f);
-
-        if (CurrentCompanion && !WinBattle)
-        {
-            // companion turn
-            CurrentCompanion.BattleTurn = true;
-        }
-        else
-        {
-            // enemy turn
-            if (Opponent != null)
-                Opponent.BattleTurn = true;
-        }
-    }
-
     public IEnumerator Run()
     {
         string text = "Got away safely!";
@@ -161,24 +142,21 @@ public class Player : PartyBase
         yield return new WaitForSeconds(1.5f);
 
         // TODO: add random chance of working
-        if (Opponent)
+        foreach (Enemy opponent in Opponents)
         {
-            Opponent.Opponent = null;
-            Opponent.Opponents.Clear();
+            opponent.Opponents.Clear();
         }
-        Opponent = null;
-        Opponents.Clear();
 
-        if (CurrentCompanion)
+        Opponents.Clear();
+        foreach (Companion ally in Allies)
         {
-            CurrentCompanion.Opponent = null;
-            CurrentCompanion.Opponents.Clear();
+            ally.Opponents.Clear();
         }
 
         // end battle dialogue
-        CurrentCompanion.SpeakAfterBattle = false;
+        Allies[0].GetComponent<Companion>().SpeakAfterBattle = false;
         DialogueController.Instance.EndBattleDialogue();
-        CurrentCompanion.SpeakAfterBattle = true;
+        Allies[0].GetComponent<Companion>().SpeakAfterBattle = true;
     }
 
     private void AfterBattle()
@@ -196,10 +174,10 @@ public class Player : PartyBase
             // show bars
             HBar.gameObject.GetComponent<Image>().enabled = true;
             EBar.gameObject.GetComponent<Image>().enabled = true;
-            if (CurrentCompanion)
+            if (Allies[0])
             {
-                CurrentCompanion.HBar.gameObject.GetComponent<Image>().enabled = true;
-                CurrentCompanion.EBar.gameObject.GetComponent<Image>().enabled = true;
+                Allies[0].HBar.gameObject.GetComponent<Image>().enabled = true;
+                Allies[0].GetComponent<Companion>().EBar.gameObject.GetComponent<Image>().enabled = true;
             }
 
             // inventory
@@ -225,10 +203,10 @@ public class Player : PartyBase
             // hide bars
             HBar.gameObject.GetComponent<Image>().enabled = false;
             EBar.gameObject.GetComponent<Image>().enabled = false;
-            if (CurrentCompanion)
+            if (Allies[0])
             {
-                CurrentCompanion.HBar.gameObject.GetComponent<Image>().enabled = false;
-                CurrentCompanion.EBar.gameObject.GetComponent<Image>().enabled = false;
+                Allies[0].HBar.gameObject.GetComponent<Image>().enabled = false;
+                Allies[0].GetComponent<Companion>().EBar.gameObject.GetComponent<Image>().enabled = false;
             }
 
             // inventory

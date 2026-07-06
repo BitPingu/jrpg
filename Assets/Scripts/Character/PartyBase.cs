@@ -92,16 +92,6 @@ public class PartyBase : FighterBase
 
         string text = charName + " was defeated!";
         DialogueController.Instance.BattleDialogue(this, text, false);
-
-        yield return new WaitForSeconds(1.5f);
-
-        // exp
-        Opponent.GetComponent<Player>().GainExperience(40);
-
-        yield return new WaitForSeconds(1.5f);
-
-        // end battle dialogue
-        DialogueController.Instance.EndBattleDialogue();
     }
 
     public override IEnumerator Die()
@@ -150,7 +140,7 @@ public class PartyBase : FighterBase
         Level++;
 
         // update stats
-        MaxHealth = Level * 40;
+        MaxHealth = Level * 20;
         CurrentHealth = MaxHealth;
         HBar.UpdateBar(MaxHealth, CurrentHealth);
         Strength = Level * 3 + 3;

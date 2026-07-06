@@ -107,8 +107,6 @@ public class Enemy : FighterBase
         {
             // choose target
             // current strat: prioritize opponents <= 50% health
-            Opponent = Opponents[0];
-
             if (Opponents.Count > 1)
             {
                 bool priority = false;
@@ -116,14 +114,14 @@ public class Enemy : FighterBase
                 {
                     if (opponent.CurrentHealth <= opponent.MaxHealth / 2)
                     {
-                        Opponent = opponent;
+                        CurrentOpponent = opponent;
                         priority = true;
                         break;
                     }
                 }
                 if (!priority && Random.value < .5f)
                 {
-                    Opponent = Opponents[1];
+                    CurrentOpponent = Opponents[1];
                 }                
             }
 
@@ -166,20 +164,9 @@ public class Enemy : FighterBase
             yield return null;
         }
 
-        // exp
-        foreach (PartyBase opponent in Opponents)
-        {
-            opponent.GainExperience(40);
-            opponent.Opponents.Clear();
-            yield return new WaitForSeconds(1.5f);
-            if (opponent.LeveledUp)
-                yield return new WaitForSeconds(1.5f);
-        }
-
-        // end battle dialogue
-        DialogueController.Instance.EndBattleDialogue();
-
         // Die
+        foreach (FighterBase ally in Allies)
+            ally.Allies.Remove(this);
         Destroy(gameObject);
     }
 

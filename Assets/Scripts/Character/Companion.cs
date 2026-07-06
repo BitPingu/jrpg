@@ -7,7 +7,8 @@ public class Companion : PartyBase
     public Player Leader { get; set; }
 
     [SerializeField] private float _followDistance = 1f;
-    [SerializeField] private Dialogue _afterBattleDialogue, _levelDialogue;
+    [SerializeField] private Dialogue _levelDialogue;
+    public Dialogue CurAfterBattleDialogue { get; set; }
     public bool SpeakAfterBattle { get; set; }
 
     protected override void Start()
@@ -24,7 +25,7 @@ public class Companion : PartyBase
         // call base class
         base.Idle();
 
-        if (Leader && !Leader.IsAttacking)
+        if (Leader && !IsAttacking)
         {
             Follow();
         }
@@ -32,10 +33,20 @@ public class Companion : PartyBase
 
     public void Join(Player player)
     {
-        player.CurrentCompanion = this;
+        player.Allies.Add(this);
+        Allies.Add(player);
         Leader = player;
         Debug.Log(name + " joins the party!");
     }
+
+    public void Leave(Player player)
+    {
+        player.Allies.Remove(this);
+        Allies.Remove(player);
+        Leader = null;
+        Debug.Log(name + " left the party!");
+    }
+
 
     private void Follow()
     {
@@ -47,7 +58,7 @@ public class Companion : PartyBase
             Move(Vector2.zero);
     }
 
-    public IEnumerator Engage(Vector3 playerAttackPos, float distanceFromEnemy, Vector3 enemyPos)
+    public IEnumerator Engage(Enemy enemy, Vector3 playerAttackPos, Vector3 enemyPos, float distanceFromEnemy)
     {
         // get angle of player attack position in radians
         Vector2 offsetFromCenter = playerAttackPos - enemyPos;
@@ -61,18 +72,24 @@ public class Companion : PartyBase
         float targetX = enemyPos.x + (distanceFromEnemy * Mathf.Cos(newAngle));
         float targetY = enemyPos.y + (distanceFromEnemy * Mathf.Sin(newAngle));
         Vector3 attackPos = new Vector3(targetX, targetY);
+
+        IsAttacking = true;
         
         // move to point
         float distance = Vector2.Distance(attackPos, transform.position);
-        while (distance > 0.1f && Leader.Opponent != null)
+        while (distance > 0.1f)
         {
             distance = Vector2.Distance(attackPos, transform.position);
             Move(attackPos - transform.position);
             yield return new WaitForFixedUpdate();
         }
 
-        Opponent = Leader.Opponent;
-        Opponents.Add(Leader.Opponent);
+        IsAttacking = false;
+
+        foreach (Enemy opponent in Leader.Opponents)
+        {
+            Opponents.Add(opponent);
+        }
     }
 
     private void AfterBattle()
@@ -83,15 +100,11 @@ public class Companion : PartyBase
 
     private IEnumerator AfterBattleDialogue()
     {
-        Dialogue dialogue;
+        Dialogue dialogue = CurAfterBattleDialogue;
         if (LeveledUp)
         {
             dialogue = _levelDialogue;
             LeveledUp = false;
-        }
-        else
-        {
-            dialogue = _afterBattleDialogue;
         }
         yield return new WaitForSeconds(1f);
         SecondaryDialogueController.Instance.StartDialogue(dialogue, new List<CharacterBase>{this});
