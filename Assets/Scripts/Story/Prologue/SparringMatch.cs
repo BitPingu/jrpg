@@ -8,6 +8,7 @@ public class SparringMatch : EventBase
     public Companion Friend { get; set; }
     public Villager Chief { get; set; }
     public GameObject House { get; set; }
+    public GameObject HouseIndoor { get; set; }
     [SerializeField] private Dialogue _chiefDialogue, _damageDialogue, _chiefDialogue2, _chiefDialogue3, _friendDialogue;
     private bool _chiefDialogueActive, _friendHurt, _chiefDialogue2Active, _chiefDialogue3Active, _friendDialogueActive;
 
@@ -32,7 +33,6 @@ public class SparringMatch : EventBase
         
         PlayerChar.Face(Chief);
         Friend.Face(Chief);
-
         Friend.Anim.enabled = false;
 
         // start chief dialogue
@@ -138,11 +138,14 @@ public class SparringMatch : EventBase
         {
             _distance = Vector2.Distance(House.transform.position, Chief.transform.position);
             Chief.Move(House.transform.position - Chief.transform.position);
+            PlayerChar.Face(Chief);
             yield return new WaitForFixedUpdate();
         }
 
         Chief.Move(Vector2.zero);
-        Chief.gameObject.SetActive(false); // TODO: temp before moving to house
+        Chief.transform.position = new Vector2(18.49f, -41.73f);
+        Chief.transform.SetParent(HouseIndoor.transform);
+        Chief.StateMachine.Initialize(Chief.IdleState);
 
         Friend.Anim.enabled = true;
         StartCoroutine(MoveFriend());
@@ -160,6 +163,9 @@ public class SparringMatch : EventBase
         }
 
         Friend.Move(Vector2.zero);
+        Friend.Anim.enabled = false;
+
+        PlayerChar.Face(Friend);
 
         // start dialogue
         DialogueController.Instance.StartDialogue(_friendDialogue, new List<CharacterBase>{Friend});

@@ -11,8 +11,9 @@ public class FirstQuest : EventBase
     public Enemy SlimeChar { get; set; }
     public Enemy SlimeChar1 { get; set; }
     public Enemy SlimeChar2 { get; set; }
+    public GameObject HouseIndoor { get; set; }
     [SerializeField] private GameObject _reactIcon;
-    [SerializeField] private Dialogue _friendDialogue, _momDialogue, _slimeDialogue, _friendDialogue2, _outBoundsDialogue, _slimeDialogue2, _afterBattleDialogue, _friendDialogue3, _ambushDialogue, _afterAmbushDialogue;
+    [SerializeField] private Dialogue _friendDialogue, _chiefDialogue, _momDialogue, _slimeDialogue, _friendDialogue2, _outBoundsDialogue, _slimeDialogue2, _afterBattleDialogue, _friendDialogue3, _ambushDialogue, _afterAmbushDialogue;
     private bool _encounter, _outBounds, _firstSlimeDefeat, _slimeDialogue2Active, _encounter2;
     private int _inPos;
 
@@ -28,10 +29,12 @@ public class FirstQuest : EventBase
 
         // set current dialogues
         Friend.CurrentDialogue = _friendDialogue;
+        Chief.CurrentDialogue = _chiefDialogue;
         Mom.CurrentDialogue = _momDialogue;
 
         // reset chief position
-        Chief.gameObject.SetActive(false); // TODO: temp before moving to house
+        Chief.transform.position = new Vector2(18.49f, -41.73f);
+        Chief.transform.SetParent(HouseIndoor.transform);
 
         // reset mom position
         Mom.transform.position = new Vector3(.73f,-43.48f,0);

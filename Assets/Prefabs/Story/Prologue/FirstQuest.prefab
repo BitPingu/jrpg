@@ -47,6 +47,7 @@ MonoBehaviour:
   EventIsDone: 0
   _reactIcon: {fileID: 1370079434887590053, guid: 5d27e80fd1cab443baabf7900c995fc8, type: 3}
   _friendDialogue: {fileID: 11400000, guid: dda77396c85a7418fa164b6bfbc887f9, type: 2}
+  _chiefDialogue: {fileID: 11400000, guid: 61bdf5a7494724573a213773ecf2c9fb, type: 2}
   _momDialogue: {fileID: 11400000, guid: 5e4044f5ba1624f2d88c2210ec0d2731, type: 2}
   _slimeDialogue: {fileID: 11400000, guid: 76d4367af9a9a484d91bd1583a842004, type: 2}
   _friendDialogue2: {fileID: 11400000, guid: f863bc52012bb4af497d7b5441180c12, type: 2}

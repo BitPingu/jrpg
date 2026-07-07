@@ -17,14 +17,14 @@ MonoBehaviour:
     line: Hm? How goes the mission?
     reaction: 
     choices: []
-    redirectDialogueIndex: 0
+    redirectDialogueIndex: -1
   - charName: Alice
     line: Oh, we are not done yet...
     reaction: surprised
     choices: []
-    redirectDialogueIndex: 0
+    redirectDialogueIndex: -1
   - charName: Alice
-    line: Ely! Let's head back out!
+    line: Ely! Let's finish the mission first!
     reaction: surprised
     choices: []
-    redirectDialogueIndex: 0
+    redirectDialogueIndex: -1

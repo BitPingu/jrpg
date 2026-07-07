@@ -15,7 +15,7 @@ public class Prologue : ChapterBase
     [SerializeField] protected Villager _mom, _chief, _shopkeeper;
     [SerializeField] protected Enemy _slime, _slime1, _slime2;
     [SerializeField] protected VillagerDialogue[] _vDialogue;
-    [SerializeField] protected GameObject _chiefHouse;
+    [SerializeField] protected GameObject _chiefHouse, _chiefHouseIndoor;
 
     public override void BeginChapter()
     {
@@ -55,6 +55,7 @@ public class Prologue : ChapterBase
             CurrentEvent.GetComponent<SparringMatch>().Friend = _friend;
             CurrentEvent.GetComponent<SparringMatch>().Chief = _chief;
             CurrentEvent.GetComponent<SparringMatch>().House = _chiefHouse;
+            CurrentEvent.GetComponent<SparringMatch>().HouseIndoor = _chiefHouseIndoor;
         }
         else if (CurrentEvent.GetComponent<FirstQuest>())
         {
@@ -67,6 +68,7 @@ public class Prologue : ChapterBase
             CurrentEvent.GetComponent<FirstQuest>().SlimeChar = _slime;
             CurrentEvent.GetComponent<FirstQuest>().SlimeChar1 = _slime1;
             CurrentEvent.GetComponent<FirstQuest>().SlimeChar2 = _slime2;
+            CurrentEvent.GetComponent<FirstQuest>().HouseIndoor = _chiefHouseIndoor;
         }
     }
 

@@ -858,11 +858,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Ely
   _portraits:
-  - sprite: {fileID: 21300000, guid: c93ad599bf58b4d3dad1db800b0d3dd4, type: 3}
+  - sprite: {fileID: 21300000, guid: d03e569bc1dd2410bbef04b4a4b96d86, type: 3}
     reaction: 
   voiceSound: {fileID: 8300000, guid: fb638b115793a403a950f41ef22ee07e, type: 3}
   voicePitch: 0.4
   _moveSpeed: 3
+  Opponents: []
+  Allies: []
   Level: 1
   MaxHealth: 20
   Strength: 6

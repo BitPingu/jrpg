@@ -24,7 +24,7 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Chief Vandham
-    line: I can see that you two have much improved since last time, well done.
+    line: I can see that you two have improved much since last time, well done.
     reaction: 
     choices: []
     redirectDialogueIndex: -1

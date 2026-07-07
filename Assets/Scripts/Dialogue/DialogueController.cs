@@ -60,6 +60,8 @@ public class DialogueController : MonoBehaviour
     {
         // set params
         _dialogue = dialogue;
+
+        // add characters
         foreach (CharacterBase character in characters)
         {
             _charsInDialogue.Add(character.charName, character);

@@ -62,8 +62,19 @@ public class Talk : MonoBehaviour
                 _detectPlayer.StateMachine.End(); // disable movement
                 _character.StateMachine.End(); // disable movement
 
+                // get characters in dialogue
+                List<CharacterBase> characters = new List<CharacterBase>{_character, _detectPlayer};
+                if (_detectPlayer.Allies.Count > 0)
+                {
+                    foreach (PartyBase ally in _detectPlayer.Allies)
+                    {
+                        if (!characters.Contains(ally))
+                            characters.Add(ally);
+                    }
+                }
+
                 // start dialogue
-                DialogueController.Instance.StartDialogue(_character.CurrentDialogue, new List<CharacterBase>{_character});
+                DialogueController.Instance.StartDialogue(_character.CurrentDialogue, characters);
             }
 
             if (!_activeIcon)
