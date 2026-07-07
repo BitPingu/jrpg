@@ -5,11 +5,11 @@ using UnityEngine;
 public class SparringMatch : EventBase
 {
     public Player PlayerChar { get; set; }
-    public Companion Fiona { get; set; }
+    public Companion Friend { get; set; }
     public Villager Chief { get; set; }
     public GameObject House { get; set; }
-    [SerializeField] private Dialogue _chiefDialogue, _damageDialogue, _chiefDialogue2, _chiefDialogue3, _fionaDialogue;
-    private bool _chiefDialogueActive, _fionaHurt, _chiefDialogue2Active, _chiefDialogue3Active, _fionaDialogueActive;
+    [SerializeField] private Dialogue _chiefDialogue, _damageDialogue, _chiefDialogue2, _chiefDialogue3, _friendDialogue;
+    private bool _chiefDialogueActive, _friendHurt, _chiefDialogue2Active, _chiefDialogue3Active, _friendDialogueActive;
 
     private void Start()
     {
@@ -22,31 +22,31 @@ public class SparringMatch : EventBase
 
         // set spawn
         PlayerChar.transform.position = new Vector2(Chief.transform.position.x+.8f, Chief.transform.position.y-1f);
-        Fiona.transform.position = new Vector2(Chief.transform.position.x-.8f, Chief.transform.position.y-1f);
+        Friend.transform.position = new Vector2(Chief.transform.position.x-.8f, Chief.transform.position.y-1f);
 
         // end states
         if (PlayerChar.StateMachine.CurrentState != null)
             PlayerChar.StateMachine.End(); // stop movement
-        if (Fiona.StateMachine.CurrentState != null)
-            Fiona.StateMachine.End(); // stop movement
+        if (Friend.StateMachine.CurrentState != null)
+            Friend.StateMachine.End(); // stop movement
         
         PlayerChar.Face(Chief);
-        Fiona.Face(Chief);
+        Friend.Face(Chief);
 
-        Fiona.Anim.enabled = false;
+        Friend.Anim.enabled = false;
 
         // start chief dialogue
-        DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief, Fiona});
+        DialogueController.Instance.StartDialogue(_chiefDialogue, new List<CharacterBase>{Chief, Friend});
         _chiefDialogueActive = true;
     }
 
     private void Update()
     {
-        if (PlayerChar.StateMachine.CurrentState == PlayerChar.BattleState && !_fionaHurt && Fiona.CurrentHealth <= Fiona.MaxHealth/2f)
+        if (PlayerChar.StateMachine.CurrentState == PlayerChar.BattleState && !_friendHurt && Friend.CurrentHealth <= Friend.MaxHealth/2f)
         {
             // dialogue during battle
-            SecondaryDialogueController.Instance.StartDialogue(_damageDialogue, new List<CharacterBase>{Fiona});
-            _fionaHurt = true;
+            SecondaryDialogueController.Instance.StartDialogue(_damageDialogue, new List<CharacterBase>{Friend});
+            _friendHurt = true;
         }
     }
 
@@ -59,14 +59,14 @@ public class SparringMatch : EventBase
 
         // start the match
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState);
-        Fiona.StateMachine.Initialize(Fiona.IdleState);
-        Fiona.Anim.enabled = true;
+        Friend.StateMachine.Initialize(Friend.IdleState);
+        Friend.Anim.enabled = true;
 
-        Fiona.Leave(PlayerChar);
-        Fiona.IsSparring = true;
+        Friend.Leave(PlayerChar);
+        Friend.IsSparring = true;
 
-        PlayerChar.Opponents.Add(Fiona);
-        Fiona.Opponents.Add(PlayerChar);
+        PlayerChar.Opponents.Add(Friend);
+        Friend.Opponents.Add(PlayerChar);
 
         // Player goes first
         PlayerChar.BattleTurn = true;
@@ -74,19 +74,19 @@ public class SparringMatch : EventBase
 
     private void FinishMatch()
     {
-        if (!Fiona.IsSparring)
+        if (!Friend.IsSparring)
             return;
 
         PlayerChar.Opponents.Clear();
-        Fiona.Opponents.Clear();
+        Friend.Opponents.Clear();
 
-        Fiona.IsSparring = false;
+        Friend.IsSparring = false;
 
         PlayerChar.StateMachine.End(); // stop movement (and combat)
 
         // rest TODO: move this part to the inn tutorial?
         PlayerChar.Heal(PlayerChar.MaxHealth);
-        Fiona.Heal(Fiona.MaxHealth);
+        Friend.Heal(Friend.MaxHealth);
 
         StartCoroutine(DelayNextDialogue());
     }
@@ -96,7 +96,7 @@ public class SparringMatch : EventBase
         yield return new WaitForSeconds(.4f);
 
         // start dialogue
-        DialogueController.Instance.StartDialogue(_chiefDialogue2, new List<CharacterBase>{Chief, Fiona});
+        DialogueController.Instance.StartDialogue(_chiefDialogue2, new List<CharacterBase>{Chief, Friend});
         _chiefDialogue2Active = true;
     }
 
@@ -108,7 +108,7 @@ public class SparringMatch : EventBase
         _chiefDialogue2Active = false;
 
         // start dialogue
-        DialogueController.Instance.StartDialogue(_chiefDialogue3, new List<CharacterBase>{Chief, Fiona});
+        DialogueController.Instance.StartDialogue(_chiefDialogue3, new List<CharacterBase>{Chief, Friend});
         StartCoroutine(DelayNextDialogue2());
     }
 
@@ -144,36 +144,36 @@ public class SparringMatch : EventBase
         Chief.Move(Vector2.zero);
         Chief.gameObject.SetActive(false); // TODO: temp before moving to house
 
-        Fiona.Anim.enabled = true;
-        StartCoroutine(MoveFiona());
+        Friend.Anim.enabled = true;
+        StartCoroutine(MoveFriend());
     }
 
-    private IEnumerator MoveFiona()
+    private IEnumerator MoveFriend()
     {
         // move to player
-        float _distance = Vector2.Distance(PlayerChar.transform.position, Fiona.transform.position);
+        float _distance = Vector2.Distance(PlayerChar.transform.position, Friend.transform.position);
         while (_distance > 0.7f)
         {
-            _distance = Vector2.Distance(PlayerChar.transform.position, Fiona.transform.position);
-            Fiona.Move(PlayerChar.transform.position - Fiona.transform.position);
+            _distance = Vector2.Distance(PlayerChar.transform.position, Friend.transform.position);
+            Friend.Move(PlayerChar.transform.position - Friend.transform.position);
             yield return new WaitForFixedUpdate();
         }
 
-        Fiona.Move(Vector2.zero);
+        Friend.Move(Vector2.zero);
 
         // start dialogue
-        DialogueController.Instance.StartDialogue(_fionaDialogue, new List<CharacterBase>{Fiona});
-        _fionaDialogueActive = true;
+        DialogueController.Instance.StartDialogue(_friendDialogue, new List<CharacterBase>{Friend});
+        _friendDialogueActive = true;
     }
 
     private void FinishEvent()
     {
-        if (!_fionaDialogueActive)
+        if (!_friendDialogueActive)
             return;
 
-        _fionaDialogueActive = false;
+        _friendDialogueActive = false;
 
-        Fiona.Join(PlayerChar); // rejoin party
+        Friend.Join(PlayerChar); // rejoin party
 
         EventIsDone = true; // event done
 

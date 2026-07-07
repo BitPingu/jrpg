@@ -29,18 +29,18 @@ public class Player : PartyBase
         // call base class
         base.Update();
 
-        if (Input.Q && StateMachine.CurrentState == IdleState && !DialogueController.Instance.IsDialogueActive)
-        {
-            StateMachine.End(); // disable movement
-            StatusOn = true;
-            CheckStatus();
-        }
-        else if (Input.Q && StatusOn)
-        {
-            StateMachine.Initialize(IdleState); // enable movement
-            StatusOn = false;
-            CheckStatus();
-        }
+        // if (Input.Q && StateMachine.CurrentState == IdleState && !DialogueController.Instance.IsDialogueActive)
+        // {
+        //     StateMachine.End(); // disable movement
+        //     StatusOn = true;
+        //     CheckStatus();
+        // }
+        // else if (Input.Q && StatusOn)
+        // {
+        //     StateMachine.Initialize(IdleState); // enable movement
+        //     StatusOn = false;
+        //     CheckStatus();
+        // }
     }
 
     public override void Idle()

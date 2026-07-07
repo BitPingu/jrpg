@@ -6,9 +6,9 @@ public class HeadToMatch : EventBase
 {
     private Player _detectPlayer;
     public Player PlayerChar { get; set; }
-    public Companion Fiona { get; set; }
+    public Companion Friend { get; set; }
     public Villager Chief { get; set; }
-    [SerializeField] private Dialogue _curFionaDialogue, _targetDialogue, _outBoundsDialogue;
+    [SerializeField] private Dialogue _curFriendDialogue, _targetDialogue, _outBoundsDialogue;
     private bool _entered, _reached;
     private int _inPos;
 
@@ -21,7 +21,7 @@ public class HeadToMatch : EventBase
         DialogueController.Instance.OnDialogueFinish += FinishEvent;
 
         // set current dialogue
-        Fiona.CurrentDialogue = _curFionaDialogue;
+        Friend.CurrentDialogue = _curFriendDialogue;
 
         // boundary spawn
         transform.position = new Vector3(-2.44f,-4.76f,0);
@@ -50,8 +50,8 @@ public class HeadToMatch : EventBase
         {
             _inPos = -1;
 
-            Fiona.Anim.Rebind();
-            Fiona.Anim.enabled = false;
+            Friend.Anim.Rebind();
+            Friend.Anim.enabled = false;
 
             EventIsDone = true; // event done
 
@@ -66,13 +66,13 @@ public class HeadToMatch : EventBase
         if (!_reached && chiefDistance < 1.5f)
         {
             PlayerChar.StateMachine.End(); // stop movement
-            Fiona.StateMachine.End(); // stop movement
+            Friend.StateMachine.End(); // stop movement
             
-            Fiona.Anim.Rebind();
-            Fiona.Anim.enabled = false;
+            Friend.Anim.Rebind();
+            Friend.Anim.enabled = false;
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_targetDialogue, new List<CharacterBase>{Friend});
 
             _reached = true;
         }
@@ -82,12 +82,12 @@ public class HeadToMatch : EventBase
         {
             _detectPlayer.StateMachine.End(); // stop movement
 
-            Fiona.Face(PlayerChar);
-            Fiona.Anim.Rebind();
-            Fiona.Anim.enabled = false;
+            Friend.Face(PlayerChar);
+            Friend.Anim.Rebind();
+            Friend.Anim.enabled = false;
 
             // start dialogue
-            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
+            DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Friend});
         }
     }
 
@@ -96,15 +96,15 @@ public class HeadToMatch : EventBase
         if (!_detectPlayer)
             return;
 
-        Fiona.Anim.enabled = true;
+        Friend.Anim.enabled = true;
         StartCoroutine(GoBack(_detectPlayer));
     }
 
     private IEnumerator GoBack(Player player)
     {
-        player.Face(Fiona);
+        player.Face(Friend);
 
-        Vector3 returnPos = Fiona.transform.position;
+        Vector3 returnPos = Friend.transform.position;
 
         // go back
         float _distance = Vector2.Distance(returnPos, player.transform.position);
@@ -124,12 +124,12 @@ public class HeadToMatch : EventBase
         // enter building check
         PlayerChar.StateMachine.End(); // stop movement
 
-        Fiona.Face(PlayerChar);
-        Fiona.Anim.Rebind();
-        Fiona.Anim.enabled = false;
+        Friend.Face(PlayerChar);
+        Friend.Anim.Rebind();
+        Friend.Anim.enabled = false;
 
         // start dialogue
-        DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Fiona});
+        DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Friend});
 
         _entered = true;
     }
@@ -140,7 +140,7 @@ public class HeadToMatch : EventBase
             return;
 
         _entered = false;
-        Fiona.Anim.enabled = true;
+        Friend.Anim.enabled = true;
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
     }
 
@@ -149,11 +149,11 @@ public class HeadToMatch : EventBase
         if (!_reached)
             return;
 
-        Fiona.Anim.enabled = true;
+        Friend.Anim.enabled = true;
 
         // before battle
         StartCoroutine(GoToBattle(PlayerChar, new Vector2(Chief.transform.position.x+.8f, Chief.transform.position.y-1f)));
-        StartCoroutine(GoToBattle(Fiona, new Vector2(Chief.transform.position.x-.8f, Chief.transform.position.y-1f)));
+        StartCoroutine(GoToBattle(Friend, new Vector2(Chief.transform.position.x-.8f, Chief.transform.position.y-1f)));
     }
 
     private IEnumerator GoToBattle(CharacterBase character, Vector3 destination)

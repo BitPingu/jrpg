@@ -18,7 +18,7 @@ MonoBehaviour:
     reaction: 
     choices: []
     redirectDialogueIndex: -1
-  - charName: Fiona
+  - charName: Alice
     line: Oh! A special request from the chief?
     reaction: 
     choices: []
@@ -39,7 +39,7 @@ MonoBehaviour:
     reaction: 
     choices: []
     redirectDialogueIndex: -1
-  - charName: Fiona
+  - charName: Alice
     line: Really chief? Are you sure? But why choose us?
     reaction: 
     choices: []
