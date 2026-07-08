@@ -97,9 +97,9 @@ public class Talk : MonoBehaviour
             _activeIcon.SetActive(true);
         }
 
-        if (_detectPlayer && (_detectPlayer.IsEntering || _detectPlayer.IsNearEnemy))
+        if (_detectPlayer && (_detectPlayer.IsEntering || _detectPlayer.IsNearEnemy || _detectPlayer.IsNearChest))
         {
-            // cancel when on enter or battle
+            // cancel when other actions are available
             OnTriggerExit2D(_detectPlayer.GetComponent<Collider2D>());
         }
 

@@ -5,8 +5,8 @@ public class Interact : MonoBehaviour
 {
     private Player _detectPlayer;
     private GameObject _activeIcon;
-    [SerializeField] private Dialogue _dialogue;
     [SerializeField] private GameObject _icon;
+    [SerializeField] private Dialogue _dialogue;
 
     private void Start()
     {

@@ -6,15 +6,17 @@ public class FirstQuest : EventBase
 {
     public Player PlayerChar { get; set; }
     public Companion Friend { get; set; }
-    public Villager Chief { get; set; }
     public Villager Mom { get; set; }
+    public Villager Chief { get; set; }
+    public Villager Shopkeeper { get; set; }
     public Enemy SlimeChar { get; set; }
     public Enemy SlimeChar1 { get; set; }
     public Enemy SlimeChar2 { get; set; }
     public GameObject HouseIndoor { get; set; }
+    public GameObject Chest { get; set; }
     [SerializeField] private GameObject _reactIcon;
-    [SerializeField] private Dialogue _friendDialogue, _chiefDialogue, _momDialogue, _slimeDialogue, _friendDialogue2, _outBoundsDialogue, _slimeDialogue2, _afterBattleDialogue, _friendDialogue3, _ambushDialogue, _afterAmbushDialogue;
-    private bool _encounter, _outBounds, _firstSlimeDefeat, _slimeDialogue2Active, _encounter2;
+    [SerializeField] private Dialogue _friendDialogue, _chiefDialogue, _momDialogue, _shopkeeperDialogue, _slimeDialogue, _friendDialogue2, _outBoundsDialogue, _slimeDialogue2, _afterBattleDialogue, _friendDialogue3, _chestDialogue, _ambushDialogue, _afterAmbushDialogue;
+    private bool _encounter, _outBounds, _firstSlimeDefeat, _slimeDialogue2Active, _findChest, _encounter2;
     private int _inPos;
 
     private void Start()
@@ -29,8 +31,9 @@ public class FirstQuest : EventBase
 
         // set current dialogues
         Friend.CurrentDialogue = _friendDialogue;
-        Chief.CurrentDialogue = _chiefDialogue;
         Mom.CurrentDialogue = _momDialogue;
+        Chief.CurrentDialogue = _chiefDialogue;
+        Shopkeeper.CurrentDialogue = _shopkeeperDialogue;
 
         // reset chief position
         Chief.transform.position = new Vector2(18.49f, -41.73f);
@@ -73,6 +76,17 @@ public class FirstQuest : EventBase
                 // start dialogue
                 DialogueController.Instance.StartDialogue(_outBoundsDialogue, new List<CharacterBase>{Friend});
                 _outBounds = true;
+            }
+        }
+
+        // chest
+        if (!_findChest)
+        {
+            float chestDistance = Vector2.Distance(Chest.transform.position, PlayerChar.transform.position);
+            if (chestDistance < 3f)
+            {
+                SecondaryDialogueController.Instance.StartDialogue(_chestDialogue, new List<CharacterBase>{Friend});
+                _findChest = true;
             }
         }
 
@@ -190,8 +204,9 @@ public class FirstQuest : EventBase
 
     private IEnumerator DelayAnimStop()
     {
-        yield return new WaitForSeconds(.4f);
-        Friend.Anim.enabled = false;
+        yield return new WaitForSeconds(.2f);
+        if (_slimeDialogue2Active)
+            Friend.Anim.enabled = false;
     }
 
     private void SlimeDefeat2()

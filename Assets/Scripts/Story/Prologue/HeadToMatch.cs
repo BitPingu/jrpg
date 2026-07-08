@@ -80,7 +80,7 @@ public class HeadToMatch : EventBase
         // out of bounds check
         if (_detectPlayer && _detectPlayer.StateMachine.CurrentState == _detectPlayer.IdleState)
         {
-            _detectPlayer.StateMachine.End(); // stop movement
+            PlayerChar.StateMachine.End(); // stop movement
 
             Friend.Face(PlayerChar);
             Friend.Anim.Rebind();
@@ -97,25 +97,22 @@ public class HeadToMatch : EventBase
             return;
 
         Friend.Anim.enabled = true;
-        StartCoroutine(GoBack(_detectPlayer));
+        StartCoroutine(GoBack());
     }
 
-    private IEnumerator GoBack(Player player)
+    private IEnumerator GoBack()
     {
-        player.Face(Friend);
-
-        Vector3 returnPos = Friend.transform.position;
+        PlayerChar.Face(Friend);
 
         // go back
-        float _distance = Vector2.Distance(returnPos, player.transform.position);
-        while (_distance > 0.6f)
-        {
-            _distance = Vector2.Distance(returnPos, player.transform.position);
-            player.Move(returnPos - player.transform.position);
-            yield return new WaitForFixedUpdate();
-        }
+        Vector2 vec = Friend.transform.position - PlayerChar.transform.position;
+        
+        PlayerChar.Move(vec);
 
-        player.StateMachine.Initialize(player.IdleState); // enable movement
+        yield return new WaitForSeconds(1f);
+
+        PlayerChar.StateMachine.Initialize(PlayerChar.IdleState); // enable movement
+        
         _detectPlayer = null;
     }
 

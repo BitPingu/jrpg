@@ -15,12 +15,12 @@ public class Prologue : ChapterBase
     [SerializeField] protected Villager _mom, _chief, _shopkeeper;
     [SerializeField] protected Enemy _slime, _slime1, _slime2;
     [SerializeField] protected VillagerDialogue[] _vDialogue;
-    [SerializeField] protected GameObject _chiefHouse, _chiefHouseIndoor;
+    [SerializeField] protected GameObject _chiefHouse, _chiefHouseIndoor, _chest;
 
     public override void BeginChapter()
     {
         // TODO: temp
-        // _friend.Join(_player);
+        _friend.Join(_player);
 
         UpdateDialogue(0); // init dialogue
         base.BeginChapter();
@@ -63,12 +63,14 @@ public class Prologue : ChapterBase
             _player.CanEnter = true; // enable enter action
             CurrentEvent.GetComponent<FirstQuest>().PlayerChar = _player;
             CurrentEvent.GetComponent<FirstQuest>().Friend = _friend;
-            CurrentEvent.GetComponent<FirstQuest>().Chief = _chief;
             CurrentEvent.GetComponent<FirstQuest>().Mom = _mom;
+            CurrentEvent.GetComponent<FirstQuest>().Chief = _chief;
+            CurrentEvent.GetComponent<FirstQuest>().Shopkeeper = _shopkeeper;
             CurrentEvent.GetComponent<FirstQuest>().SlimeChar = _slime;
             CurrentEvent.GetComponent<FirstQuest>().SlimeChar1 = _slime1;
             CurrentEvent.GetComponent<FirstQuest>().SlimeChar2 = _slime2;
             CurrentEvent.GetComponent<FirstQuest>().HouseIndoor = _chiefHouseIndoor;
+            CurrentEvent.GetComponent<FirstQuest>().Chest = _chest;
         }
     }
 
