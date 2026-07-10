@@ -94,7 +94,7 @@ public class FirstQuest : EventBase
         if (SlimeChar1 && SlimeChar2)
         {
             float slimeDistance = Vector2.Distance(SlimeChar1.transform.position, PlayerChar.transform.position);
-            if (!_encounter2 && slimeDistance < 3.3f)
+            if (!_encounter2 && slimeDistance < 2.5f)
             {
                 PlayerChar.StateMachine.End(); // stop movement
                 Friend.StateMachine.End(); // stop movement
@@ -204,7 +204,7 @@ public class FirstQuest : EventBase
 
     private IEnumerator DelayAnimStop()
     {
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.4f);
         if (_slimeDialogue2Active)
             Friend.Anim.enabled = false;
     }
