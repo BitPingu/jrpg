@@ -222,6 +222,7 @@ public class FirstQuest : EventBase
 
         PlayerChar.StateMachine.Initialize(PlayerChar.IdleState);
         Friend.StateMachine.Initialize(Friend.IdleState);
+        Friend.Anim.enabled = true;
     }
 
     private IEnumerator MoveSlime(CharacterBase character, Vector3 destination)
