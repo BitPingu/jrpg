@@ -19,7 +19,7 @@ public class TalkToFriend : EventBase
         Mom.CurrentDialogue = _curMomDialogue;
 
         // spawn friend
-        Friend.transform.position = new Vector3(1.672f,-0.557f,0);
+        Friend.transform.position = new Vector3(3f,-.3f);
     }
 
     private void Update()

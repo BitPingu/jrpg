@@ -24,7 +24,7 @@ public class HeadToMatch : EventBase
         Friend.CurrentDialogue = _curFriendDialogue;
 
         // boundary spawn
-        transform.position = new Vector3(-2.44f,-4.76f,0);
+        transform.position = new Vector3(9.45f,-3.07f);
     }
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
