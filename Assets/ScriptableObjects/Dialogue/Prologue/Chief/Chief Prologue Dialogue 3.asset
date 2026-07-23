@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - charName: Chief Vandham
-    line: Now that you two are here, I have a favor to ask from both of you.
+    line: Now that I have both of you here, I have a favor to ask.
     reaction: 
     choices: []
     redirectDialogueIndex: -1

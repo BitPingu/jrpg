@@ -19,7 +19,7 @@ MonoBehaviour:
     choices: []
     redirectDialogueIndex: -1
   - charName: Alice
-    line: Let's hurry! We have to meet the chief at the training grounds.
+    line: Let's hurry! We have to meet with the chief at the training grounds.
     reaction: 
     choices: []
     redirectDialogueIndex: -1
